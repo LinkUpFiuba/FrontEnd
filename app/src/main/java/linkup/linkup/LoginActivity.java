@@ -78,13 +78,19 @@ public class LoginActivity extends BaseActivity implements
             }
         });
 
-
-
-
         TextView textView = (TextView) findViewById(R.id.useConditions);
         SpannableString content = new SpannableString(getResources().getString(R.string.activity_loigin_use_conditions));
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         textView.setText(content);
+
+        startMainActivity();
+    }
+
+    public void startMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     // [START on_start_check_user]
@@ -150,9 +156,7 @@ public class LoginActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-
-            startActivity(intent);
+            startMainActivity();
         } else {
         }
     }

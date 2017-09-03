@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity  {
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         setContentView(R.layout.activity_main);
+        /*
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.logoutButton);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -32,8 +33,8 @@ public class MainActivity extends AppCompatActivity  {
                     startActivity(intent);
                 }
             }
-        });
-    }
+        });*/
 
+    }
 
 }
