@@ -17,4 +17,15 @@
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
+
+    <!-- Content Swipe Deck-->
+    <dimen name="swipe_horizontal_margin">0dp</dimen>
+    <dimen name="card_top_shadow_margin_bottom">2dp</dimen>
+    <!-- Candidate card-->
+    <dimen name="card_margin">8dp</dimen>
+
+    <dimen name="appbarlayout_height">418dp</dimen>
+    <dimen name="edittext_drawable_pad">16dp</dimen>
+    <dimen name="rippleStrokeWidth">2dp</dimen>
+    <dimen name="rippleRadius">64dp</dimen>
 </resources>
