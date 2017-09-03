@@ -19,4 +19,6 @@
 
     <string name="facebook_app_id">113492992704721</string>
     <string name="fb_login_protocol_scheme">fb113492992704721</string>
+
+    <string name="activit_continue_button">Continuar con facebook</string>
 </resources>
