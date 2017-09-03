@@ -3,8 +3,12 @@ package linkup.linkup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -22,25 +26,24 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
 public class LoginActivity extends BaseActivity implements
         View.OnClickListener {
     private static final String TAG = "FacebookLogin";
     private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
+    private Button facebookView;
+    private LoginButton loginButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
 
-        // [START initialize_fblogin]
-        // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_login);
+        loginButton = (LoginButton) findViewById(R.id.facebook_login);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -65,7 +68,23 @@ public class LoginActivity extends BaseActivity implements
                 // [END_EXCLUDE]
             }
         });
-        // [END initialize_fblogin]
+
+        Button facebookView = (Button)findViewById(R.id.facebookView);
+        facebookView.setOnClickListener(this);
+        facebookView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginButton.performClick();
+            }
+        });
+
+
+
+
+        TextView textView = (TextView) findViewById(R.id.useConditions);
+        SpannableString content = new SpannableString(getResources().getString(R.string.activity_loigin_use_conditions));
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        textView.setText(content);
     }
 
     // [START on_start_check_user]

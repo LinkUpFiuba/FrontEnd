@@ -1,31 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorPrimary"
-    tools:context="linkup.linkup.LoginActivity">
-
-    <Button
-        android:id="@+id/facebookView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_alignParentBottom="true"
-        android:height="@dimen/button_height"
-        android:onClick="login"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:text="@string/activit_continue_button" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/backrepeat"
+        android:padding="@dimen/activity_horizontal_margin"
+        tools:context="linkup.linkup.LoginActivity">
 
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/activity_login_button_text_vertical_margin_top"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/logo"/>
+
+            <ImageView
+                android:layout_width="235dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/text_logo"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/facebookView"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:height="@dimen/button_height"
+                android:background="@color/white_text"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:text="@string/activit_continue_button"
+                android:textColor="@color/colorText"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_text"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/activity_login_button_text_vertical_margin"
+                android:text="@string/activity_loigin_dont_publish_facebook"
+                android:textSize="@dimen/text_size_xsmall"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/useConditions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_text"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/activity_vertical_margin_small"
+                android:text="@string/activity_loigin_use_conditions"
+                android:layout_marginBottom="@dimen/activity_vertical_margin_small"
+                android:textSize="@dimen/text_size_xsmall"/>
+        </LinearLayout>
+
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebook_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            />
+
+
+    </RelativeLayout>
+</LinearLayout>
+

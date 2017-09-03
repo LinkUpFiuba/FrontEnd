@@ -21,4 +21,7 @@
     <string name="fb_login_protocol_scheme">fb113492992704721</string>
 
     <string name="activit_continue_button">Continuar con facebook</string>
+    <string name="activity_loigin_dont_publish_facebook">Nunca publicaremos algo en tu facebook</string>
+    <string name="activity_loigin_use_conditions">Condiciones de uso</string>
+    <string name="activity_loigin_use_logo">LinkUp</string>
 </resources>
