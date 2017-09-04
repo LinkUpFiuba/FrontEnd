@@ -32,6 +32,8 @@ public class User {
     String email;
     String birthday;
     String gender;
+    int minRange;
+    int maxRange;
     List<String> jobs;
     List<String> education;
     User user;

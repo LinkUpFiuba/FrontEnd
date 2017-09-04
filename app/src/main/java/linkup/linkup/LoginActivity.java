@@ -27,6 +27,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import linkup.linkup.Utils.DataBase;
 import linkup.linkup.model.User;
 
 
@@ -132,7 +133,7 @@ public class LoginActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            User user=new User(firebaseUser);
+                            DataBase.userExists(firebaseUser);
                             startMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
