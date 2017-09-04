@@ -25,6 +25,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
+                    android:transitionName="simple_activity_transition"
+                    tools:ignore="UnusedAttribute"
                     tools:src="@drawable/p2"/>
 
                 <ImageView

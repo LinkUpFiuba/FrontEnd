@@ -2,6 +2,9 @@ package linkup.linkup.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.transition.ChangeBounds;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import linkup.linkup.MainActivity;
+import linkup.linkup.ProfileActivity;
 import linkup.linkup.R;
 
 
@@ -49,7 +54,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
         if (v == null) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.candidate_card, parent, false);
         }
-        ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
+        final ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
         Picasso.with(context).load(R.drawable.p2).fit().centerCrop().into(imageView);
         TextView textView = (TextView) v.findViewById(R.id.sample_text);
         String item = (String)getItem(position);
@@ -60,8 +65,12 @@ public class SwipeDeckAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Log.i("Layer type: ", Integer.toString(v.getLayerType()));
                 Log.i("Hwardware Accel type:", Integer.toString(View.LAYER_TYPE_HARDWARE));
-                //Intent i = new Intent(v.getContext(), ProfileActivity.class);
-               // v.getContext().startActivity(i);
+                Intent i = new Intent(v.getContext(), ProfileActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation((MainActivity)v.getContext(),
+                                imageView,
+                                ViewCompat.getTransitionName(imageView));
+                v.getContext().startActivity(i, options.toBundle());
             }
         });
 

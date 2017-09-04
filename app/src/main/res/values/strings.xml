@@ -24,4 +24,6 @@
     <string name="activity_loigin_dont_publish_facebook">Nunca publicaremos algo en tu facebook</string>
     <string name="activity_loigin_use_conditions">Condiciones de uso</string>
     <string name="activity_loigin_use_logo">LinkUp</string>
+
+    <string name="activity_profile_interests">Intereses</string>
 </resources>

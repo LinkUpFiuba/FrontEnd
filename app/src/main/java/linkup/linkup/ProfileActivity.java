@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
 import android.view.MenuItem;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -16,7 +17,11 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbarLayout.setTitle("Camii");
+        toolbarLayout.setTitle("Camiila, 21");
+
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(250);
+        getWindow().setSharedElementEnterTransition(bounds);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

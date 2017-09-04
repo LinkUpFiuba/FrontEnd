@@ -12,6 +12,8 @@
         <item name="windowNoTitle">true</item>
         <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
+
     </style>
 
     <style name="AppTheme.LoginActionbar" parent="AppTheme.NoActionBar"></style>
