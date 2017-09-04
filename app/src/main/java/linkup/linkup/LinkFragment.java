@@ -42,11 +42,11 @@ public class LinkFragment extends Fragment {
     }
 
     private void agregarCandidatosDePrueba(){
-        testData.add("0");
-        testData.add("1");
-        testData.add("2");
-        testData.add("3");
-        testData.add("4");
+        testData.add("Samanta, 21");
+        testData.add("Luis, 22");
+        testData.add("José, 18");
+        testData.add("Rafael, 32");
+        testData.add("Federico, 24");
 
     }
     private void initCardstack(){

@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/card_margin"
+    app:cardCornerRadius="@dimen/cardview_radius"
     android:gravity="center_horizontal"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -46,24 +46,45 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/top_shadow"
-                    android:paddingBottom="@dimen/card_top_shadow_margin_bottom"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/shadow"
+
                     >
-                    <TextView
-                        android:id="@+id/sample_text"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        style="@style/swipeTitle"
-                        android:text="Leo, 34"/>
-                    <TextView
-                        android:id="@+id/subtitle_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/sample_text"
-                        android:gravity="center_horizontal"
-                        style="@style/swipeTitle.sub"
-                        android:text="Buenos Aires (6.0km)"/>
+                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/sample_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            style="@style/swipeTitle"
+                            android:layout_marginBottom="@dimen/activity_vertical_margin_xsmall"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1.5"
+                            android:shadowDy="1.3"
+                            android:shadowRadius="1.6"
+                            android:text="Leo, 34"/>
+                        <TextView
+                            android:id="@+id/subtitle_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/sample_text"
+                            android:gravity="start"
+                            style="@style/swipeTitle.sub"
+                            android:text="Docente"/>
+                        <TextView
+                            android:id="@+id/subtitle2_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/sample_text"
+                            android:gravity="start"
+                            style="@style/swipeTitle.sub"
+                            android:text="Universidad de Buenos Aires"/>
+                    </LinearLayout>
+
                 </RelativeLayout>
 
             </FrameLayout>
