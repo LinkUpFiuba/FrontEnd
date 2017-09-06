@@ -12,11 +12,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import linkup.linkup.Utils.DataBase;
 
@@ -24,29 +34,41 @@ import linkup.linkup.Utils.DataBase;
 /**
  * Created by andres on 9/3/17.
  */
+
 @IgnoreExtraProperties
+
 public class User {
     public String Uid;
-    Uri photoUrl;
-    String name;
-    String email;
-    String birthday;
-    String gender;
-    int minRange;
-    int maxRange;
-    List<String> jobs;
-    List<String> education;
-    User user;
-     JSONObject userJson;
+    public String photoUrl;
+    public String name;
+    public String email;
+    public String birthday;
+    public String age;
+    public String gender;
+    public Range range;
+    public List<Like> likesList;
+    public List<Education> educationList;
+    public List<Work>workList;
+    public String education;
+    public String work;
+
+    public boolean invisibleMode;
+    public boolean linkUpPlus;
+    public Interests interests;
+    public List<Photo> photoList;
+
     public User(){
+
     }
+
     public User(FirebaseUser firebaseUser){
+        invisibleMode=false;
+        linkUpPlus=false;
         Uid =firebaseUser.getUid();
-        photoUrl = firebaseUser.getPhotoUrl();
+        photoUrl = firebaseUser.getPhotoUrl().toString();
         name = firebaseUser.getDisplayName();
         email =firebaseUser.getEmail();
-        List<UserInfo> userInfos = (List<UserInfo>) firebaseUser.getProviderData();
-        user=this;
+        final User user=this;
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -55,11 +77,42 @@ public class User {
                             JSONObject object,
                             GraphResponse response) {
                         // Application code
-                        userJson=object;
                         try {
-                            gender=object.getString("gender");
-                            //birthday=object.getString("birthday");
+                            if(object.has("gender")) {
+                                gender = object.getString("gender");
+                            }else {
+                                gender="";
+                            }
+                            if(object.has("birthday")){
+                                birthday=object.getString("birthday");
+                                DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+                                DateTime dt = formatter.parseDateTime(birthday);
+                                DateTime today= DateTime.now();
+                                Period period=new Period(dt,today);
+                                int years= period.getYears();
+                                age=String.valueOf(years);
+                                range=new Range(years);
+                            }else {
+                                birthday="";
+                                age="18";
+                            }
+                            if(object.has("education")) {
+                                educationList = Education.educationList(object.getJSONArray("education"));
+                                education=educationList.get(educationList.size()-1).name;
+                            }else {
+                                education="";
+                            }
+                            if(object.has("likes")) {
+                                likesList = Like.likesList(object.getJSONObject("likes").getJSONArray("data"));
+                            }
+                            if(object.has("work")) {
+                                workList=Work.workList(object.getJSONArray("work"));
+                                work=workList.get(workList.size()-1).name;
+                            }
 
+                            if(object.has("photos")) {
+                                photoList=Photo.photoList(object.getJSONObject("photos").getJSONArray("data"));
+                            }
 
                         }catch (JSONException e){
                             Log.d("User",e.toString());
@@ -68,7 +121,7 @@ public class User {
                     }
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "gender,birthday,education,likes,work,photos");
+        parameters.putString("fields", "gender,birthday,education,likes,work,photos,id");
         request.setParameters(parameters);
         request.executeAsync();
 
