@@ -15,8 +15,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import linkup.linkup.Utils.DataBase;
-import linkup.linkup.model.User;
 
 
 public class LoginActivity extends BaseActivity implements
@@ -57,6 +54,7 @@ public class LoginActivity extends BaseActivity implements
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
                 startMainActivity();
+
             }
 
             @Override
@@ -133,8 +131,9 @@ public class LoginActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            DataBase.userExists(firebaseUser);
+                            DataBase.createOrGetUser(firebaseUser);
                             startMainActivity();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

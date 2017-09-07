@@ -8,8 +8,12 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 
 public class Interests {
-    public Interests(){}
-    private boolean men,women,friends;
+    public Interests(){
+        men=false;
+        women=false;
+        friends=false;
+    }
+    public boolean men,women,friends;
     public boolean searchesMen(){
         return men;
     }

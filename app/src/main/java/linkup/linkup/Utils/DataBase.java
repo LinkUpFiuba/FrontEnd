@@ -9,9 +9,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Map;
 
 import linkup.linkup.model.Interests;
 import linkup.linkup.model.Photo;
+import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
 /**
@@ -20,6 +22,28 @@ import linkup.linkup.model.User;
 
 public class DataBase {
 
+    public static  void updateUser(User user){
+        Map<String, Object> map = user.toMap();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("users").child(user.Uid).updateChildren(map);
+    }
+    public static User getUser(String Uid){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        final User[] user = new User[1];
+        ref.child("users").child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user[0] =(User)dataSnapshot.getValue(User.class);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return user[0];
+    }
     public static void  saveUser(User user){
         FirebaseDatabase database= FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();/**
@@ -47,15 +71,18 @@ public class DataBase {
 **/
         databaseReference.child("users").child(user.Uid).setValue(user);
     }
-    public static void  userExists(final FirebaseUser firebaseUser){
+    public static void createOrGetUser(final FirebaseUser firebaseUser){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                User user;
                 if(dataSnapshot.exists()){
+                    user =(User)dataSnapshot.getValue(User.class);
                 } else {
-                    User user=new User(firebaseUser);
+                    user=new User(firebaseUser);
                 }
+                SingletonUser.set(user);
             }
 
             @Override

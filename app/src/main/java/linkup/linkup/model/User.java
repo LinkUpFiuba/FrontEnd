@@ -10,6 +10,7 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import org.joda.time.DateTime;
@@ -24,9 +25,12 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import linkup.linkup.Utils.DataBase;
 
@@ -68,6 +72,7 @@ public class User {
         photoUrl = firebaseUser.getPhotoUrl().toString();
         name = firebaseUser.getDisplayName();
         email =firebaseUser.getEmail();
+        interests=new Interests();
         final User user=this;
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -108,10 +113,15 @@ public class User {
                             if(object.has("work")) {
                                 workList=Work.workList(object.getJSONArray("work"));
                                 work=workList.get(workList.size()-1).name;
+                            }else{
+                                work="";
+                                workList=new ArrayList<Work>();
                             }
 
                             if(object.has("photos")) {
                                 photoList=Photo.photoList(object.getJSONObject("photos").getJSONArray("data"));
+                            }else {
+                                photoList=new ArrayList<Photo>();
                             }
 
                         }catch (JSONException e){
@@ -124,7 +134,41 @@ public class User {
         parameters.putString("fields", "gender,birthday,education,likes,work,photos,id");
         request.setParameters(parameters);
         request.executeAsync();
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("Uid",Uid);
+        result.put("photoUrl",photoUrl);
+        result.put("name",name);
+        result.put("email",email);
+
+        result.put("birthday",birthday);
+        result.put("age",age);
+        result.put("gender",gender);
+
+        result.put("range",range);
+
+        result.put("likesList",likesList);
 
 
+        result.put("educationList",educationList);
+
+        result.put("workList",workList);
+
+        result.put("education",education);
+
+        result.put("work",work);
+
+        result.put("invisibleMode",invisibleMode);
+
+        result.put("linkUpPlus",linkUpPlus);
+
+        result.put("interests",interests);
+        result.put("photoList",photoList);
+
+
+        return result;
     }
 }
