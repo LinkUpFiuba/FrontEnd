@@ -26,4 +26,8 @@
     <string name="activity_loigin_use_logo">LinkUp</string>
 
     <string name="activity_profile_interests">Intereses</string>
+
+    <string name="activity_configurations_edit_info">Editar perfil</string>
+    <string name="activity_configurations_account">ajustes</string>
+
 </resources>
