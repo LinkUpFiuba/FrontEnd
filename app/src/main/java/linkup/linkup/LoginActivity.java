@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity implements
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                startMainActivity();
+                //startMainActivity();
 
             }
 
@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity implements
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         textView.setText(content);
 
-       // startMainActivity();
+        startMainActivity();
     }
 
     public void startMainActivity(){
