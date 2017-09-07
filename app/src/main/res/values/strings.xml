@@ -30,4 +30,15 @@
     <string name="activity_configurations_edit_info">Editar perfil</string>
     <string name="activity_configurations_account">ajustes</string>
 
+    <string name="icon_game">Linkear</string>
+    <string name="icon_chats">Chat</string>
+<!-- Navigation lateral panel-->
+    <string name="nav_item_link">Linkear</string>
+    <string name="nav_item_chats">Chat</string>
+
+    <string name="nav_section_config">Configuración</string>
+    <string name="nav_item_edit_profile">Editar perfil</string>
+    <string name="nav_item_edit_account">Ajustes</string>
+    <string name="nav_item_edit_logout">Cerrar sesión</string>
+
 </resources>

@@ -40,6 +40,7 @@ public class LoginActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser()!=null){

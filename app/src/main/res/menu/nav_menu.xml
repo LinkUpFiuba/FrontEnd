@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_link"
+            android:checked="true"
+            android:icon="@drawable/ic_content_copy_white_24dp"
+            android:background="?attr/selectableItemBackground"
+            android:title="@string/nav_item_link" />
+        <item
+            android:id="@+id/nav_chats"
+            android:icon="@drawable/ic_chat_bubble_black_24dp"
+            android:background="?attr/selectableItemBackground"
+            android:title="@string/nav_item_chats" />
+
+        <!-- Sección de configuración -->
+        <item
+            android:id="@+id/configuration_section"
+            android:title="@string/nav_section_config">
+            <menu>
+                <item
+                    android:id="@+id/nav_edit_profile"
+                    android:icon="@drawable/ic_person_black_24dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:title="@string/nav_item_edit_profile" />
+                <item
+                    android:id="@+id/nav_edit_acount"
+                    android:icon="@drawable/ic_mode_edit_black_24dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:title="@string/nav_item_edit_account" />
+                <item
+                    android:id="@+id/nav_log_out"
+                    android:icon="@android:drawable/ic_lock_power_off"
+                    android:background="?attr/selectableItemBackground"
+                    android:title="@string/nav_item_edit_logout" />
+            </menu>
+        </item>
+    </group>
+</menu>

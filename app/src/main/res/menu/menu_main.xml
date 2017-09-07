@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".view.activity.MainActivity">
+    <item
+        android:id="@+id/icon_game"
+        android:icon="@drawable/ic_content_copy_white_24dp"
+        android:title="@string/icon_game"
+        app:itemIconTint="@color/icons"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/icon_chats"
+        android:icon="@drawable/ic_chat_bubble_white_24dp"
+        android:title="@string/icon_chats"
+        app:itemIconTint="@color/icons"
+        app:showAsAction="always" />
+</menu>
