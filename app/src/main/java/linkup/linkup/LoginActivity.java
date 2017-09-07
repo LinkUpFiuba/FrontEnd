@@ -15,7 +15,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +24,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import linkup.linkup.Utils.DataBase;
 
 
 public class LoginActivity extends BaseActivity implements
@@ -41,22 +42,25 @@ public class LoginActivity extends BaseActivity implements
         setContentView(R.layout.activity_login);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
+        if(mAuth.getCurrentUser()!=null){
+            startMainActivity();
+        }
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.facebook_login);
-        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.setReadPermissions("email", "public_profile","user_birthday","user_education_history","user_likes","user_work_history","user_photos");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                startMainActivity();
+
             }
 
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
                 // [START_EXCLUDE]
-                updateUI(null);
                 // [END_EXCLUDE]
             }
 
@@ -64,7 +68,6 @@ public class LoginActivity extends BaseActivity implements
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
                 // [START_EXCLUDE]
-                updateUI(null);
                 // [END_EXCLUDE]
             }
         });
@@ -83,7 +86,7 @@ public class LoginActivity extends BaseActivity implements
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         textView.setText(content);
 
-        startMainActivity();
+       // startMainActivity();
     }
 
     public void startMainActivity(){
@@ -99,7 +102,6 @@ public class LoginActivity extends BaseActivity implements
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
     }
     // [END on_start_check_user]
 
@@ -128,14 +130,15 @@ public class LoginActivity extends BaseActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            DataBase.createOrGetUser(firebaseUser);
+                            startMainActivity();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
 
                         // [START_EXCLUDE]
@@ -146,20 +149,7 @@ public class LoginActivity extends BaseActivity implements
     }
     // [END auth_with_facebook]
 
-    public void signOut() {
-        mAuth.signOut();
-        LoginManager.getInstance().logOut();
 
-        updateUI(null);
-    }
-
-    private void updateUI(FirebaseUser user) {
-        hideProgressDialog();
-        if (user != null) {
-            startMainActivity();
-        } else {
-        }
-    }
 
     @Override
     public void onClick(View v) {
