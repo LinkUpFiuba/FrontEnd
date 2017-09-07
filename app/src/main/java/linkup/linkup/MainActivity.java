@@ -55,11 +55,14 @@ public class MainActivity extends AppCompatActivity  {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             // Poner ícono del drawer toggle
             ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
             ab.setDisplayHomeAsUpEnabled(true);
+            ab.setTitle(getResources().getString(R.string.icon_game));
         }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -87,8 +90,7 @@ public class MainActivity extends AppCompatActivity  {
             toolbar.setTitle(getResources().getString(R.string.nav_item_chats));
 
         }else if (menuItem == getResources().getString(R.string.nav_item_edit_profile)) {
-            changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
-            toolbar.setTitle(getResources().getString(R.string.nav_item_edit_profile));
+            startMyProfileActivity();
 
         }else if (menuItem == getResources().getString(R.string.nav_item_edit_account)) {
             changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
@@ -164,5 +166,9 @@ public class MainActivity extends AppCompatActivity  {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void startMyProfileActivity(){
+        Intent intent = new Intent(this, MyProfileActivity.class);
+        startActivity(intent);
     }
 }

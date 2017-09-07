@@ -35,4 +35,18 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="profileTitle">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="profileTitle.sub" parent="profileTitle">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="profileTitle.sub.accent" parent="profileTitle.sub">
+        <item name="android:textColor">@color/accent</item>
+    </style>
+
 </resources>

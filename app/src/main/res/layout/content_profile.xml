@@ -15,30 +15,70 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/activity_vertical_margin"
-            android:paddingStart="@dimen/activity_vertical_margin"
-            android:paddingTop="@dimen/activity_vertical_margin_small"
+            android:padding="@dimen/activity_vertical_margin_large"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:tint="@color/gray_text"
+                    android:layout_marginEnd="@dimen/activity_vertical_margin_large"
+                    android:tint="@color/secondary_text"
                     android:src="@drawable/ic_business_center_black_24dp"/>
                 <TextView
                     android:id="@+id/proffesion_text"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/activity_vertical_margin_xsmall"
-                    android:textSize="@dimen/text_size_small"
-                    android:textColor="@color/gray_text"
+                    android:layout_height="wrap_content"
+                    style="@style/profileTitle.sub"
                     android:gravity="start|center_vertical"
                     android:text="Docente"/>
+            </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin_large"
+                        android:tint="@color/secondary_text"
+                        android:src="@drawable/ic_school_black_24dp"/>
+                    <TextView
+                        android:id="@+id/center_study_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/profileTitle.sub"
+                        android:gravity="start|center_vertical"
+                        android:text="Universidad de Buenos Aires"/>
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/activity_vertical_margin_large"
+                    android:tint="@color/secondary_text"
+                    android:layout_gravity="top"
+                    android:src="@drawable/ic_person_black_24dp"/>
+                <TextView
+                    android:id="@+id/about_me_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/profileTitle.sub"
+                    android:gravity="start|center_vertical"
+                    android:text="American actress, model and singer. Most commonly famous as Black Widow."/>
             </LinearLayout>
 
             <LinearLayout
@@ -49,51 +89,20 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:tint="@color/gray_text"
-
-                    android:src="@drawable/ic_school_black_24dp"/>
+                    android:layout_marginEnd="@dimen/activity_vertical_margin_large"
+                    android:tint="@color/secondary_text"
+                    android:layout_gravity="top"
+                    android:src="@drawable/ic_thumb_up_white_24dp"/>
                 <TextView
-                    android:id="@+id/studies_center_text"
+                    android:id="@+id/interests_text"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/activity_vertical_margin_xsmall"
-                    android:textSize="@dimen/text_size_small"
-                    android:textColor="@color/gray_text"
+                    android:layout_height="wrap_content"
+                    style="@style/profileTitle.sub"
                     android:gravity="start|center_vertical"
-                    android:text="Universidad de Buenos Aires"/>
+                    android:text="Tenis, UBA, FIUBA, Modelaje, dientes, pelo, dr pelo"/>
             </LinearLayout>
+
         </LinearLayout>
-
-        <include layout="@layout/item_divider" />
-
-        <TextView
-            android:id="@+id/about_me_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingEnd="@dimen/activity_vertical_margin"
-            android:paddingStart="@dimen/activity_vertical_margin"
-            android:paddingTop="@dimen/activity_vertical_margin_small"
-            android:paddingBottom="@dimen/activity_vertical_margin_small"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/gray_text"
-            android:gravity="start|center_vertical"
-            android:text="Sobre mí"/>
-
-        <include layout="@layout/item_divider" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingEnd="@dimen/activity_vertical_margin"
-            android:paddingStart="@dimen/activity_vertical_margin"
-            android:paddingTop="@dimen/activity_vertical_margin_small"
-            android:paddingBottom="@dimen/activity_vertical_margin_small"
-            android:textColor="@color/colorText"
-            android:textSize="@dimen/text_size_small"
-            android:gravity="start|center_vertical"
-            android:textStyle="bold"
-            android:text="@string/activity_profile_interests"/>
 
     </LinearLayout>
 
