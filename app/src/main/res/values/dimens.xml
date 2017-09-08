@@ -44,4 +44,7 @@
     <dimen name="header_height">192dp</dimen>
 
     <dimen name="perfil_image_size">76dp</dimen>
+
+    <dimen name="perfil_gallery_padding">4dp</dimen>
+
 </resources>

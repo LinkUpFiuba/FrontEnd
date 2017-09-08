@@ -49,4 +49,15 @@
         <item name="android:textColor">@color/accent</item>
     </style>
 
+    <style name="editProfileTitle">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="editProfileTitle.sub" parent="editProfileTitle">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>

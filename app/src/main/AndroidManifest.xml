@@ -49,6 +49,8 @@
         </activity>
         <activity android:name=".MainActivity"  android:theme="@style/AppTheme"></activity>
         <activity android:name=".MyProfileActivity"  android:theme="@style/AppTheme"></activity>
+        <activity android:name=".EditProfileActivity"  android:theme="@style/AppTheme"></activity>
+
 
     </application>
 

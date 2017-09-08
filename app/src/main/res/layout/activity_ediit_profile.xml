@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+               xmlns:app="http://schemas.android.com/apk/res-auto"
+               xmlns:tools="http://schemas.android.com/tools"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbarEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:padding="@dimen/activity_vertical_margin"
+                            android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/first"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3" >
+
+                <linkup.linkup.helper.SquareImageView
+                    android:id="@+id/profileImage1"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:layout_margin="@dimen/perfil_gallery_padding"
+                    android:background="@color/empty_photo"
+                    android:src="@drawable/p2"
+                    android:scaleType="centerCrop"
+                    android:text="1" />
+                <linkup.linkup.helper.SquareImageView
+                    android:layout_width="0dp"
+                    android:id="@+id/profileImage2"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:layout_margin="@dimen/perfil_gallery_padding"
+                    android:background="@color/empty_photo"
+                    android:src="@drawable/ic_camera_alt_white_24dp"
+                    android:scaleType="centerInside"
+                    android:text="1" />
+
+                <linkup.linkup.helper.SquareImageView
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/profileImage3"
+                    android:adjustViewBounds="true"
+                    android:background="@color/empty_photo"
+                    android:layout_margin="@dimen/perfil_gallery_padding"
+                    android:src="@drawable/ic_camera_alt_white_24dp"
+                    android:scaleType="centerInside"
+                    android:text="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/second"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/first"
+                android:weightSum="3" >
+                <linkup.linkup.helper.SquareImageView
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/profileImage4"
+                    android:layout_margin="@dimen/perfil_gallery_padding"
+                    android:adjustViewBounds="true"
+                    android:background="@color/empty_photo"
+                    android:src="@drawable/ic_camera_alt_white_24dp"
+                    android:scaleType="centerInside"
+                    android:text="1" />
+                <linkup.linkup.helper.SquareImageView
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/perfil_gallery_padding"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/profileImage5"
+                    android:background="@color/empty_photo"
+                    android:src="@drawable/ic_camera_alt_white_24dp"
+                    android:scaleType="centerInside"
+                    android:text="1" />
+                <linkup.linkup.helper.SquareImageView
+                    android:id="@+id/profileImage6"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:layout_margin="@dimen/perfil_gallery_padding"
+                    android:background="@color/empty_photo"
+                    android:src="@drawable/ic_camera_alt_white_24dp"
+                    android:scaleType="centerInside"
+                    android:text="1" />
+            </LinearLayout>
+
+            </RelativeLayout>
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/profileTitle.sub.accent"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/text_size_xsmall"
+            android:text="@string/edit_profile_explain_gallery"/>
+
+        <include layout="@layout/item_divider"></include>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/activity_vertical_margin_large"
+            android:paddingEnd="@dimen/activity_vertical_margin_large"
+            android:paddingTop="@dimen/activity_vertical_margin_small"
+            android:paddingBottom="@dimen/activity_vertical_margin_small"
+            android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/Proffesion_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/editProfileTitle"
+                        android:gravity="start"
+                        android:text="@string/edit_profile_work"/>
+                    <EditText
+                        android:id="@+id/txtEditProffesion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/editProfileTitle.sub"
+                        android:text="Docente"
+                        android:maxLength="35"
+                        android:gravity="end"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:maxLines="1"/>
+        </LinearLayout>
+            <include layout="@layout/item_divider"></include>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/activity_vertical_margin_large"
+                android:paddingEnd="@dimen/activity_vertical_margin_large"
+                android:paddingTop="@dimen/activity_vertical_margin_small"
+                android:paddingBottom="@dimen/activity_vertical_margin_small"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/CenterStudy_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/editProfileTitle"
+                    android:gravity="start"
+                    android:text="@string/edit_profile_formacion"/>
+                <EditText
+                    android:id="@+id/txtEditCenterStudy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/editProfileTitle.sub"
+                    android:maxLength="40"
+                    android:text="Univerdidad de Buenos Aires"
+                    android:gravity="end"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
+            </LinearLayout>
+            <include layout="@layout/item_divider"></include>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/activity_vertical_margin_large"
+                android:paddingEnd="@dimen/activity_vertical_margin_large"
+                android:paddingTop="@dimen/activity_vertical_margin_small"
+                android:paddingBottom="@dimen/activity_vertical_margin_small"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/about_me_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/editProfileTitle"
+                    android:gravity="start"
+                    android:text="@string/edit_profile_about_me"/>
+                <EditText
+                    android:id="@+id/txtEditAbout_me"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin_small"
+                    style="@style/editProfileTitle.sub"
+                    android:maxLength="500"
+                    android:text=""
+                    android:hint="@string/edit_profile_about_me_hint"
+                    android:gravity="start"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:maxLines="3"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

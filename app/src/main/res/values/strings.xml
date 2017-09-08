@@ -32,7 +32,9 @@
 
     <string name="icon_game">Linkear</string>
     <string name="icon_chats">Chat</string>
-<!-- Navigation lateral panel-->
+    <string name="icon_confirm">Confirmar cambios</string>
+
+    <!-- Navigation lateral panel-->
     <string name="nav_item_link">Linkear</string>
     <string name="nav_item_chats">Chat</string>
 
@@ -40,5 +42,12 @@
     <string name="nav_item_edit_profile">Editar perfil</string>
     <string name="nav_item_edit_account">Ajustes</string>
     <string name="nav_item_edit_logout">Cerrar sesión</string>
+
+    <string name="edit_profile_explain_gallery">Pulsa para cambiar la foto</string>
+    <string name="edit_profile_formacion">Formación</string>
+    <string name="edit_profile_work">Trabajo actual</string>
+    <string name="edit_profile_about_me">Sobre mí</string>
+    <string name="edit_profile_about_me_hint">No dejes tu info en blanco. Añádele un toque personal. Por ejemplo a mucha gente le gusta añadir el link a sus redes sociales</string>
+
 
 </resources>
