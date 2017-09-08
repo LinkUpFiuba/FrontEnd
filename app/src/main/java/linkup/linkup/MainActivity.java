@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,9 +68,18 @@ public class MainActivity extends AppCompatActivity  {
         }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
+            View headerview = navigationView.getHeaderView(0);
+            LinearLayout navigationDrawerHeaderContainer = (LinearLayout) headerview.findViewById(R.id.linearLayoutNavHeader);
+            navigationDrawerHeaderContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startMyProfileActivity();
+                }
+            });
         }
 
         if (savedInstanceState == null) {

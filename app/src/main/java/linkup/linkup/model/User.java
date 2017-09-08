@@ -140,6 +140,7 @@ public class User {
     @Exclude
     public String getLikesString(){
         String likesString="";
+        if(likesList == null) return "";
         for (Like like: likesList ){
             likesString+=(like.name+", ");
         }
