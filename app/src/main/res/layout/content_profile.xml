@@ -94,7 +94,7 @@
                     android:layout_gravity="top"
                     android:src="@drawable/ic_thumb_up_white_24dp"/>
                 <TextView
-                    android:id="@+id/interests_text"
+                    android:id="@+id/like_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/profileTitle.sub"

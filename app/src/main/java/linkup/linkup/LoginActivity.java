@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity implements
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         textView.setText(content);
 
-        startMainActivity();
+        //startMainActivity();
     }
 
     public void startMainActivity(){

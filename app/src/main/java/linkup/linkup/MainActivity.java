@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity  {
             starEditAccountSettingsActivity();
 
         }else if (menuItem == getResources().getString(R.string.nav_item_edit_logout)) {
-            //logOut();
+            logOut();
         }
 
         drawerLayout.closeDrawers(); // Cerrar drawer
@@ -123,10 +123,11 @@ public class MainActivity extends AppCompatActivity  {
         if(currentUser!=null) {
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
-            startActivity(intent);
         }
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+        startActivity(intent);
     }
     public void changeFragment(Fragment fragment, EnterAnimation animation, String FragmentTag){
         FragmentManager supportFragmentManager = getSupportFragmentManager();

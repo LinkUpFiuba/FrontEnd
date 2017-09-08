@@ -55,6 +55,7 @@ public class User {
     public List<Work>workList;
     public String education;
     public String work;
+    public String aboutMe;
 
     public boolean invisibleMode;
     public boolean linkUpPlus;
@@ -74,6 +75,7 @@ public class User {
         email =firebaseUser.getEmail();
         interests=new Interests();
         final User user=this;
+        aboutMe="";
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -135,7 +137,14 @@ public class User {
         request.setParameters(parameters);
         request.executeAsync();
     }
-
+    @Exclude
+    public String getLikesString(){
+        String likesString="";
+        for (Like like: likesList ){
+            likesString+=(like.name+", ");
+        }
+        return likesString;
+    }
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
