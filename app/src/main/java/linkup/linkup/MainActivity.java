@@ -93,8 +93,7 @@ public class MainActivity extends AppCompatActivity  {
             startMyProfileActivity();
 
         }else if (menuItem == getResources().getString(R.string.nav_item_edit_account)) {
-            changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
-            toolbar.setTitle(getResources().getString(R.string.nav_item_edit_account));
+            starEditAccountSettingsActivity();
 
         }else if (menuItem == getResources().getString(R.string.nav_item_edit_logout)) {
             //logOut();
@@ -169,6 +168,10 @@ public class MainActivity extends AppCompatActivity  {
     }
     public void startMyProfileActivity(){
         Intent intent = new Intent(this, MyProfileActivity.class);
+        startActivity(intent);
+    }
+    public void starEditAccountSettingsActivity(){
+        Intent intent = new Intent(this, AccountConfigProfileActivity.class);
         startActivity(intent);
     }
 

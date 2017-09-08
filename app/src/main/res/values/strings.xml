@@ -49,5 +49,25 @@
     <string name="edit_profile_about_me">Sobre mí</string>
     <string name="edit_profile_about_me_hint">No dejes tu info en blanco. Añádele un toque personal. Por ejemplo a mucha gente le gusta añadir el link a sus redes sociales</string>
 
+    <string name="edit_settings_invisible_mode">Mostrarme en LinkUp</string>
+    <string name="edit_settings_invisible_mode_hint">Puedes activar modo invisible para ocultar tu perfil para todos excepto aquellos con los que has hecho un link</string>
+    <string name="edit_settings_seccion_exploration">Ajustes de exploración</string>
+    <string name="edit_settings_seccion_exploration_sub">Mostrarme</string>
+    <string name="edit_settings_exploration_men">Hombres</string>
+    <string name="edit_settings_exploration_women">Mujeres</string>
+    <string name="edit_settings_exploration_just_friends">Sólo amigos</string>
+
+    <string name="edit_settings_exploration_age_range">Rango de edad</string>
+    <string name="edit_settings_exploration_age_range_hint">LinkUp usará estas preferencias para sugerirte candidatos a linkear</string>
+    <string name="edit_settings_seccion_app_settings">Ajustes de la app</string>
+    <string name="edit_settings_app_settings_notifications">Notificaciones</string>
+    <string name="edit_settings_btn_get_link_plus">Obtener linkup plus</string>
+    <string name="edit_settings_btn_get_salir">salir</string>
+    <string name="edit_settings_btn_get_eliminar">eliminar cuenta</string>
+
+    <string name="edit_settings_logo">LinkUp</string>
+    <string name="edit_settings_version">Versión 0.0.1</string>
+    <string name="edit_settings_version_platform">(Android)</string>
+
 
 </resources>
