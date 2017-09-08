@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
+    android:id="@+id/linearLayoutNavHeader"
               android:layout_height="@dimen/header_height"
               android:background="@color/primary"
               android:foreground="@drawable/backrepeat"
-              android:gravity="bottom"
               android:orientation="vertical"
               android:padding="@dimen/header_left_padding"
               android:theme="@style/ThemeOverlay.AppCompat.Dark">
@@ -15,32 +15,38 @@
         android:id="@+id/circle_image"
         android:layout_width="@dimen/perfil_image_size"
         android:layout_height="@dimen/perfil_image_size"
+        android:layout_gravity="start"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:scaleType="centerCrop"
         android:src="@drawable/p2"/>
 
-    <!-- Nombre de Usuario -->
-    <TextView
-        android:id="@+id/username"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Juana Maria Perez, 30"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="bold" />
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/formacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Docente"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Juana Maria Perez, 30"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/centro_estudios"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Universidad de Buenos Aires"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        <TextView
+            android:id="@+id/formacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Docente"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
+        <TextView
+            android:id="@+id/centro_estudios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Universidad de Buenos Aires"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    </LinearLayout>
 </LinearLayout>
