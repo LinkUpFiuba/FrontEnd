@@ -21,11 +21,7 @@ import linkup.linkup.model.User;
 
 public class DataBase {
 
-    public static  void updateUser(User user){
-        Map<String, Object> map = user.toMap();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("users").child(user.Uid).updateChildren(map);
-    }
+
     public static User getUser(String Uid){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         final User[] user = new User[1];

@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,12 +63,12 @@ public class User {
     public Interests interests = new Interests();
     public List<Photo> photoList = new ArrayList<>();
 
-
-
     public User(){
 
     }
-
+    public SerializableUser getSerializableUser(){
+        return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education,getLikesString(),this.photoUrl);
+    }
     public User(FirebaseUser firebaseUser){
         invisibleMode=false;
         linkUpPlus=false;

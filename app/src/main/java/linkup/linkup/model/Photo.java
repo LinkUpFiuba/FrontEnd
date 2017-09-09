@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @IgnoreExtraProperties
 
-public class Photo {
+public class Photo implements Serializable {
     public String id;
     private Photo(){}
     public static List<Photo> photoList(JSONArray photoArray) throws JSONException {

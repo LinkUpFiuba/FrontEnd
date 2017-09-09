@@ -58,7 +58,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.candidate_card, parent, false);
         }
         if(getItem(position) != null){
-            User currrentUser = (User) getItem(position);
+            final User currrentUser = (User) getItem(position);
 
             final ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
             Picasso.with(context).load(currrentUser.photoUrl).fit().centerCrop().into(imageView);
@@ -78,6 +78,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
                     Log.i("Layer type: ", Integer.toString(v.getLayerType()));
                     Log.i("Hwardware Accel type:", Integer.toString(View.LAYER_TYPE_HARDWARE));
                     Intent i = new Intent(v.getContext(), ProfileActivity.class);
+                    i.putExtra("user", currrentUser.getSerializableUser());
                     ActivityOptionsCompat options = ActivityOptionsCompat.
                             makeSceneTransitionAnimation((MainActivity)v.getContext(),
                                     imageView,

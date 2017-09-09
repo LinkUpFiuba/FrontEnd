@@ -72,4 +72,9 @@
     <string name="welcome">Su usuario fue creado con éxito</string>
     <string name="welcome_title">Todo listo</string>
 
+    <string name="edit_success_title">Todo listo</string>
+    <string name="edit_success_message">Los datos fueron almacenados con éxito</string>
+    <string name="edit_profile_work_hint">¿Dónde trabajas?</string>
+
+    <string name="edit_profile_studies_hint">¿Dónde estudias/estudiaste?</string>
 </resources>

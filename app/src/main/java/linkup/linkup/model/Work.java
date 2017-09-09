@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 @IgnoreExtraProperties
 
-public class Work {
+public class Work implements Serializable {
     public String name;
     public String id;
     public Work(){}

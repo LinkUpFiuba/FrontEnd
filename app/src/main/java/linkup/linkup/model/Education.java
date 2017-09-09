@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,7 +20,7 @@ import java.util.ListIterator;
  */
 @IgnoreExtraProperties
 
-public class Education {
+public class Education implements Serializable {
     public String id;
     public String name;
     public String type;

@@ -1,22 +1,22 @@
 package linkup.linkup;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import linkup.linkup.Utils.DataBase;
+import com.squareup.picasso.Picasso;
+
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
-public class EditProfileActivity extends AppCompatActivity {
+import static linkup.linkup.R.id.profileImage1;
+
+public class EditProfileActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -31,26 +31,26 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 User user = SingletonUser.get();
                 boolean changed = false;
+
                 TextView proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
 
-                if (proffesionText.getText() != user.work) {
+                if (proffesionText.getText().toString() !=  user.work) {
                     user.work = proffesionText.getText().toString();
                     changed = true;
                 }
                 TextView centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
-                if (centerStudyText.getText() != user.education) {
+                if (centerStudyText.getText().toString() != user.education) {
                     user.education = centerStudyText.getText().toString();
                     changed = true;
                 }
                 TextView about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
-                if (about_me_text.getText() != user.aboutMe) {
+                if (about_me_text.getText().toString() != user.aboutMe) {
                     user.aboutMe = about_me_text.getText().toString();
                     changed = true;
                 }
                 if (changed) {
-                    DataBase.updateUser(user);
+                    updateUser(user);
                 }
-                onBackPressed();
 
                 return true;
             }
@@ -79,24 +79,29 @@ public class EditProfileActivity extends AppCompatActivity {
     }
     private void setUserProfile(){
         User user = SingletonUser.get();
+        ImageView imageView1 = (ImageView) findViewById(R.id.profileImage1);
+        Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
+
+
         TextView proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
+
         if(!user.work.isEmpty()) {
             proffesionText.setText(user.work);
         }else{
-            proffesionText.setHint("Donde trabajas?");
+            proffesionText.setHint(getResources().getString(R.string.edit_profile_work_hint));
         }
         TextView centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
         if(!user.work.isEmpty()) {
             centerStudyText.setText(user.education);
         }else{
-            centerStudyText.setHint("Donde estudias/estudiaste?");
+            centerStudyText.setHint(getResources().getString(R.string.edit_profile_studies_hint));
         }
 
         TextView about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
         if(!user.aboutMe.isEmpty()) {
             about_me_text.setText(user.aboutMe);
         }else{
-            about_me_text.setHint("Cuenta algo sobre ti");
+            about_me_text.setHint(getResources().getString(R.string.edit_profile_about_me_hint));
         }
 
     }
@@ -106,8 +111,6 @@ public class EditProfileActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-
-
             break;
 
         }

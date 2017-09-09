@@ -9,7 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
@@ -58,6 +61,10 @@ public class MyProfileActivity extends AppCompatActivity {
         User user = SingletonUser.get();
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         toolbarLayout.setTitle(user.name+","+user.age);
+
+        ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
+        Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
+
         TextView proffesionText = (TextView) findViewById(R.id.proffesion_text);
         proffesionText.setText(user.work);
         TextView centerStudyText = (TextView) findViewById(R.id.center_study_text);

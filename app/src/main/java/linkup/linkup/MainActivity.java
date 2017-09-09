@@ -16,12 +16,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import connections.GetUsersAsyncTask;
 import linkup.linkup.model.SingletonUser;
@@ -178,6 +180,10 @@ public class MainActivity extends AppCompatActivity  {
         if (navigationView != null) {
             setupDrawerContent(navigationView);
             View headerview = navigationView.getHeaderView(0);
+
+            ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
+            Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
+
             TextView menu_name_age=(TextView) headerview.findViewById(R.id.menu_name_age);
             menu_name_age.setText(user.name+", "+user.age);
             TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);

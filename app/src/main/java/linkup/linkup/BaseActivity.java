@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import linkup.linkup.Utils.DataBase;
 import linkup.linkup.Utils.HttpClient;
@@ -106,6 +107,7 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+
     public void getFbInformationForUser(final User user){
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -160,6 +162,7 @@ public class BaseActivity extends AppCompatActivity {
         request.setParameters(parameters);
         request.executeAsync();
     }
+
     public void  saveUser(final User user) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
@@ -191,12 +194,41 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+    public  void updateUser(final User user){
+        Map<String, Object> map = user.toMap();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("users").child(user.Uid).updateChildren(map, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    System.out.println("Data could not be saved " + databaseError.getMessage());
+                } else {
+                    Log.d(TAG, "Data saved successfully.");
 
+                    AlertDialog.Builder builder =
+                            new AlertDialog.Builder(BaseActivity.this, R.style.AppTheme);
+                    builder.setTitle(getResources().getString(R.string.edit_success_title));
+                    builder.setMessage(getResources().getString(R.string.edit_success_message));
+                    builder.setIcon(R.drawable.ic_check_white_24dp);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-        public void startMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+                        public void onClick(DialogInterface dialog, int id) {
+                            Log.d(TAG, "Exito");
+                            SingletonUser.set(user);
+                            onBackPressed();
+                        }
+
+                    });
+                    builder.show();
+                }
+            }
+        });
+    }
+
+    public void startMainActivity(){
+    Intent intent = new Intent(this, MainActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    startActivity(intent);
+    finish();
     }
 }
