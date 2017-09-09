@@ -24,6 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 import linkup.linkup.Utils.DataBase;
 
@@ -43,9 +44,12 @@ public class LoginActivity extends BaseActivity implements
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        //if(mAuth.getCurrentUser()!=null){
-          //  startMainActivity();
-        //}
+        for (UserInfo user: mAuth.getCurrentUser().getProviderData()) {
+            if (user.getProviderId().equals("facebook.com")) {
+                DataBase.createOrGetUser(mAuth.getCurrentUser());
+                startMainActivity();
+            }
+        }
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.facebook_login);
         loginButton.setReadPermissions("email", "public_profile","user_birthday","user_education_history","user_likes","user_work_history","user_photos");
