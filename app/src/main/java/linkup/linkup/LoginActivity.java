@@ -44,14 +44,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        if ( mAuth.getCurrentUser() != null){
-            for (UserInfo user: mAuth.getCurrentUser().getProviderData()) {
-                if (user.getProviderId().equals("facebook.com")) {
-                    super.createOrGetUser(mAuth.getCurrentUser());
-                }
-            }
-        }
-
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.facebook_login);
         loginButton.setReadPermissions("email", "public_profile","user_birthday","user_education_history","user_likes","user_work_history","user_photos");
@@ -60,7 +52,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                //startMainActivity();
+
 
             }
 
@@ -93,7 +85,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         textView.setText(content);
 
-        //startMainActivity();
     }
 
 
@@ -133,7 +124,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             createOrGetUser(firebaseUser);
-                            startMainActivity();
 
                         } else {
                             // If sign in fails, display a message to the user.
