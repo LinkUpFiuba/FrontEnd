@@ -11,8 +11,11 @@ public class Range {
     public int minAge;
     public int maxAge;
     private final int defaultInterval=5;
-    public Range(){}
-    Range(int age){
+
+    public Range (){
+
+    }
+    public Range(int age){
         minAge=age-defaultInterval;
         if(minAge<18){
             minAge=18;

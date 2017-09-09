@@ -69,5 +69,7 @@
     <string name="edit_settings_version">Versión 0.0.1</string>
     <string name="edit_settings_version_platform">(Android)</string>
 
+    <string name="welcome">Su usuario fue creado con éxito</string>
+    <string name="welcome_title">Todo listo</string>
 
 </resources>

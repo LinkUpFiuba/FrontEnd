@@ -29,8 +29,7 @@ import com.google.firebase.auth.UserInfo;
 import linkup.linkup.Utils.DataBase;
 
 
-public class LoginActivity extends BaseActivity implements
-        View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "FacebookLogin";
     private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
@@ -44,12 +43,15 @@ public class LoginActivity extends BaseActivity implements
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        for (UserInfo user: mAuth.getCurrentUser().getProviderData()) {
-            if (user.getProviderId().equals("facebook.com")) {
-                DataBase.createOrGetUser(mAuth.getCurrentUser());
-                startMainActivity();
+
+        if ( mAuth.getCurrentUser() != null){
+            for (UserInfo user: mAuth.getCurrentUser().getProviderData()) {
+                if (user.getProviderId().equals("facebook.com")) {
+                    super.createOrGetUser(mAuth.getCurrentUser());
+                }
             }
         }
+
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.facebook_login);
         loginButton.setReadPermissions("email", "public_profile","user_birthday","user_education_history","user_likes","user_work_history","user_photos");
@@ -94,12 +96,6 @@ public class LoginActivity extends BaseActivity implements
         //startMainActivity();
     }
 
-    public void startMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
-    }
 
     // [START on_start_check_user]
     @Override
@@ -136,7 +132,7 @@ public class LoginActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            DataBase.createOrGetUser(firebaseUser);
+                            createOrGetUser(firebaseUser);
                             startMainActivity();
 
                         } else {
