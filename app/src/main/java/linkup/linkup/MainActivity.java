@@ -178,12 +178,12 @@ public class MainActivity extends AppCompatActivity  {
         if (navigationView != null) {
             setupDrawerContent(navigationView);
             View headerview = navigationView.getHeaderView(0);
-            /**TextView menu_name_age=(TextView) headerview.findViewById(R.id.menu_name_age);
+            TextView menu_name_age=(TextView) headerview.findViewById(R.id.menu_name_age);
             menu_name_age.setText(user.name+", "+user.age);
             TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
             menu_work.setText(user.work);
             TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
-            menu_education.setText(user.education);**/
+            menu_education.setText(user.education);
         }
 
 
