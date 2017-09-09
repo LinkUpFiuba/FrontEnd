@@ -77,7 +77,6 @@ public class User {
         email =firebaseUser.getEmail();
         interests=new Interests();
         aboutMe="";
-
     }
     @Exclude
     public String getLikesString(){

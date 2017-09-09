@@ -23,6 +23,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import connections.GetUsersAsyncTask;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
@@ -94,6 +95,8 @@ public class MainActivity extends AppCompatActivity  {
                     .commit();
             toolbar.setTitle(getResources().getString(R.string.icon_game));
         }
+
+
 
     }
     private void selectItem(String menuItem) {

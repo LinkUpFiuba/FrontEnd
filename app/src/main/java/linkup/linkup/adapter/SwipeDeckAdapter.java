@@ -20,14 +20,17 @@ import java.util.List;
 import linkup.linkup.MainActivity;
 import linkup.linkup.ProfileActivity;
 import linkup.linkup.R;
+import linkup.linkup.model.User;
+
+import static android.media.CamcorderProfile.get;
 
 
 public class SwipeDeckAdapter extends BaseAdapter {
 
-    private List<String> data;
+    private List<User> data;
     private Context context;
 
-    public SwipeDeckAdapter(List<String> data, Context context) {
+    public SwipeDeckAdapter(List<User> data, Context context) {
         this.data = data;
         this.context = context;
     }
@@ -54,25 +57,28 @@ public class SwipeDeckAdapter extends BaseAdapter {
         if (v == null) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.candidate_card, parent, false);
         }
-        final ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
-        Picasso.with(context).load(R.drawable.womn).fit().centerCrop().into(imageView);
-        TextView textView = (TextView) v.findViewById(R.id.sample_text);
-        String item = (String)getItem(position);
-        textView.setText(item);
+        if(getItem(position) != null){
+            User currrentUser = (User) getItem(position);
 
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("Layer type: ", Integer.toString(v.getLayerType()));
-                Log.i("Hwardware Accel type:", Integer.toString(View.LAYER_TYPE_HARDWARE));
-                Intent i = new Intent(v.getContext(), ProfileActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation((MainActivity)v.getContext(),
-                                imageView,
-                                ViewCompat.getTransitionName(imageView));
-                v.getContext().startActivity(i, options.toBundle());
-            }
-        });
+            final ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
+            Picasso.with(context).load(currrentUser.photoUrl).fit().centerCrop().into(imageView);
+
+            TextView textView = (TextView) v.findViewById(R.id.sample_text);
+            textView.setText(currrentUser.name + ", " + currrentUser.age);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("Layer type: ", Integer.toString(v.getLayerType()));
+                    Log.i("Hwardware Accel type:", Integer.toString(View.LAYER_TYPE_HARDWARE));
+                    Intent i = new Intent(v.getContext(), ProfileActivity.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation((MainActivity)v.getContext(),
+                                    imageView,
+                                    ViewCompat.getTransitionName(imageView));
+                    v.getContext().startActivity(i, options.toBundle());
+                }
+            });
+        };
 
         return v;
     }

@@ -18,6 +18,7 @@ public class Like {
     public String name;
     public String id;
     public Like(){}
+
     public static List<Like> likesList(JSONArray likesArray) throws JSONException {
         List<Like> likeList =new ArrayList<Like>();
         for(int i=0; i<likesArray.length();i++){

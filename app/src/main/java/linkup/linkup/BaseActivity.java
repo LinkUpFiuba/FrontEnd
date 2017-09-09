@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -29,10 +30,12 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import linkup.linkup.Utils.DataBase;
+import linkup.linkup.Utils.HttpClient;
 import linkup.linkup.model.Education;
 import linkup.linkup.model.Like;
 import linkup.linkup.model.Photo;
@@ -182,7 +185,10 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
     }
-    public void startMainActivity(){
+
+
+
+        public void startMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

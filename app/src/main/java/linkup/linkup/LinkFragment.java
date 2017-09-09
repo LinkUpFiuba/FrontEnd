@@ -8,52 +8,72 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import connections.GetUsersAsyncTask;
+import connections.ViewWithCards;
 import fiuba.cardstack.SwipeDeck;
 import linkup.linkup.adapter.SwipeDeckAdapter;
+import linkup.linkup.model.User;
 
 
-public class LinkFragment extends Fragment {
+public class LinkFragment extends Fragment implements ViewWithCards {
     private static final String TAG = "Connect_fragment";
     RippleAnimation rippleBackground1;
     private SwipeDeck cardStack;
     private SwipeDeckAdapter adapter;
-    private ArrayList<String> testData;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-
+    public void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_link, container, false);
-
         init(view);
-
         startAnimation();
 
-        initCardstack();
-        stopAnimation();
-        //stopAnimation();//deberia estar cuando recibo el http request answer con los candidatos
+
+
         return view;
     }
 
-    private void agregarCandidatosDePrueba(){
-        testData.add("Samanta, 21");
-        testData.add("Luis, 22");
-        testData.add("José, 18");
-        testData.add("Rafael, 32");
-        testData.add("Federico, 24");
+    private void init(View view) {
+        rippleBackground1 = (RippleAnimation) view.findViewById(R.id.content);
+        rippleBackground1.setVisibility(View.VISIBLE);
+
+        cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
+        cardStack.setHardwareAccelerationEnabled(true);
+
+        cardStack.setLeftImage(R.id.left_image);
+        cardStack.setRightImage(R.id.right_image);
+    }
+    private void addCandidate(String candidate){
+        //testData.add(candidate);
+        adapter.notifyDataSetChanged();
+    }
+    private void startAnimation() {
+        //if it's not running
+        if (!rippleBackground1.isRippleAnimationRunning()) {
+            rippleBackground1.setVisibility(View.VISIBLE);
+            rippleBackground1.startRippleAnimation();
+        }
+        GetUsersAsyncTask task = new GetUsersAsyncTask(this);
+        task.execute();
+    }
+
+    private void stopAnimation() {
+        if (rippleBackground1.isRippleAnimationRunning()) {
+            rippleBackground1.stopRippleAnimation();
+            rippleBackground1.setVisibility(View.GONE);
+        }
 
     }
-    private void initCardstack(){
-        testData = new ArrayList<>();
-        agregarCandidatosDePrueba();
 
-        adapter = new SwipeDeckAdapter(testData, getActivity());
+    @Override
+    public void showCards(List<User> users) {
+        adapter = new SwipeDeckAdapter(users, getActivity());
         cardStack.setAdapter(adapter);
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
@@ -84,34 +104,6 @@ public class LinkFragment extends Fragment {
             }
 
         });
-    }
-    private void init(View view) {
-        rippleBackground1 = (RippleAnimation) view.findViewById(R.id.content);
-        rippleBackground1.setVisibility(View.VISIBLE);
-
-        cardStack = (SwipeDeck) view.findViewById(R.id.swipe_deck);
-        cardStack.setHardwareAccelerationEnabled(true);
-
-        cardStack.setLeftImage(R.id.left_image);
-        cardStack.setRightImage(R.id.right_image);
-    }
-    private void addCandidate(String candidate){
-        testData.add(candidate);
-        adapter.notifyDataSetChanged();
-    }
-    private void startAnimation() {
-        //if it's not running
-        if (!rippleBackground1.isRippleAnimationRunning()) {
-            rippleBackground1.setVisibility(View.VISIBLE);
-            rippleBackground1.startRippleAnimation();
-        }
-    }
-
-    private void stopAnimation() {
-        if (rippleBackground1.isRippleAnimationRunning()) {
-            rippleBackground1.stopRippleAnimation();
-            rippleBackground1.setVisibility(View.GONE);
-        }
-
+        stopAnimation();
     }
 }
