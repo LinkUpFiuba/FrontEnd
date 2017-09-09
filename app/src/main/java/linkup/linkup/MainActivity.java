@@ -171,17 +171,18 @@ public class MainActivity extends AppCompatActivity  {
     {
         super.onResume();
         User user= SingletonUser.get();
-        NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            setupDrawerContent(navigationView);
+            View headerview = navigationView.getHeaderView(0);
+            /**TextView menu_name_age=(TextView) headerview.findViewById(R.id.menu_name_age);
+            menu_name_age.setText(user.name+", "+user.age);
+            TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
+            menu_work.setText(user.work);
+            TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
+            menu_education.setText(user.education);**/
+        }
 
-        //TextView menu_name_age = (TextView) navigationView.getMenu().findItem(R.id.menu_name_age).getActionView();
-        //menu_name_age.setText(user.name+", "+user.age);
-
-        /**TextView menu_name_age = (TextView) findViewById(R.id.menu_name_age);
-        menu_name_age.setText(user.name+", "+user.age);
-        TextView menu_work = (TextView) findViewById(R.id.menu_work);
-        menu_work.setText(user.work);
-        TextView menu_education = (TextView) findViewById(R.id.menu_education);
-        menu_education.setText(user.education);**/
 
     }
     @Override
