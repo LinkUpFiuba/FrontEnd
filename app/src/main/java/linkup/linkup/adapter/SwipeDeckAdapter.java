@@ -65,6 +65,13 @@ public class SwipeDeckAdapter extends BaseAdapter {
 
             TextView textView = (TextView) v.findViewById(R.id.sample_text);
             textView.setText(currrentUser.name + ", " + currrentUser.age);
+
+            TextView textView2 = (TextView) v.findViewById(R.id.subtitle_text);
+            textView2.setText(currrentUser.work);
+
+            TextView textView3 = (TextView) v.findViewById(R.id.subtitle2_text);
+            textView3.setText(currrentUser.education);
+
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

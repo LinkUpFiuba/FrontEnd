@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -43,6 +45,8 @@ import linkup.linkup.model.Range;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 import linkup.linkup.model.Work;
+
+import static android.R.attr.data;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -112,6 +116,7 @@ public class BaseActivity extends AppCompatActivity {
                             GraphResponse response) {
                         // Application code
                         try {
+                            Log.d(TAG,object.toString());
                             if(object.has("gender")) {
                                 user.gender = object.getString("gender");
                             }
