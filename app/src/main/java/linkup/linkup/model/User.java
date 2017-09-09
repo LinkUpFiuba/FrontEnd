@@ -170,6 +170,7 @@ public class User {
         result.put("education",education);
 
         result.put("work",work);
+        result.put("aboutMe",aboutMe);
 
         result.put("invisibleMode",invisibleMode);
 

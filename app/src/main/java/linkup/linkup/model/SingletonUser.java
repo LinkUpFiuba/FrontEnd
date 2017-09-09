@@ -18,7 +18,7 @@ public class SingletonUser {
     }
 
     private static synchronized User getSync() {
-        if(instance == null) instance = new User();
+        if(instance == null) instance = null;
         return instance;
     }
 

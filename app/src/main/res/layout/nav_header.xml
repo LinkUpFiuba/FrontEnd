@@ -28,7 +28,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/menu_name_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Juana Maria Perez, 30"
@@ -36,14 +36,14 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/formacion"
+            android:id="@+id/menu_work"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Docente"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
-            android:id="@+id/centro_estudios"
+            android:id="@+id/menu_education"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Universidad de Buenos Aires"

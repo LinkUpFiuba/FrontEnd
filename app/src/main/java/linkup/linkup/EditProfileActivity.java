@@ -50,9 +50,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (changed) {
                     DataBase.updateUser(user);
                 }
-                Intent intent = new Intent(getApplicationContext(), MyProfileActivity.class);
+                onBackPressed();
 
-                startActivity(intent);
                 return true;
             }
         });

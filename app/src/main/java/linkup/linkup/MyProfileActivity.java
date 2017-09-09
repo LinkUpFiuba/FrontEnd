@@ -37,6 +37,14 @@ public class MyProfileActivity extends AppCompatActivity {
         bounds.setDuration(250);
         getWindow().setSharedElementEnterTransition(bounds);
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        setUserProfile();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

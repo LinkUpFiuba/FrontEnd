@@ -43,9 +43,9 @@ public class LoginActivity extends BaseActivity implements
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser()!=null){
-            startMainActivity();
-        }
+        //if(mAuth.getCurrentUser()!=null){
+          //  startMainActivity();
+        //}
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.facebook_login);
         loginButton.setReadPermissions("email", "public_profile","user_birthday","user_education_history","user_likes","user_work_history","user_photos");
