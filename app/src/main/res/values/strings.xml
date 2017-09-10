@@ -77,4 +77,10 @@
     <string name="edit_profile_work_hint">¿Dónde trabajas?</string>
 
     <string name="edit_profile_studies_hint">¿Dónde estudias/estudiaste?</string>
+
+    <string name="missing_gender_text">¡Un pasito más! Faltan algunos datos para completar tu perfil. Rellénalos y podrás comenzar a usar la aplicación.</string>
+    <string name="missing_gender_male">Hombre</string>
+    <string name="missing_gender_fem">Mujer</string>
+    <string name="missing_gender_btn_ok">Todo listo</string>
+
 </resources>
