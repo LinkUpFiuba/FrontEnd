@@ -43,9 +43,22 @@ public class AccountConfigProfileActivity extends BaseActivity {
         setNotificationsSwitch();
         setSearchFriendSwitch();
         setLogOffButton();
+        setDeleteButton();
+
         setSeekBarRange();
 
     }
+
+    private void setDeleteButton() {
+        final Button logOffButton = (Button)findViewById(R.id.btnDeleteAccount);
+        logOffButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteAccount();
+            }
+        });
+    }
+
 
     private void setSeekBarRange() {
         // get seekbar from view

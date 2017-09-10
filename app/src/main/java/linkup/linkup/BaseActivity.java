@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,11 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FacebookAuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -234,7 +240,7 @@ public class BaseActivity extends AppCompatActivity {
                     System.out.println("Data could not be saved " + databaseError.getMessage());
                 } else {
                     Log.d(TAG, "Data saved successfully.");
-
+                    /***
                     AlertDialog.Builder builder =
                             new AlertDialog.Builder(BaseActivity.this, R.style.AppTheme);
                     builder.setTitle(getResources().getString(R.string.edit_success_title));
@@ -248,7 +254,7 @@ public class BaseActivity extends AppCompatActivity {
                         }
 
                     });
-                    builder.show();
+                    builder.show();**/
                 }
             }
         });
@@ -273,4 +279,37 @@ public class BaseActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+    public void deleteAccount(){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+
+        // Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(FacebookAuthProvider.getCredential(AccessToken.getCurrentAccessToken().getToken()))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        LoginManager.getInstance().logOut();
+                        user.delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+                                            databaseReference.child("users").child(user.getUid()).removeValue();
+
+                                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+                                            startActivity(intent);
+                                        }
+                                    }
+
+
+                            });
+                    }
+                });
+    }
+
 }
+
