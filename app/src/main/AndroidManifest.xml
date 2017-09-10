@@ -35,7 +35,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".SplashAcitivity" android:theme="@style/AppTheme" >
+        <activity android:name=".SplashAcitivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,15 +45,22 @@
         </activity>
 
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ProfileActivity" android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".MainActivity"  android:theme="@style/AppTheme"></activity>
-        <activity android:name=".MyProfileActivity"  android:theme="@style/AppTheme"></activity>
-        <activity android:name=".EditProfileActivity"  android:theme="@style/AppTheme"></activity>
-        <activity android:name=".AccountConfigProfileActivity"  android:theme="@style/AppTheme"></activity>
-        <activity android:name=".LoginActivity"  android:theme="@style/AppTheme"></activity>
-        <activity android:name=".FillMissingInformationActivity"  android:theme="@style/AppTheme"></activity>
+        <activity android:name=".MainActivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait"  android:theme="@style/AppTheme"></activity>
+        <activity android:name=".MyProfileActivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
+        <activity android:name=".EditProfileActivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
+        <activity android:name=".AccountConfigProfileActivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
+        <activity android:name=".LoginActivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
+        <activity android:name=".FillMissingInformationActivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
 
 
     </application>

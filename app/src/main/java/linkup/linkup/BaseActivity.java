@@ -294,10 +294,10 @@ public void startLoginActivity(){
                     Log.d(TAG, "Data saved successfully.");
 
                     AlertDialog.Builder builder =
-                            new AlertDialog.Builder(BaseActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                            new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
                     builder.setTitle("Todo listo");
                     builder.setMessage("Bienvenido a LinkUp!");
-                    builder.setIcon(R.drawable.ic_check_white_24dp);
+                    builder.setIcon(R.drawable.ic_done_black_24dp);
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
@@ -398,9 +398,8 @@ public void startLoginActivity(){
         startActivity(intent);
     }
     public void deleteAccount(){
+        showProgressDialog();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
 
         // Prompt the user to re-provide their sign-in credentials
         user.reauthenticate(FacebookAuthProvider.getCredential(AccessToken.getCurrentAccessToken().getToken()))
@@ -415,11 +414,14 @@ public void startLoginActivity(){
                                         if (task.isSuccessful()) {
                                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-                                            databaseReference.child("users").child(user.getUid()).removeValue();
-
-                                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-
-                                            startActivity(intent);
+                                            databaseReference.child("users").child(user.getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    hideProgressDialog();
+                                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            });
                                         }
                                     }
 
