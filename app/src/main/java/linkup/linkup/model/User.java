@@ -75,7 +75,7 @@ public class User {
         invisibleMode=false;
         linkUpPlus=false;
         Uid =firebaseUser.getUid();
-        photoUrl = "https://graph.facebook.com/"+getFacebookId()+"/picture?height=600";
+        photoUrl = "https://graph.facebook.com/"+getFacebookId()+"/picture?height=400";
         name = firebaseUser.getDisplayName();
         email =firebaseUser.getEmail();
         interests=new Interests();
