@@ -15,11 +15,11 @@ public class SplashAcitivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        Log.d(TAG,"antes");
 
         mAuth = FirebaseAuth.getInstance();
-
         if ( mAuth.getCurrentUser() != null){
-            Log.d(TAG,"Entra");
+
             for (UserInfo user: mAuth.getCurrentUser().getProviderData()) {
                 if (user.getProviderId().equals("facebook.com")) {
 

@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -51,12 +53,42 @@ public class BaseActivity extends AppCompatActivity {
     @VisibleForTesting
     public ProgressDialog mProgressDialog;
 
+
+    public void setTimeOutConnectionAction(){
+
+        final AlertDialog.Builder builder =
+                new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
+        builder.setMessage(getResources().getString(R.string.create_user_error_fireabase_get));
+        builder.setIcon(R.drawable.ic_clear_white_24dp);
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+                startLoginActivity();
+            }
+
+        });
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                if(mProgressDialog!=null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+
+                    builder.show();
+                }
+            }
+        }, 10000);
+    }
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setProgressStyle(R.style.AppThemeDialog);
             mProgressDialog.setMessage(getString(R.string.loading));
             mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+
         }
 
         mProgressDialog.show();
@@ -81,6 +113,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void createOrGetUser(final FirebaseUser firebaseUser){
+        showProgressDialog();
+        setTimeOutConnectionAction();
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -110,11 +144,26 @@ public class BaseActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
+                builder.setMessage(getResources().getString(R.string.create_user_error_fireabase_get));
+                builder.setIcon(R.drawable.ic_clear_white_24dp);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
+                    public void onClick(DialogInterface dialog, int id) {
+                        startLoginActivity();
+                    }
+
+                });
+                builder.show();
             }
         });
     }
-
+public void startLoginActivity(){
+    Intent i = new Intent(this, LoginActivity.class);
+    startActivity(i);
+    finish();
+}
 
 
     public void getFbInformationForUser(final User user){

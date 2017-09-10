@@ -83,4 +83,7 @@
     <string name="missing_gender_fem">Mujer</string>
     <string name="missing_gender_btn_ok">Todo listo</string>
 
+    <string name="create_user_error_fireabase_get">Error de conexión, por favor vuelva a intentar más tarde</string>
+
+
 </resources>
