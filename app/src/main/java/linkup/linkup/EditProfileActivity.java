@@ -89,7 +89,7 @@ public class EditProfileActivity extends BaseActivity {
             proffesionText.setHint(getResources().getString(R.string.edit_profile_work_hint));
         }
         TextView centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
-        if(!user.work.isEmpty()) {
+        if(!user.education.isEmpty()) {
             centerStudyText.setText(user.education);
         }else{
             centerStudyText.setHint(getResources().getString(R.string.edit_profile_studies_hint));

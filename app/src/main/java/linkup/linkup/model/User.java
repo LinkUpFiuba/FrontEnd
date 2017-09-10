@@ -66,6 +66,7 @@ public class User {
     public User(){
 
     }
+
     public SerializableUser getSerializableUser(){
         return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education,getLikesString(),this.photoUrl);
     }
@@ -74,7 +75,7 @@ public class User {
         invisibleMode=false;
         linkUpPlus=false;
         Uid =firebaseUser.getUid();
-        photoUrl = firebaseUser.getPhotoUrl().toString();
+        photoUrl = "https://graph.facebook.com/"+getFacebookId()+"/picture?height=600";
         name = firebaseUser.getDisplayName();
         email =firebaseUser.getEmail();
         interests=new Interests();
@@ -88,6 +89,13 @@ public class User {
             likesString+=(like.name+", ");
         }
         return likesString;
+    }
+    @Exclude
+    public String getFacebookId(){
+        if(Profile.getCurrentProfile()!=null) {
+            return Profile.getCurrentProfile().getId();
+        }
+        return "";
     }
     @Exclude
     public Map<String, Object> toMap() {
