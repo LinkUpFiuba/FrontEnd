@@ -68,7 +68,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
         rangeSeekbar.setMaxStartValue(user.range.maxAge);
         rangeSeekbar.setMinValue(18);
         rangeSeekbar.setMaxValue(69);
-
+        rangeSeekbar.apply();
         // get min and max text view
         final TextView ageRangeText = (TextView) findViewById(R.id.ageRangeText);
         ageRangeText.setText(String.valueOf(user.range.minAge)+"-"+String.valueOf(user.range.maxAge));
