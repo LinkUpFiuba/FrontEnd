@@ -309,7 +309,7 @@ public void startLoginActivity(){
                     System.out.println("Data could not be saved " + databaseError.getMessage());
                 } else {
                     Log.d(TAG, "Data saved successfully.");
-                    /***
+
                     AlertDialog.Builder builder =
                             new AlertDialog.Builder(BaseActivity.this, R.style.AppTheme);
                     builder.setTitle(getResources().getString(R.string.edit_success_title));
@@ -323,7 +323,7 @@ public void startLoginActivity(){
                         }
 
                     });
-                    builder.show();**/
+                    builder.show();
                 }
             }
         });
