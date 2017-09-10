@@ -202,4 +202,19 @@ public class MainActivity extends BaseActivity  {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Fragment linkFragment = (Fragment)getSupportFragmentManager().findFragmentByTag("LINK_FRAGMENT");
+        Fragment chatsFragment = (Fragment)getSupportFragmentManager().findFragmentByTag("CHATS_FRAGMENT");
+
+        if (linkFragment != null && linkFragment.isVisible()) {
+            toolbar.setTitle(getResources().getString(R.string.icon_game));
+        }
+        if (chatsFragment != null && chatsFragment.isVisible()) {
+            toolbar.setTitle(getResources().getString(R.string.icon_chats));
+        }
+    }
+
 }
