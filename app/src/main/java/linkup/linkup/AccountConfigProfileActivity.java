@@ -3,6 +3,7 @@ package linkup.linkup;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +11,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarFinalValueListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
@@ -32,16 +37,41 @@ public class AccountConfigProfileActivity extends BaseActivity {
         }
 
         user=SingletonUser.getUser();
-        TextView ageRange=(TextView) findViewById(R.id.ageRange);
-        ageRange.setText(user.range.toString());
         setSwitchInvisibleMode();
         setSearchMenSwitch();
         setSearchWomenSwitch();
         setNotificationsSwitch();
         setSearchFriendSwitch();
         setLogOffButton();
+        setSeekBarRange();
+
+    }
+
+    private void setSeekBarRange() {
+        // get seekbar from view
+        final CrystalRangeSeekbar rangeSeekbar = (CrystalRangeSeekbar) findViewById(R.id.rangeSeekbar1);
+        User user=SingletonUser.getUser();
+        rangeSeekbar.setMinStartValue(user.range.minAge);
+        rangeSeekbar.setMaxStartValue(user.range.maxAge);
+        rangeSeekbar.setMinValue(18);
+        rangeSeekbar.setMaxValue(69);
+
+        // get min and max text view
+        final TextView ageRangeText = (TextView) findViewById(R.id.ageRangeText);
+        ageRangeText.setText(String.valueOf(user.range.minAge)+"-"+String.valueOf(user.range.maxAge));
 
 
+        // set final value listener
+        rangeSeekbar.setOnRangeSeekbarFinalValueListener(new OnRangeSeekbarFinalValueListener() {
+            @Override
+            public void finalValue(Number minValue, Number maxValue) {
+                ageRangeText.setText(String.valueOf(minValue.intValue())+"-"+String.valueOf(maxValue.intValue()));
+                User user=SingletonUser.getUser();
+                user.range.minAge= (int) minValue.intValue();
+                user.range.maxAge= (int) maxValue.intValue();
+                Log.d("CRS=>", String.valueOf(minValue) + " : " + String.valueOf(maxValue));
+            }
+        });
     }
 
     private void setLogOffButton() {
