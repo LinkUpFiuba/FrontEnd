@@ -25,9 +25,12 @@ public class Work implements Serializable {
         for(int i=0; i<worksArray.length();i++){
             Work work=new Work();
             JSONObject workObject = worksArray.getJSONObject(i);
+            JSONObject positionObject=workObject.getJSONObject("position");
+            String position=positionObject.getString("name");
             JSONObject employerObject=workObject.getJSONObject("employer");
-            work.name=employerObject.getString("id");
-            work.id=employerObject.getString("name");
+            String employer=employerObject.getString("name");
+            work.name=position+" en "+employer;
+            work.id=employerObject.getString("id");
             workList.add(work);
         }
         return workList;

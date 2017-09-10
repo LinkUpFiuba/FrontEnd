@@ -99,8 +99,10 @@ public class BaseActivity extends AppCompatActivity {
             mProgressDialog.setCanceledOnTouchOutside(false);
 
         }
+        if(!isFinishing()) {
 
-        mProgressDialog.show();
+            mProgressDialog.show();
+        }
     }
 
     public void hideProgressDialog() {
