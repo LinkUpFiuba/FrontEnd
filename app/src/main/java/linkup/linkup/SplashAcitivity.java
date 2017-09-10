@@ -31,6 +31,7 @@ public class SplashAcitivity extends BaseActivity {
             Log.d(TAG,"Entra");
             for (UserInfo user: mAuth.getCurrentUser().getProviderData()) {
                 if (user.getProviderId().equals("facebook.com")) {
+                    
                     super.createOrGetUser(mAuth.getCurrentUser());
                 }
             }

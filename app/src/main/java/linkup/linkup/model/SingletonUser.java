@@ -8,7 +8,6 @@ import linkup.linkup.Utils.App;
 
 public class SingletonUser {
     private static User instance;
-
     public static User get() {
         if(instance == null) instance = getSync();
         return instance;

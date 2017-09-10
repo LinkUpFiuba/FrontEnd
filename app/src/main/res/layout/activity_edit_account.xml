@@ -134,6 +134,7 @@
                         style="@style/editAccountTitle"
                         android:gravity="start"
                         android:text="@string/edit_settings_exploration_just_friends"/>
+
                     <Switch
                         android:id="@+id/switchSearchesFriends"
                         android:layout_width="wrap_content"

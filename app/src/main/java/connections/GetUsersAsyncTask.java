@@ -3,6 +3,9 @@ package connections;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,12 +36,15 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
             //String cityCode = params[0];
             try {
                 String data = ((new HttpClient()).getUsers());
-                Log.d(TAG, data);
-                try {
-                    List<User> users = getUsers(data);
-                    Log.d(TAG, users.get(0).name);
+               // Log.d(TAG, data);
 
-                    return users;
+                try {
+                    if(data!=null){
+                    List<User> users = getUsers(data);
+                 //   Log.d(TAG, users.get(0).name);
+
+                    return users;}
+                    return new ArrayList<User>();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

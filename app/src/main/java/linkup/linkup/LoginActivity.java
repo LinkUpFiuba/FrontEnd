@@ -15,6 +15,9 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,7 +29,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
 import linkup.linkup.Utils.DataBase;
+import linkup.linkup.model.Like;
+import linkup.linkup.model.SingletonUser;
+import linkup.linkup.model.User;
 
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -108,7 +119,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     // [END on_activity_result]
 
     // [START auth_with_facebook]
-    private void handleFacebookAccessToken(AccessToken token) {
+    private void handleFacebookAccessToken(final AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
         // [START_EXCLUDE silent]
         showProgressDialog();

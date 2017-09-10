@@ -18,6 +18,7 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -87,7 +88,6 @@ public class BaseActivity extends AppCompatActivity {
     }
     public void createOrGetUser(final FirebaseUser firebaseUser){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        String token = FirebaseInstanceId.getInstance().getToken();
         ref.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,6 +102,7 @@ public class BaseActivity extends AppCompatActivity {
                     user = new User(firebaseUser);
                     getFbInformationForUser(user);
                 }
+
             }
 
             @Override
@@ -155,10 +156,14 @@ public class BaseActivity extends AppCompatActivity {
                             if(object.has("photos")) {
                                 user.photoList = Photo.photoList(object.getJSONObject("photos").getJSONArray("data"));
                             }
+                            SingletonUser.set(user);
 
+                            JSONObject likes=object.getJSONObject("likes");
+                            getLikes(likes);
                         }catch (JSONException e){
                             Log.d("User",e.toString());
                         }
+
                         saveUser(user);
                     }
                 });
@@ -167,7 +172,37 @@ public class BaseActivity extends AppCompatActivity {
         request.setParameters(parameters);
         request.executeAsync();
     }
+    public void getLikes(JSONObject likes) throws JSONException {
+        JSONObject paging=likes.getJSONObject("paging");
+        if(paging.has("next")) {
+            String stringNext = paging.getString("next");
+            String[] url=stringNext.split("/");
+            String nextLikes=url[url.length-2]+"/"+url[url.length-1];
+            new GraphRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    nextLikes,
+                    null,
+                    HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
+                            JSONObject likes=response.getJSONObject();
+                            try {
+                                List<Like> likesList = Like.likesList(likes.getJSONArray("data"));
+                                SingletonUser.get().likesList.addAll(likesList);
+                                getLikes(likes);
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            };
+
+                        }
+                    }
+            ).executeAsync();
+        }else{
+            updateUser(SingletonUser.get());
+        }
+
+    }
     public void  saveUser(final User user) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
