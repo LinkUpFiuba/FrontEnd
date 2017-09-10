@@ -25,6 +25,7 @@
                 android:transitionName="splash_activity_transition"
                 android:src="@drawable/logo"/>
 
+
     </RelativeLayout>
 </LinearLayout>
 
