@@ -14,8 +14,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="loading">Loading</string>
-    <string name="action_logout"> Log Out</string>
+    <string name="loading">Cargando</string>
+    <string name="action_logout">Salir</string>
 
     <string name="facebook_app_id">113492992704721</string>
     <string name="fb_login_protocol_scheme">fb113492992704721</string>

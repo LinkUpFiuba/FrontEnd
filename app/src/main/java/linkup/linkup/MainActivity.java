@@ -216,5 +216,5 @@ public class MainActivity extends BaseActivity  {
             toolbar.setTitle(getResources().getString(R.string.icon_chats));
         }
     }
-    
+
 }

@@ -7,7 +7,6 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserInfo;
 
-
 public class SplashAcitivity extends BaseActivity {
     private static final String TAG = "SplashAcitivity";
     private FirebaseAuth mAuth;

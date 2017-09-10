@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -53,6 +54,7 @@ public class BaseActivity extends AppCompatActivity {
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setProgressStyle(R.style.AppThemeDialog);
             mProgressDialog.setMessage(getString(R.string.loading));
             mProgressDialog.setIndeterminate(true);
         }
@@ -79,6 +81,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void createOrGetUser(final FirebaseUser firebaseUser){
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -88,12 +91,15 @@ public class BaseActivity extends AppCompatActivity {
                     user =(User)dataSnapshot.getValue(User.class);
                     Log.d(TAG, "Usuario existente");
 
+                    hideProgressDialog();
                     if(!(user.gender.equalsIgnoreCase("male") || user.gender.equalsIgnoreCase("female"))){
                         SingletonUser.setUser(user);
                         startMissingInformationActivityForResult();
                     }else {
                         SingletonUser.setUser(user);
-                        startMainActivity();                    }
+
+                        startMainActivity();
+                    }
                 } else {
                     Log.d(TAG, "Usuario no existente");
                     user = new User(firebaseUser);
@@ -160,7 +166,9 @@ public class BaseActivity extends AppCompatActivity {
                         }catch (JSONException e){
                             Log.d("User",e.toString());
                         }
+
                         if(!(user.gender.equalsIgnoreCase("male") || user.gender.equalsIgnoreCase("female"))){
+                            hideProgressDialog();
                             startMissingInformationActivityForResult();
                         }else {
                             saveUser(user);
@@ -210,6 +218,7 @@ public class BaseActivity extends AppCompatActivity {
         databaseReference.child("users").child(user.Uid).setValue(user, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                hideProgressDialog();
                 if (databaseError != null) {
                     System.out.println("Data could not be saved " + databaseError.getMessage());
                 } else {
@@ -286,7 +295,7 @@ public class BaseActivity extends AppCompatActivity {
                 String gender =data.getStringExtra("result");
                 User user = SingletonUser.getUser();
                 user.gender = gender;
-
+                showProgressDialog();
                 saveUser(user);
             }
             if (resultCode == Activity.RESULT_CANCELED) {

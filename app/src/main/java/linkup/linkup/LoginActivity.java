@@ -133,6 +133,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     Log.d(TAG, "GetTokenResult result = " + idToken);
                                 }
                             });
+                            showProgressDialog();
+
                             createOrGetUser(firebaseUser);
 
                         } else {
