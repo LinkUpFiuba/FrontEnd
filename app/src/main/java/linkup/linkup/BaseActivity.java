@@ -300,6 +300,9 @@ public void startLoginActivity(){
     }
 
     public  void updateUser(final User user){
+        showProgressDialog();
+        setTimeOutConnectionAction();
+        
         Map<String, Object> map = user.toMap();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("users").child(user.Uid).updateChildren(map, new DatabaseReference.CompletionListener() {
@@ -311,7 +314,7 @@ public void startLoginActivity(){
                     Log.d(TAG, "Data saved successfully.");
 
                     AlertDialog.Builder builder =
-                            new AlertDialog.Builder(BaseActivity.this, R.style.AppTheme);
+                            new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
                     builder.setTitle(getResources().getString(R.string.edit_success_title));
                     builder.setMessage(getResources().getString(R.string.edit_success_message));
                     builder.setIcon(R.drawable.ic_check_white_24dp);
@@ -320,6 +323,7 @@ public void startLoginActivity(){
                         public void onClick(DialogInterface dialog, int id) {
                             Log.d(TAG, "Exito");
                             onBackPressed();
+                            hideProgressDialog();
                         }
 
                     });
