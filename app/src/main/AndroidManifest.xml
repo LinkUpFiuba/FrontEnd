@@ -52,6 +52,8 @@
         <activity android:name=".EditProfileActivity"  android:theme="@style/AppTheme"></activity>
         <activity android:name=".AccountConfigProfileActivity"  android:theme="@style/AppTheme"></activity>
         <activity android:name=".LoginActivity"  android:theme="@style/AppTheme"></activity>
+        <activity android:name=".FillMissingInformationActivity"  android:theme="@style/AppTheme"></activity>
+
 
     </application>
 

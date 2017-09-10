@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
-public class MyProfileActivity extends AppCompatActivity {
+public class MyProfileActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

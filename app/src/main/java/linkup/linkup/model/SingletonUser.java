@@ -9,6 +9,7 @@ import linkup.linkup.Utils.App;
 public class SingletonUser {
     private static User instance;
     private static String token;
+
     public static User getUser() {
         if(instance == null) instance = getSync();
         return instance;

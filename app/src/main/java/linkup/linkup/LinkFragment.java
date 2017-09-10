@@ -33,9 +33,6 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         View view = inflater.inflate(R.layout.fragment_link, container, false);
         init(view);
         startAnimation();
-
-
-
         return view;
     }
 
