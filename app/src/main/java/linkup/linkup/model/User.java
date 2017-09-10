@@ -57,7 +57,7 @@ public class User {
     public String education = "";
     public String work = "";
     public String aboutMe = "";
-
+    public boolean getNotifications=true;
     public boolean invisibleMode = false;
     public boolean linkUpPlus = false;
     public Interests interests = new Interests();
@@ -70,6 +70,7 @@ public class User {
         return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education,getLikesString(),this.photoUrl);
     }
     public User(FirebaseUser firebaseUser){
+
         invisibleMode=false;
         linkUpPlus=false;
         Uid =firebaseUser.getUid();
@@ -120,7 +121,7 @@ public class User {
 
         result.put("interests",interests);
         result.put("photoList",photoList);
-
+        result.put("getNotifications",getNotifications);
 
         return result;
     }

@@ -7,7 +7,7 @@
                android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbarEditProfile"
+        android:id="@+id/toolbarEditAccount"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary"
@@ -47,7 +47,8 @@
                     android:id="@+id/switchInvisibleMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                />
                 </LinearLayout>
                 <TextView
                     android:layout_width="match_parent"
@@ -102,7 +103,7 @@
                         android:gravity="start"
                         android:text="@string/edit_settings_exploration_men"/>
                     <Switch
-                        android:id="@+id/switchMen"
+                        android:id="@+id/switchSearchesMen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
@@ -118,7 +119,7 @@
                         android:gravity="start"
                         android:text="@string/edit_settings_exploration_women"/>
                     <Switch
-                        android:id="@+id/switchWomen"
+                        android:id="@+id/switchSearchesWomen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
@@ -134,7 +135,7 @@
                         android:gravity="start"
                         android:text="@string/edit_settings_exploration_just_friends"/>
                     <Switch
-                        android:id="@+id/switchJustFriends"
+                        android:id="@+id/switchSearchesFriends"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
@@ -168,13 +169,14 @@
                         android:layout_marginBottom="@dimen/activity_vertical_margin_small"
                         android:text="@string/edit_settings_exploration_age_range"/>
                     <TextView
+                        android:id="@+id/ageRange"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
                         style="@style/editAccountTitle"
                         android:layout_marginBottom="@dimen/activity_vertical_margin_small"
-                        android:text="18-25"/>
+                        />
                 </LinearLayout>
 
 
@@ -257,7 +259,7 @@
                 android:background="@color/icons"
                 android:foreground="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:text="@string/edit_settings_btn_get_salir"
+                android:text="Cerrar sesion"
                 android:textColor="@color/accent"/>
 
             <Button

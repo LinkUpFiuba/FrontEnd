@@ -18,12 +18,15 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -84,6 +87,7 @@ public class BaseActivity extends AppCompatActivity {
     }
     public void createOrGetUser(final FirebaseUser firebaseUser){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        String token = FirebaseInstanceId.getInstance().getToken();
         ref.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -106,6 +110,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     public void getFbInformationForUser(final User user){
@@ -177,7 +182,7 @@ public class BaseActivity extends AppCompatActivity {
                     AlertDialog.Builder builder =
                             new AlertDialog.Builder(BaseActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                     builder.setTitle("Todo listo");
-                    builder.setMessage("El challenge fue creado con éxito, en breve lo verás en los listados");
+                    builder.setMessage("Bienvenido a LinkUp!");
                     builder.setIcon(R.drawable.ic_check_white_24dp);
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
@@ -214,7 +219,6 @@ public class BaseActivity extends AppCompatActivity {
 
                         public void onClick(DialogInterface dialog, int id) {
                             Log.d(TAG, "Exito");
-                            SingletonUser.set(user);
                             onBackPressed();
                         }
 
@@ -230,5 +234,18 @@ public class BaseActivity extends AppCompatActivity {
     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(intent);
     finish();
+    }
+    public void logOut(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if(currentUser!=null) {
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+
+        }
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+        startActivity(intent);
     }
 }

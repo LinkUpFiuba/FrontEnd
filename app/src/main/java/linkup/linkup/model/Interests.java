@@ -18,10 +18,10 @@ public class Interests {
         return men;
     }
     public boolean searchesWomen(){
-        return men;
+        return women;
     }
     public boolean searchesFriends(){
-        return men;
+        return friends;
     }
     public void setSearchesMen(boolean searchesMen){
         if(searchesMen) {

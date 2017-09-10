@@ -31,7 +31,7 @@ import linkup.linkup.model.User;
 
 import static android.R.attr.id;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends BaseActivity  {
 
     public static final String CHATS_FRAGMENT = "CHATS_FRAGMENT";
     public static final String LINK_FRAGMENT = "LINK_FRAGMENT";
@@ -138,18 +138,8 @@ public class MainActivity extends AppCompatActivity  {
                 }
         );
     }
-    public void logOut(){
-        final FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if(currentUser!=null) {
-            FirebaseAuth.getInstance().signOut();
-            LoginManager.getInstance().logOut();
 
-        }
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-
-        startActivity(intent);
-    }
     public void changeFragment(Fragment fragment, EnterAnimation animation, String FragmentTag){
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();

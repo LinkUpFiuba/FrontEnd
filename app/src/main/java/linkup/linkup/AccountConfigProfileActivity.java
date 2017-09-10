@@ -1,27 +1,165 @@
 package linkup.linkup;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TextView;
 
-public class AccountConfigProfileActivity extends AppCompatActivity {
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import linkup.linkup.Utils.DataBase;
+import linkup.linkup.model.SingletonUser;
+import linkup.linkup.model.User;
+
+public class AccountConfigProfileActivity extends BaseActivity {
+
+    private User user=SingletonUser.get();
+    private static String TAG="AccountConfig";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_account);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarEditProfile);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarEditAccount);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
+        TextView ageRange=(TextView) findViewById(R.id.ageRange);
+        ageRange.setText(SingletonUser.get().range.toString());
+        setSwitchInvisibleMode();
+        setSearchMenSwitch();
+        setSearchWomenSwitch();
+        setNotificationsSwitch();
+        setSearchFriendSwitch();
+        setLogOffButton();
         if (ab != null) {
             // Poner ícono del drawer toggle
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setTitle(getResources().getString(R.string.nav_item_edit_account));
         }
 
+    }
+
+    private void setLogOffButton() {
+        final Button logOffButton = (Button)findViewById(R.id.btnLogOut2);
+        logOffButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOut();
+            }
+        });
+
+    }
+
+    private void setSwitchInvisibleMode(){
+        final User user=SingletonUser.get();
+        Switch switchInvisibleMode = (Switch)findViewById(R.id.switchInvisibleMode);
+        updateSwitchInvisibleMode();
+        switchInvisibleMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                user.invisibleMode=!isChecked;
+            }
+
+        });
+    }
+    private void updateSwitchInvisibleMode(){
+        Switch switchInvisibleMode = (Switch)findViewById(R.id.switchInvisibleMode);
+
+        switchInvisibleMode.setChecked(!user.invisibleMode);
+    }
+    private void setSearchMenSwitch(){
+        final User user=SingletonUser.get();
+        Switch switchSearchesMen = (Switch)findViewById(R.id.switchSearchesMen);
+
+        updateSearchMenSwitch();
+        switchSearchesMen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                user.interests.setSearchesMen(isChecked);
+                updateInterestsSwitches();
+            }
+        });
+    }
+    private void updateSearchMenSwitch(){
+        Switch switchSearchesMen = (Switch)findViewById(R.id.switchSearchesMen);
+
+        switchSearchesMen.setChecked(user.interests.searchesMen());
+    }
+    private void setNotificationsSwitch(){
+        final User user=SingletonUser.get();
+        Switch switchNotifications = (Switch)findViewById(R.id.switchNotifications);
+        updateNotificationsSwitch();
+        switchNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                user.getNotifications=isChecked;
+
+            }
+        });
+    }
+    private void updateNotificationsSwitch(){
+        Switch switchNotifications = (Switch)findViewById(R.id.switchNotifications);
+
+        switchNotifications.setChecked(user.getNotifications);
+    }
+    private void setSearchWomenSwitch(){
+        final User user=SingletonUser.get();
+        Switch switchSearchesWomen = (Switch)findViewById(R.id.switchSearchesWomen);
+
+        updateSearchWomenSwitch();
+        switchSearchesWomen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                user.interests.setSearchesWomen(isChecked);
+                updateInterestsSwitches();
+            }
+        });
+    }
+    private void updateSearchWomenSwitch(){
+        Switch switchNotifications = (Switch)findViewById(R.id.switchSearchesWomen);
+
+        switchNotifications.setChecked(user.interests.searchesWomen());
+    }
+    private void setSearchFriendSwitch(){
+        final User user=SingletonUser.get();
+        Switch switchSearchesFriends = (Switch)findViewById(R.id.switchSearchesFriends);
+        updateSearchFriendSwitch();
+        switchSearchesFriends.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                user.interests.setSearchesFriends(isChecked);
+                updateInterestsSwitches();
+            }
+        });
+    }
+    private  void updateInterestsSwitches(){
+        updateSearchWomenSwitch();
+        updateSearchMenSwitch();
+        updateSearchFriendSwitch();
+    }
+    private void updateSearchFriendSwitch(){
+        Switch switchSearchesFriends = (Switch)findViewById(R.id.switchSearchesFriends);
+
+        switchSearchesFriends.setChecked(user.interests.searchesFriends());
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,9 +171,11 @@ public class AccountConfigProfileActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                updateUser(SingletonUser.get());
             break;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }

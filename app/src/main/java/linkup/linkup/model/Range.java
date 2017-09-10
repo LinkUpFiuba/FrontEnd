@@ -13,7 +13,10 @@ public class Range implements Serializable {
     public int minAge;
     public int maxAge;
     private final int defaultInterval=5;
-
+    @Override
+    public String toString(){
+        return minAge+"-"+maxAge;
+    }
     public Range (){
 
     }
