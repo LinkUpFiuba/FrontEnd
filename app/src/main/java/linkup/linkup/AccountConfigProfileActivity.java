@@ -31,7 +31,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
             ab.setTitle(getResources().getString(R.string.nav_item_edit_account));
         }
 
-        user=SingletonUser.get();
+        user=SingletonUser.getUser();
         TextView ageRange=(TextView) findViewById(R.id.ageRange);
         ageRange.setText(user.range.toString());
         setSwitchInvisibleMode();
@@ -156,7 +156,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                updateUser(SingletonUser.get());
+                updateUser(SingletonUser.getUser());
             break;
         }
         return super.onOptionsItemSelected(item);

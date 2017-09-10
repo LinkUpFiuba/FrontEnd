@@ -8,19 +8,30 @@ import linkup.linkup.Utils.App;
 
 public class SingletonUser {
     private static User instance;
-    public static User get() {
+    private static String token;
+    public static User getUser() {
         if(instance == null) instance = getSync();
         return instance;
     }
-    public static void set(User user) {
+    public static void setUser(User user) {
         instance=user;
+    }
+    public static void setToken(String userToken) {
+        token=userToken;
+    }
+    public static String getToken(){
+        if(token == null) token = getSyncToken();
+        return token;
     }
 
     private static synchronized User getSync() {
         if(instance == null) instance = null;
         return instance;
     }
-
+    private static synchronized String getSyncToken() {
+        if(token == null) token = "";
+        return token;
+    }
     private SingletonUser(){
         // here you can directly access the Application context calling
         App.get();

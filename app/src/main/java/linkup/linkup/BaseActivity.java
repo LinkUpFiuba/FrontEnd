@@ -4,9 +4,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -27,7 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -36,13 +32,9 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import linkup.linkup.Utils.DataBase;
-import linkup.linkup.Utils.HttpClient;
 import linkup.linkup.model.Education;
 import linkup.linkup.model.Like;
 import linkup.linkup.model.Photo;
@@ -50,8 +42,6 @@ import linkup.linkup.model.Range;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 import linkup.linkup.model.Work;
-
-import static android.R.attr.data;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -95,7 +85,7 @@ public class BaseActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     user =(User)dataSnapshot.getValue(User.class);
                     Log.d(TAG, "Usuario existente");
-                    SingletonUser.set(user);
+                    SingletonUser.setUser(user);
                     startMainActivity();
                 } else {
                     Log.d(TAG, "Usuario no existente");
@@ -156,7 +146,7 @@ public class BaseActivity extends AppCompatActivity {
                             if(object.has("photos")) {
                                 user.photoList = Photo.photoList(object.getJSONObject("photos").getJSONArray("data"));
                             }
-                            SingletonUser.set(user);
+                            SingletonUser.setUser(user);
 
                             JSONObject likes=object.getJSONObject("likes");
                             getLikes(likes);
@@ -188,7 +178,7 @@ public class BaseActivity extends AppCompatActivity {
                             JSONObject likes=response.getJSONObject();
                             try {
                                 List<Like> likesList = Like.likesList(likes.getJSONArray("data"));
-                                SingletonUser.get().likesList.addAll(likesList);
+                                SingletonUser.getUser().likesList.addAll(likesList);
                                 getLikes(likes);
 
                             } catch (JSONException e) {
@@ -199,7 +189,7 @@ public class BaseActivity extends AppCompatActivity {
                     }
             ).executeAsync();
         }else{
-            updateUser(SingletonUser.get());
+            updateUser(SingletonUser.getUser());
         }
 
     }
@@ -223,7 +213,7 @@ public class BaseActivity extends AppCompatActivity {
 
                         public void onClick(DialogInterface dialog, int id) {
                             Log.d(TAG, "Exito");
-                            SingletonUser.set(user);
+                            SingletonUser.setUser(user);
                             startMainActivity();
                         }
 

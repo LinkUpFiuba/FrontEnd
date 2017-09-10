@@ -1,5 +1,5 @@
 <!--this layout contains ripple background animation and Imageview
-In ripple animation tag we have set some properties -->
+In ripple animation tag we have setUser some properties -->
 <linkup.linkup.RippleAnimation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
