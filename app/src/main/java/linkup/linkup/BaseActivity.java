@@ -83,8 +83,9 @@ public class BaseActivity extends AppCompatActivity {
             public void run() {
                 if(mProgressDialog!=null && mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
+                    if(!isFinishing()) {
 
-                    builder.show();
+                        builder.show();}
                 }
             }
         }, 10000);
@@ -173,7 +174,10 @@ public class BaseActivity extends AppCompatActivity {
                     }
 
                 });
-                builder.show();
+                if(!isFinishing()) {
+
+                    builder.show();
+                }
             }
         });
     }
@@ -309,7 +313,10 @@ public void startLoginActivity(){
                         }
 
                     });
-                    builder.show();
+                    if(!isFinishing()) {
+
+                        builder.show();
+                    }
                 }
             }
         });
@@ -350,7 +357,10 @@ public void startLoginActivity(){
                         }
 
                     });
-                    builder.show();
+                    if(!isFinishing()) {
+
+                        builder.show();
+                    }
                 }
             }
         });

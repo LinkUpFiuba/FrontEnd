@@ -81,7 +81,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
             }
 
-           
+
         });
         // set final value listener
         rangeSeekbar.setOnRangeSeekbarFinalValueListener(new OnRangeSeekbarFinalValueListener() {
