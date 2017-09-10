@@ -60,7 +60,7 @@ public class MyProfileActivity extends BaseActivity {
     private void setUserProfile(){
         User user = SingletonUser.getUser();
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        toolbarLayout.setTitle(user.name+","+user.age);
+        toolbarLayout.setTitle(user.name+", "+user.age);
 
         ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
         Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
