@@ -1,12 +1,8 @@
 package linkup.linkup;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,20 +11,12 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.Map;
-
-import linkup.linkup.Utils.DataBase;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
 public class AccountConfigProfileActivity extends BaseActivity {
 
-    private User user=SingletonUser.get();
+    private User user;
     private static String TAG="AccountConfig";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +25,22 @@ public class AccountConfigProfileActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarEditAccount);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            // Poner ícono del drawer toggle
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setTitle(getResources().getString(R.string.nav_item_edit_account));
+        }
+
+        user=SingletonUser.get();
         TextView ageRange=(TextView) findViewById(R.id.ageRange);
-        ageRange.setText(SingletonUser.get().range.toString());
+        ageRange.setText(user.range.toString());
         setSwitchInvisibleMode();
         setSearchMenSwitch();
         setSearchWomenSwitch();
         setNotificationsSwitch();
         setSearchFriendSwitch();
         setLogOffButton();
-        if (ab != null) {
-            // Poner ícono del drawer toggle
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle(getResources().getString(R.string.nav_item_edit_account));
-        }
+
 
     }
 
@@ -65,7 +56,6 @@ public class AccountConfigProfileActivity extends BaseActivity {
     }
 
     private void setSwitchInvisibleMode(){
-        final User user=SingletonUser.get();
         Switch switchInvisibleMode = (Switch)findViewById(R.id.switchInvisibleMode);
         updateSwitchInvisibleMode();
         switchInvisibleMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -83,7 +73,6 @@ public class AccountConfigProfileActivity extends BaseActivity {
         switchInvisibleMode.setChecked(!user.invisibleMode);
     }
     private void setSearchMenSwitch(){
-        final User user=SingletonUser.get();
         Switch switchSearchesMen = (Switch)findViewById(R.id.switchSearchesMen);
 
         updateSearchMenSwitch();
@@ -102,7 +91,6 @@ public class AccountConfigProfileActivity extends BaseActivity {
         switchSearchesMen.setChecked(user.interests.searchesMen());
     }
     private void setNotificationsSwitch(){
-        final User user=SingletonUser.get();
         Switch switchNotifications = (Switch)findViewById(R.id.switchNotifications);
         updateNotificationsSwitch();
         switchNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -120,7 +108,6 @@ public class AccountConfigProfileActivity extends BaseActivity {
         switchNotifications.setChecked(user.getNotifications);
     }
     private void setSearchWomenSwitch(){
-        final User user=SingletonUser.get();
         Switch switchSearchesWomen = (Switch)findViewById(R.id.switchSearchesWomen);
 
         updateSearchWomenSwitch();
@@ -139,7 +126,6 @@ public class AccountConfigProfileActivity extends BaseActivity {
         switchNotifications.setChecked(user.interests.searchesWomen());
     }
     private void setSearchFriendSwitch(){
-        final User user=SingletonUser.get();
         Switch switchSearchesFriends = (Switch)findViewById(R.id.switchSearchesFriends);
         updateSearchFriendSwitch();
         switchSearchesFriends.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -170,7 +156,6 @@ public class AccountConfigProfileActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
                 updateUser(SingletonUser.get());
             break;
         }
