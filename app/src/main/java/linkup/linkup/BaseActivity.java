@@ -236,8 +236,10 @@ public void startLoginActivity(){
                             hideProgressDialog();
                             startMissingInformationActivityForResult();
                         }else {
+
                             saveUser(user);
                         }
+
                     }
                 });
         Bundle parameters = new Bundle();
@@ -277,7 +279,9 @@ public void startLoginActivity(){
 
     }
     public void  saveUser(final User user) {
+        user.setDefaultInterests();
         SingletonUser.setUser(user);
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
         databaseReference.child("users").child(user.Uid).setValue(user, new DatabaseReference.CompletionListener() {

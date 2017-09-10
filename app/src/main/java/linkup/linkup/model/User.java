@@ -133,4 +133,12 @@ public class User {
 
         return result;
     }
+    @Exclude
+    public void setDefaultInterests() {
+        if(gender.equalsIgnoreCase("male")){
+            interests.setSearchesWomen(true);
+        }else{
+            interests.setSearchesMen(true);
+        }
+    }
 }
