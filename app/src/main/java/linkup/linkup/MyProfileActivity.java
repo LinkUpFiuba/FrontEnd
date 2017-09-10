@@ -58,7 +58,7 @@ public class MyProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void setUserProfile(){
-        User user = SingletonUser.get();
+        User user = SingletonUser.getUser();
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         toolbarLayout.setTitle(user.name+","+user.age);
 

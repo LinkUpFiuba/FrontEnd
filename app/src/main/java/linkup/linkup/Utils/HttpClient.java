@@ -24,7 +24,7 @@ import linkup.linkup.model.SingletonUser;
 
 public class HttpClient {
 
-	private static String BASE_URL = "https://link-up-g1.herokuapp.com/users";
+	private static String BASE_URL = "https://dev-link-up-g1.herokuapp.com/users";
 
 	public String getUsers() throws  UnknownHostException {
 		HttpURLConnection con = null ;
@@ -32,7 +32,7 @@ public class HttpClient {
 
 		try {
 			con = (HttpURLConnection) ( new URL(BASE_URL + "")).openConnection();
-			con.setRequestProperty ("token", 			AccessToken.getCurrentAccessToken().getToken());
+			con.setRequestProperty ("token", 			SingletonUser.getToken());
 			con.setRequestMethod("GET");
 			con.setDoInput(true);
 			con.connect();

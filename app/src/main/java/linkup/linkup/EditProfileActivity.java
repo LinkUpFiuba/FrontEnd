@@ -14,8 +14,6 @@ import com.squareup.picasso.Picasso;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
-import static linkup.linkup.R.id.profileImage1;
-
 public class EditProfileActivity extends BaseActivity {
 
     @Override
@@ -29,7 +27,7 @@ public class EditProfileActivity extends BaseActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                User user = SingletonUser.get();
+                User user = SingletonUser.getUser();
                 boolean changed = false;
 
                 TextView proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
@@ -78,7 +76,7 @@ public class EditProfileActivity extends BaseActivity {
 
     }
     private void setUserProfile(){
-        User user = SingletonUser.get();
+        User user = SingletonUser.getUser();
         ImageView imageView1 = (ImageView) findViewById(R.id.profileImage1);
         Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
 

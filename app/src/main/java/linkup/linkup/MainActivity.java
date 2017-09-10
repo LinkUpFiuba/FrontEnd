@@ -9,10 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.method.SingleLineTransformationMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,16 +17,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
-import connections.GetUsersAsyncTask;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
-
-import static android.R.attr.id;
 
 public class MainActivity extends BaseActivity  {
 
@@ -165,7 +158,7 @@ public class MainActivity extends BaseActivity  {
     protected void onResume()
     {
         super.onResume();
-        User user= SingletonUser.get();
+        User user= SingletonUser.getUser();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);

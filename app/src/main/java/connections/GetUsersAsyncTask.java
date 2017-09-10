@@ -41,7 +41,7 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
                 try {
                     if(data!=null){
                     List<User> users = getUsers(data);
-                 //   Log.d(TAG, users.get(0).name);
+                 //   Log.d(TAG, users.getUser(0).name);
 
                     return users;}
                     return new ArrayList<User>();
