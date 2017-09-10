@@ -59,8 +59,11 @@ public class BaseActivity extends AppCompatActivity {
     @VisibleForTesting
     public ProgressDialog mProgressDialog;
 
+    public interface Command{
+        public void excute();
+    }
 
-    public void setTimeOutConnectionAction(){
+    public void setTimeOutConnectionAction(final Command command){
 
         final AlertDialog.Builder builder =
                 new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
@@ -71,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
-                startLoginActivity();
+                command.excute();
             }
 
         });
@@ -120,9 +123,16 @@ public class BaseActivity extends AppCompatActivity {
 
     public void createOrGetUser(final FirebaseUser firebaseUser){
         showProgressDialog();
-        setTimeOutConnectionAction();
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        setTimeOutConnectionAction(new Command() {
+            @Override
+            public void excute() {
+                ref.goOffline();
+                startLoginActivity();
+            }
+        });
         ref.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -301,10 +311,17 @@ public void startLoginActivity(){
 
     public  void updateUser(final User user){
         showProgressDialog();
-        setTimeOutConnectionAction();
-        
+
         Map<String, Object> map = user.toMap();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        setTimeOutConnectionAction(new Command() {
+            @Override
+            public void excute() {
+                ref.goOffline();
+            }
+        });
+
+
         ref.child("users").child(user.Uid).updateChildren(map, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
