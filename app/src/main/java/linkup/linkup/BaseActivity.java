@@ -1,5 +1,6 @@
 package linkup.linkup;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -82,6 +83,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onStop();
         hideProgressDialog();
     }
+
     public void createOrGetUser(final FirebaseUser firebaseUser){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -91,8 +93,13 @@ public class BaseActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     user =(User)dataSnapshot.getValue(User.class);
                     Log.d(TAG, "Usuario existente");
-                    SingletonUser.setUser(user);
-                    startMainActivity();
+
+                    if(!(user.gender.equalsIgnoreCase("male") || user.gender.equalsIgnoreCase("female"))){
+                        SingletonUser.setUser(user);
+                        startMissingInformationActivityForResult();
+                    }else {
+                        SingletonUser.setUser(user);
+                        startMainActivity();                    }
                 } else {
                     Log.d(TAG, "Usuario no existente");
                     user = new User(firebaseUser);
@@ -159,8 +166,11 @@ public class BaseActivity extends AppCompatActivity {
                         }catch (JSONException e){
                             Log.d("User",e.toString());
                         }
-
-                        saveUser(user);
+                        if(!(user.gender.equalsIgnoreCase("male") || user.gender.equalsIgnoreCase("female"))){
+                            startMissingInformationActivityForResult();
+                        }else {
+                            saveUser(user);
+                        }
                     }
                 });
         Bundle parameters = new Bundle();
@@ -200,6 +210,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
     public void  saveUser(final User user) {
+        SingletonUser.setUser(user);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
         databaseReference.child("users").child(user.Uid).setValue(user, new DatabaseReference.CompletionListener() {
@@ -266,6 +277,30 @@ public class BaseActivity extends AppCompatActivity {
     startActivity(intent);
     finish();
     }
+
+    public void startMissingInformationActivityForResult(){
+        Intent intent = new Intent(this, FillMissingInformationActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String gender =data.getStringExtra("result");
+                User user = SingletonUser.getUser();
+                user.gender = gender;
+
+                saveUser(user);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
     public void logOut(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser currentUser = mAuth.getCurrentUser();

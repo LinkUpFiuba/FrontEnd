@@ -14,6 +14,7 @@ import connections.GetUsersAsyncTask;
 import connections.ViewWithCards;
 import fiuba.cardstack.SwipeDeck;
 import linkup.linkup.adapter.SwipeDeckAdapter;
+import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
 
@@ -33,9 +34,6 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         View view = inflater.inflate(R.layout.fragment_link, container, false);
         init(view);
         startAnimation();
-
-
-
         return view;
     }
 
@@ -59,6 +57,8 @@ public class LinkFragment extends Fragment implements ViewWithCards {
             rippleBackground1.setVisibility(View.VISIBLE);
             rippleBackground1.startRippleAnimation();
         }
+        Log.d(TAG, "token" + SingletonUser.getToken());
+
         GetUsersAsyncTask task = new GetUsersAsyncTask(this);
         task.execute();
     }

@@ -36,7 +36,7 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
             //String cityCode = params[0];
             try {
                 String data = ((new HttpClient()).getUsers());
-               // Log.d(TAG, data);
+//                Log.d(TAG, data);
 
                 try {
                     if(data!=null){

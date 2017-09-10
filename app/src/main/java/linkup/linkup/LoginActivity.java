@@ -15,9 +15,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,17 +26,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.auth.UserInfo;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
-
-import linkup.linkup.Utils.DataBase;
-import linkup.linkup.model.Like;
 import linkup.linkup.model.SingletonUser;
-import linkup.linkup.model.User;
 
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -60,6 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.facebook_login);
         loginButton.setReadPermissions("email", "public_profile","user_birthday","user_education_history","user_likes","user_work_history","user_photos");
+
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
