@@ -170,7 +170,7 @@
                         android:layout_marginBottom="@dimen/activity_vertical_margin_small"
                         android:text="@string/edit_settings_exploration_age_range"/>
                     <TextView
-                        android:id="@+id/ageRange"
+                        android:id="@+id/ageRangeText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -181,11 +181,24 @@
                 </LinearLayout>
 
 
-                    <SeekBar
-                        android:id="@+id/seekBarAgeRange"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/rangeSeekbar1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:min_value="18"
+                    app:max_value="69"
+                    app:bar_color="@color/primary_light"
+                    app:bar_highlight_color="@color/primary_dark"
+                    app:data_type="_integer"
+                    app:left_thumb_color="@color/primary"
+                    app:left_thumb_color_pressed="@color/primary"
+                    app:right_thumb_color="@color/primary"
+                    app:right_thumb_color_pressed="@color/primary"
+                    app:corner_radius="1"
+
+
+
+                    />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
@@ -264,7 +277,7 @@
                 android:textColor="@color/accent"/>
 
             <Button
-                android:id="@+id/btnEliminarAccount"
+                android:id="@+id/btnDeleteAccount"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
