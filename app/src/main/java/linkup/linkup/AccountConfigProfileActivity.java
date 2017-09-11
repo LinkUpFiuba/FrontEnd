@@ -1,8 +1,10 @@
 package linkup.linkup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarFinalValueListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 
+import linkup.linkup.model.Interests;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
@@ -24,6 +27,8 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
     private User user;
     private static String TAG="AccountConfig";
+    boolean changed=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +60,30 @@ public class AccountConfigProfileActivity extends BaseActivity {
         logOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteAccount();
+                final AlertDialog.Builder builder =
+                        new AlertDialog.Builder(AccountConfigProfileActivity.this, R.style.AppThemeDialog);
+                builder.setMessage("¿Desea usted eliminar esta cuenta?");
+                builder.setCancelable(false);
+
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                            deleteAccount();
+
+
+                    }
+
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+
+                });
+                builder.show();
+
             }
+
         });
     }
 
@@ -90,6 +117,8 @@ public class AccountConfigProfileActivity extends BaseActivity {
             public void finalValue(Number minValue, Number maxValue) {
                 ageRangeText.setText(String.valueOf(minValue.intValue())+"-"+String.valueOf(maxValue.intValue()));
                 User user=SingletonUser.getUser();
+                changed=true;
+
                 user.range.minAge= (int) minValue.intValue();
                 user.range.maxAge= (int) maxValue.intValue();
                 Log.d("CRS=>", String.valueOf(minValue) + " : " + String.valueOf(maxValue));
@@ -115,6 +144,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changed=true;
                 user.invisibleMode=!isChecked;
             }
 
@@ -133,6 +163,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changed=true;
                 user.interests.setSearchesMen(isChecked);
                 updateInterestsSwitches();
             }
@@ -150,6 +181,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changed=true;
                 user.getNotifications=isChecked;
 
             }
@@ -168,6 +200,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changed=true;
                 user.interests.setSearchesWomen(isChecked);
                 updateInterestsSwitches();
             }
@@ -185,6 +218,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changed=true;
                 user.interests.setSearchesFriends(isChecked);
                 updateInterestsSwitches();
             }
@@ -205,12 +239,19 @@ public class AccountConfigProfileActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.edit_account_menu, menu);
         return true;
     }
+    private void updateIfChange(){
+        if(changed){
+            updateUser(SingletonUser.getUser());
+
+        }
+        super.onBackPressed();
+
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                updateUser(SingletonUser.getUser());
-
+                updateIfChange();
             break;
 
         }
@@ -219,8 +260,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
-        updateUser(SingletonUser.getUser());
-        super.onBackPressed();
+        updateIfChange();
     }
 
 

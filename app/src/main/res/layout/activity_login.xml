@@ -70,12 +70,13 @@
                 android:id="@+id/useConditions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white_text"
-                android:textAlignment="center"
+                android:layout_marginBottom="@dimen/activity_vertical_margin_small"
                 android:layout_marginTop="@dimen/activity_vertical_margin_small"
                 android:text="@string/activity_loigin_use_conditions"
-                android:layout_marginBottom="@dimen/activity_vertical_margin_small"
-                android:textSize="@dimen/text_size_xsmall"/>
+                android:textAlignment="center"
+                android:textColor="@color/white_text"
+                android:textSize="@dimen/text_size_xsmall"
+                android:visibility="invisible" />
         </LinearLayout>
 
 

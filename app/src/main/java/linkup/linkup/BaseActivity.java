@@ -409,39 +409,34 @@ public void startLoginActivity(){
 
         startActivity(intent);
     }
-    public void deleteAccount(){
+    public void deleteAccount() {
         showProgressDialog();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        // Prompt the user to re-provide their sign-in credentials
-        user.reauthenticate(FacebookAuthProvider.getCredential(AccessToken.getCurrentAccessToken().getToken()))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        LoginManager.getInstance().logOut();
-                        user.delete()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("users").child(user.getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
 
-                                            databaseReference.child("users").child(user.getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    hideProgressDialog();
-                                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                                    startActivity(intent);
-                                                }
-                                            });
-                                        }
-                                    }
+                user.delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    LoginManager.getInstance().logOut();
+                                    hideProgressDialog();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+
+                                }
+                            }
 
 
-                            });
-                    }
-                });
+                        });
+            }
+
+
+        });
     }
-
 }
 
