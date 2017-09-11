@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,15 @@ public class LinkFragment extends Fragment implements ViewWithCards {
 
     @Override
     public void showCards(List<User> users) {
+        if(users==null){
+            Toast.makeText(getActivity(), "Hubo un error en la conexion, volve a linkear mas tarde.",
+                    Toast.LENGTH_LONG).show();
+          }else {
+            if( users.size()==0){
+                Toast.makeText(getActivity(), "No hay mas candidatos, intenta mas tarde.",
+                    Toast.LENGTH_LONG).show();
+            }
+          }
         adapter = new SwipeDeckAdapter(users, getActivity());
         cardStack.setAdapter(adapter);
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {

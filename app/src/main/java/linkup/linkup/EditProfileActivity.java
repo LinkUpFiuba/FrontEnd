@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +19,12 @@ import linkup.linkup.model.User;
 
 public class EditProfileActivity extends BaseActivity {
 
+    boolean changed;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        changed = false;
+
         getMenuInflater().inflate(R.menu.edit_profile_menu, menu);
         MenuItem item = (MenuItem) menu.findItem(R.id.make_changes_profile);
         View makeChangesButton = (View) item.getActionView();
@@ -30,24 +34,8 @@ public class EditProfileActivity extends BaseActivity {
             public boolean onMenuItemClick(MenuItem item) {
 
                 User user = SingletonUser.getUser();
-                boolean changed = false;
 
-                TextView proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
-
-                if (proffesionText.getText().toString() !=  user.work) {
-                    user.work = proffesionText.getText().toString();
-                    changed = true;
-                }
-                TextView centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
-                if (centerStudyText.getText().toString() != user.education) {
-                    user.education = centerStudyText.getText().toString();
-                    changed = true;
-                }
-                TextView about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
-                if (about_me_text.getText().toString() != user.aboutMe) {
-                    user.aboutMe = about_me_text.getText().toString();
-                    changed = true;
-                }
+                checkForChange();
                 if (changed) {
                     updateUser(user);
                 }
@@ -60,7 +48,27 @@ public class EditProfileActivity extends BaseActivity {
 
     }
 
-
+    private void checkForChange(){
+        User user = SingletonUser.getUser();
+        TextView proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
+        String oldWork=proffesionText.getText().toString();
+        if ( !oldWork.equals(user.work)) {
+            user.work = proffesionText.getText().toString();
+            changed = true;
+        }
+        TextView centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
+        String oldEducation=centerStudyText.getText().toString();
+        if ( !oldEducation.equals(user.education)) {
+            user.education = centerStudyText.getText().toString();
+            changed = true;
+        }
+        TextView about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
+        String oldAboutMe=about_me_text.getText().toString();
+        if ( !oldAboutMe.equals( user.aboutMe)) {
+            user.aboutMe = about_me_text.getText().toString();
+            changed = true;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,30 +113,41 @@ public class EditProfileActivity extends BaseActivity {
         }
 
     }
+    private void discardChanges(){
+        checkForChange();
+        if(changed) {
+            final AlertDialog.Builder builder =
+                    new AlertDialog.Builder(this, R.style.AppThemeDialog);
+            builder.setMessage(getResources().getString(R.string.edit_profile_discartChanges));
+            builder.setCancelable(false);
+            builder.setNegativeButton(getResources().getString(R.string.edit_profile_discartChanges_negative), new DialogInterface.OnClickListener() {
 
+                public void onClick(DialogInterface dialog, int id) {
+                }
+
+            });
+            builder.setPositiveButton(getResources().getString(R.string.edit_profile_discartChanges_positive), new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int id) {
+                    onBackPressed();
+                }
+
+            });
+
+            builder.show();
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        discardChanges();
+        super.onBackPressed();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                final AlertDialog.Builder builder =
-                        new AlertDialog.Builder(this, R.style.AppThemeDialog);
 
-                builder.setMessage(getResources().getString(R.string.edit_profile_discartChanges));
-                builder.setCancelable(false);
-                builder.setNegativeButton(getResources().getString(R.string.edit_profile_discartChanges_negative), new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-
-                });
-                builder.setPositiveButton(getResources().getString(R.string.edit_profile_discartChanges_positive), new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int id) {
-                        onBackPressed();
-                    }
-
-                });
-                builder.show();
+                onBackPressed();
             break;
 
         }

@@ -1,5 +1,6 @@
 package linkup.linkup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -209,9 +210,17 @@ public class AccountConfigProfileActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 updateUser(SingletonUser.getUser());
+
             break;
+
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        Log.d("CDA", "onBackPressed Called");
+        updateUser(SingletonUser.getUser());
+        super.onBackPressed();
     }
 
 
