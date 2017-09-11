@@ -2,7 +2,6 @@ package linkup.linkup.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.transition.ChangeBounds;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
@@ -67,13 +66,13 @@ public class SwipeDeckAdapter extends BaseAdapter {
             final ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
             Picasso.with(context).load(currrentUser.photoUrl).fit().centerCrop().into(imageView);
 
-            TextView textView = (TextView) v.findViewById(R.id.sample_text);
+            TextView textView = (TextView) v.findViewById(R.id.cardNameAndAge);
             textView.setText(currrentUser.name + ", " + currrentUser.age);
 
-            TextView textView2 = (TextView) v.findViewById(R.id.subtitle_text);
+            TextView textView2 = (TextView) v.findViewById(R.id.cardWork);
             textView2.setText(currrentUser.work);
 
-            TextView textView3 = (TextView) v.findViewById(R.id.subtitle2_text);
+            TextView textView3 = (TextView) v.findViewById(R.id.cardEducation);
             textView3.setText(currrentUser.education);
 
             v.setOnClickListener(new View.OnClickListener() {

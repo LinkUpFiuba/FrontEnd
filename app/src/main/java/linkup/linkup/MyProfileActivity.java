@@ -10,6 +10,7 @@ import android.transition.ChangeBounds;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -34,7 +35,8 @@ public class MyProfileActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setUserProfile();
+        User user=SingletonUser.getUser();
+        setUserProfile(user.getSerializableUser(),user.getLikesString());
 
         ChangeBounds bounds = new ChangeBounds();
         bounds.setDuration(250);
@@ -45,7 +47,8 @@ public class MyProfileActivity extends BaseActivity {
     protected void onResume()
     {
         super.onResume();
-        setUserProfile();
+        User user=SingletonUser.getUser();
+        setUserProfile(user.getSerializableUser(),user.getLikesString());
     }
 
     @Override
@@ -57,23 +60,7 @@ public class MyProfileActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void setUserProfile(){
-        User user = SingletonUser.getUser();
-        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        toolbarLayout.setTitle(user.name+", "+user.age);
 
-        ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
-        Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
-
-        TextView proffesionText = (TextView) findViewById(R.id.proffesion_text);
-        proffesionText.setText(user.work);
-        TextView centerStudyText = (TextView) findViewById(R.id.center_study_text);
-        centerStudyText.setText(user.education);
-        TextView like_text = (TextView) findViewById(R.id.like_text);
-        like_text.setText(user.getLikesString());
-        TextView about_me_text = (TextView) findViewById(R.id.about_me_text);
-        about_me_text.setText(user.aboutMe);
-    }
     public void startEditProfileActivity(){
         Intent intent = new Intent(this, EditProfileActivity.class);
         startActivity(intent);

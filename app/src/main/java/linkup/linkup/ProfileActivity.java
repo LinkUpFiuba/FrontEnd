@@ -32,14 +32,7 @@ public class ProfileActivity extends BaseActivity {
         ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
         Picasso.with(this).load(user.getPhotoURL()).fit().centerCrop().into(imageView1);
 
-        TextView proffesionText = (TextView) findViewById(R.id.proffesion_text);
-        proffesionText.setText(user.getWork());
-        TextView centerStudyText = (TextView) findViewById(R.id.center_study_text);
-        centerStudyText.setText(user.getFormation());
-        TextView like_text = (TextView) findViewById(R.id.like_text);
-        like_text.setText(user.getInterests());
-        TextView about_me_text = (TextView) findViewById(R.id.about_me_text);
-        about_me_text.setText(user.getAboutMe());
+        setUserProfile(user,user.getInterests());
 
         ChangeBounds bounds = new ChangeBounds();
         bounds.setDuration(250);

@@ -58,7 +58,7 @@
                         android:layout_margin="@dimen/activity_horizontal_margin"
                         android:orientation="vertical">
                         <TextView
-                            android:id="@+id/sample_text"
+                            android:id="@+id/cardNameAndAge"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start"
@@ -70,18 +70,18 @@
                             android:shadowRadius="1.6"
                             android:text=""/>
                         <TextView
-                            android:id="@+id/subtitle_text"
+                            android:id="@+id/cardWork"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/sample_text"
+                            android:layout_below="@id/cardNameAndAge"
                             android:gravity="start"
                             style="@style/swipeTitle.sub"
                             android:text=""/>
                         <TextView
-                            android:id="@+id/subtitle2_text"
+                            android:id="@+id/cardEducation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/sample_text"
+                            android:layout_below="@id/cardNameAndAge"
                             android:gravity="start"
                             style="@style/swipeTitle.sub"
                             android:text=""/>

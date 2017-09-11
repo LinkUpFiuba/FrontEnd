@@ -12,15 +12,21 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +40,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -49,6 +56,7 @@ import linkup.linkup.model.Education;
 import linkup.linkup.model.Like;
 import linkup.linkup.model.Photo;
 import linkup.linkup.model.Range;
+import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 import linkup.linkup.model.Work;
@@ -321,6 +329,41 @@ public void startLoginActivity(){
             }
         });
     }
+    protected void setUserProfile(SerializableUser user,String likes){
+        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        toolbarLayout.setTitle(user.getName()+", "+user.getAge());
+
+        ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
+        Picasso.with(this).load(user.getPhotoURL()).fit().centerCrop().into(imageView1);
+        if(!user.getWork().trim().isEmpty()) {
+            TextView proffesionText = (TextView) findViewById(R.id.proffesion_text);
+            proffesionText.setText(user.getWork());
+        }else{
+            LinearLayout workLayout=(LinearLayout) findViewById(R.id.proffesion_Layout);
+            workLayout.setVisibility(View.GONE);
+        }
+        if(!user.getFormation().trim().isEmpty()) {
+            TextView centerStudyText = (TextView) findViewById(R.id.center_study_text);
+            centerStudyText.setText(user.getFormation());
+        }else{
+            LinearLayout education_Layout=(LinearLayout) findViewById(R.id.education_Layout);
+            education_Layout.setVisibility(View.GONE);
+        }
+        if(!likes.trim().isEmpty()) {
+            TextView like_text = (TextView) findViewById(R.id.like_text);
+            like_text.setText(likes);
+        }else{
+            LinearLayout likes_Layout=(LinearLayout) findViewById(R.id.likes_Layout);
+            likes_Layout.setVisibility(View.GONE);
+        }
+        if(!user.getAboutMe().trim().isEmpty()) {
+            TextView about_me_text = (TextView) findViewById(R.id.about_me_text);
+            about_me_text.setText(user.getAboutMe());
+        }else{
+            LinearLayout aboutMe_Layout=(LinearLayout) findViewById(R.id.aboutMe_Layout);
+            aboutMe_Layout.setVisibility(View.GONE);
+        }
+    }
 
     public  void updateUser(final User user){
         showProgressDialog();
@@ -353,7 +396,6 @@ public void startLoginActivity(){
                         public void onClick(DialogInterface dialog, int id) {
                             Log.d(TAG, "Exito");
                             onBackPressed();
-                            hideProgressDialog();
                         }
 
                     });
