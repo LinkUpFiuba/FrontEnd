@@ -62,6 +62,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
+                Toast.makeText(LoginActivity.this, "Fallo la autentificacion.",
+                        Toast.LENGTH_LONG).show();
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
@@ -69,6 +71,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
+                Toast.makeText(LoginActivity.this, "Fallo la autentificacion.",
+                        Toast.LENGTH_LONG).show();
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
             }
@@ -141,7 +145,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Fallo la autentificacion.",
                                     Toast.LENGTH_LONG).show();
                             LoginManager.getInstance().logOut();
                         }
