@@ -154,14 +154,22 @@ public class SwipeDeck extends FrameLayout {
         throw new UnsupportedOperationException("Not supported");
     }
 
+    private void noAdapter(){
+        nextAdapterCard = 0;
+        removeAllViewsInLayout();
+    }
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
         // if we don't have an adapter, we don't need to do anything
-        if (mAdapter == null || mAdapter.getCount() == 0) {
-            nextAdapterCard = 0;
-            removeAllViewsInLayout();
+        if (mAdapter == null ) {
+           noAdapter();
+            return;
+        }
+        if(mAdapter.getCount()==0){
+            noAdapter();
             return;
         }
 
