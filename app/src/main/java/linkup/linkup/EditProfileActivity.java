@@ -1,7 +1,9 @@
 package linkup.linkup;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -108,7 +110,25 @@ public class EditProfileActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                final AlertDialog.Builder builder =
+                        new AlertDialog.Builder(this, R.style.AppThemeDialog);
+
+                builder.setMessage(getResources().getString(R.string.edit_profile_discartChanges));
+                builder.setCancelable(false);
+                builder.setNegativeButton(getResources().getString(R.string.edit_profile_discartChanges_negative), new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+
+                });
+                builder.setPositiveButton(getResources().getString(R.string.edit_profile_discartChanges_positive), new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                        onBackPressed();
+                    }
+
+                });
+                builder.show();
             break;
 
         }

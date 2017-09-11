@@ -85,5 +85,8 @@
 
     <string name="create_user_error_fireabase_get">Error de conexión, por favor vuelva a intentar más tarde</string>
 
+    <string name="edit_profile_discartChanges">¿Está seguro que desea descartar los cambios?</string>
+    <string name="edit_profile_discartChanges_negative">Cancelar</string>
+    <string name="edit_profile_discartChanges_positive">Descartar</string>
 
 </resources>
