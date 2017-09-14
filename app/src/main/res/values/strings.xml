@@ -88,5 +88,8 @@
     <string name="edit_profile_discartChanges">¿Está seguro que desea descartar los cambios?</string>
     <string name="edit_profile_discartChanges_negative">Cancelar</string>
     <string name="edit_profile_discartChanges_positive">Descartar</string>
+    <string name="enter_message">Ingrese el mensaje</string>
+
+
 
 </resources>

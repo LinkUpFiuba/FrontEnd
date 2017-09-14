@@ -10,6 +10,8 @@
     <color name="divider">#BDBDBD</color>
     <color name="empty_photo">#E0E0E0</color>
 
+    <color name="bubble_other">#FAFAFA</color>
+
 
     <color name="colorPrimary">#9C27B0</color>
     <color name="colorPrimaryDark">#8E24AA</color>
