@@ -35,6 +35,7 @@ import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -131,8 +132,41 @@ public class BaseActivity extends AppCompatActivity {
         super.onStop();
         hideProgressDialog();
     }
+    // [START auth_with_facebook]
+    public void getIDToken(){
+        Log.d(TAG, "signInWithCredential:success");
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public void createOrGetUser(final FirebaseUser firebaseUser){
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        firebaseUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            @Override
+            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                if(task.isSuccessful()) {
+                    String idToken = task.getResult().getToken();
+                    SingletonUser.setToken(idToken);
+                    showProgressDialog();
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+                    createOrGetUser(firebaseUser);
+
+                    Log.d(TAG, "GetTokenResult result = " + idToken);
+                }else{
+                    Log.w(TAG, "signInWithCredential:failure", task.getException());
+                    Toast.makeText(BaseActivity.this, "Fallo la autentificacion.",
+                            Toast.LENGTH_LONG).show();
+                    LoginManager.getInstance().logOut();
+                    hideProgressDialog();
+
+                }
+
+            }
+
+
+        });
+    }
+
+
+    private void createOrGetUser(final FirebaseUser firebaseUser){
         showProgressDialog();
 
 
@@ -158,6 +192,7 @@ public class BaseActivity extends AppCompatActivity {
                         startMissingInformationActivityForResult();
                     }else {
                         SingletonUser.setUser(user);
+                        hideProgressDialog();
 
                         startMainActivity();
                     }
@@ -171,6 +206,7 @@ public class BaseActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
                 AlertDialog.Builder builder =
                         new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
                 builder.setMessage(getResources().getString(R.string.create_user_error_fireabase_get));

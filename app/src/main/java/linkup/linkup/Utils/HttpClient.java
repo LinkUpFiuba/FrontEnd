@@ -15,15 +15,15 @@ import linkup.linkup.model.SingletonUser;
 public class HttpClient {
 
 	private static final String TAG = "HttpClient";
-	private static String BASE_URL = "https://link-up-g1.herokuapp.com/users";
+	private static String BASE_URL = "http://dev-link-up-g1.herokuapp.com";
 
 	public String getUsers() throws  UnknownHostException {
 		HttpURLConnection con = null ;
 		InputStream is = null;
 
 		try {
-			con = (HttpURLConnection) ( new URL(BASE_URL + "")).openConnection();
-			//con.setRequestProperty ("token", 			SingletonUser.getToken());
+			con = (HttpURLConnection) ( new URL(BASE_URL + "/users")).openConnection();
+			con.setRequestProperty ("token", 			SingletonUser.getToken());
 			con.setRequestMethod("GET");
 			con.setDoInput(true);
 			con.connect();
