@@ -43,6 +43,7 @@ import linkup.linkup.Utils.DataBase;
 @IgnoreExtraProperties
 
 public class User {
+    private static final int MAX_DISTANCE_ALLOWED = 100;
     public String Uid = "";
     public String photoUrl = "";
     public String name = "" ;
@@ -51,6 +52,7 @@ public class User {
     public String age = "";
     public String gender = "";
     public Range range = new Range(18);
+    public int maxDistance = MAX_DISTANCE_ALLOWED;
     public List<Like> likesList = new ArrayList<>();
     public List<Education> educationList= new ArrayList<>();
     public List<Work>workList = new ArrayList<>();
@@ -66,7 +68,7 @@ public class User {
     public User(){
 
     }
-
+    @Exclude
     public SerializableUser getSerializableUser(){
         return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education,getLikesString(),this.photoUrl);
     }
@@ -130,6 +132,7 @@ public class User {
         result.put("interests",interests);
         result.put("photoList",photoList);
         result.put("getNotifications",getNotifications);
+        result.put("maxDistance",maxDistance);
 
         return result;
     }
