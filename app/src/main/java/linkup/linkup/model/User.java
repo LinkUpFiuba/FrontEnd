@@ -66,7 +66,7 @@ public class User {
     public User(){
 
     }
-
+    @Exclude
     public SerializableUser getSerializableUser(){
         return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education,getLikesString(),this.photoUrl);
     }
