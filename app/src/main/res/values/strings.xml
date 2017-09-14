@@ -90,6 +90,8 @@
     <string name="edit_profile_discartChanges_positive">Descartar</string>
     <string name="enter_message">Ingrese el mensaje</string>
 
+    <string name="label_yesterday">Ayer</string>
+
 
 
 </resources>

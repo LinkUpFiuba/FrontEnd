@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <solid android:color="@color/bubble_other" />
+    <solid android:color="@color/accent2" />
 
     <corners
         android:bottomLeftRadius="20dp"
