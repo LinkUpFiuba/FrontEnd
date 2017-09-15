@@ -156,7 +156,8 @@ public class BaseActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                     LoginManager.getInstance().logOut();
                     hideProgressDialog();
-
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
                 }
 
             }

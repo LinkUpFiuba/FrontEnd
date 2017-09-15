@@ -1,39 +1,14 @@
 package linkup.linkup.model;
 
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import linkup.linkup.Utils.DataBase;
 
 
 /**
@@ -64,7 +39,7 @@ public class User {
     public boolean linkUpPlus = false;
     public Interests interests = new Interests();
     public List<Photo> photoList = new ArrayList<>();
-    public UserLocation userLocation=new UserLocation();
+    public UserLocation location =new UserLocation();
 
     public User(){
 
@@ -134,7 +109,7 @@ public class User {
         result.put("photoList",photoList);
         result.put("getNotifications",getNotifications);
         result.put("maxDistance",maxDistance);
-        result.put("userLocation",userLocation);
+        result.put("location", location);
 
         return result;
     }

@@ -2,9 +2,7 @@ package linkup.linkup;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -19,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -237,7 +234,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     public void locationChanged(double longitude, double latitude) {
         User user=SingletonUser.getUser();
-        UserLocation userLocation=user.userLocation;
+        UserLocation userLocation=user.location;
         userLocation.longitude=longitude;
         userLocation.latitude=latitude;
         updateUser(user,false);
