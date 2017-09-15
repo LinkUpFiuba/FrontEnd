@@ -278,7 +278,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
     }
     private void updateIfChange(){
         if(changed){
-            updateUser(SingletonUser.getUser());
+            updateUser(SingletonUser.getUser(),true);
 
         }
         super.onBackPressed();

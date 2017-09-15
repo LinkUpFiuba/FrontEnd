@@ -324,7 +324,7 @@ public void startLoginActivity(){
                     }
             ).executeAsync();
         }else{
-            updateUser(SingletonUser.getUser());
+            updateUser(SingletonUser.getUser(),false);
         }
 
     }
@@ -401,7 +401,7 @@ public void startLoginActivity(){
         }
     }
 
-    public  void updateUser(final User user){
+    public  void updateUser(final User user, final Boolean showMessage){
         showProgressDialog();
 
         Map<String, Object> map = user.toMap();
@@ -420,24 +420,27 @@ public void startLoginActivity(){
                 if (databaseError != null) {
                     System.out.println("Data could not be saved " + databaseError.getMessage());
                 } else {
-                    Log.d(TAG, "Data saved successfully.");
+                    if(showMessage) {
+                        Log.d(TAG, "Data saved successfully.");
 
-                    AlertDialog.Builder builder =
-                            new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
-                    builder.setTitle(getResources().getString(R.string.edit_success_title));
-                    builder.setMessage(getResources().getString(R.string.edit_success_message));
-                    builder.setIcon(R.drawable.ic_check_white_24dp);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        AlertDialog.Builder builder =
+                                new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
+                        builder.setTitle(getResources().getString(R.string.edit_success_title));
+                        builder.setMessage(getResources().getString(R.string.edit_success_message));
+                        builder.setIcon(R.drawable.ic_check_white_24dp);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                        public void onClick(DialogInterface dialog, int id) {
-                            Log.d(TAG, "Exito");
-                            onBackPressed();
+                            public void onClick(DialogInterface dialog, int id) {
+                                Log.d(TAG, "Exito");
+                                onBackPressed();
+                            }
+
+                        });
+                        if (!isFinishing()) {
+
+                            builder.show();
                         }
 
-                    });
-                    if(!isFinishing()) {
-
-                        builder.show();
                     }
                 }
             }

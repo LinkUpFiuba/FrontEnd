@@ -38,7 +38,7 @@ public class EditProfileActivity extends BaseActivity {
                 checkForChange();
                 if (changed) {
                     changed=false;
-                    updateUser(user);
+                    updateUser(user,true);
                 }
 
                 return true;

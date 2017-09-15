@@ -64,6 +64,7 @@ public class User {
     public boolean linkUpPlus = false;
     public Interests interests = new Interests();
     public List<Photo> photoList = new ArrayList<>();
+    public UserLocation userLocation=new UserLocation();
 
     public User(){
 
@@ -133,6 +134,7 @@ public class User {
         result.put("photoList",photoList);
         result.put("getNotifications",getNotifications);
         result.put("maxDistance",maxDistance);
+        result.put("userLocation",userLocation);
 
         return result;
     }

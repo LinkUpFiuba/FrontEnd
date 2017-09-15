@@ -33,7 +33,7 @@ import linkup.linkup.model.SingletonUser;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "FacebookLogin";
-    private FirebaseAuth mAuth;
+        private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
     private Button facebookView;
     private LoginButton loginButton;
