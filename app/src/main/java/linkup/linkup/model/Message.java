@@ -5,25 +5,15 @@ import java.io.Serializable;
 import linkup.linkup.model.User;
 
 public class Message implements Serializable {
-    String id, message, createdAt;
-    SerializableUser user;
+    String message, userId;
 
     public Message() {
     }
 
-    public Message(String id, String message, String createdAt, SerializableUser user) {
-        this.id = id;
+    public Message(String message, String userId) {
+
         this.message = message;
-        this.createdAt = createdAt;
-        this.user = user;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.userId = userId;
     }
 
     public String getMessage() {
@@ -34,19 +24,12 @@ public class Message implements Serializable {
         this.message = message;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public SerializableUser getUser() {
-        return user;
-    }
-
-    public void setUser(SerializableUser user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
+

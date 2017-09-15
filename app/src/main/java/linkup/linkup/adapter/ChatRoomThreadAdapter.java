@@ -1,6 +1,5 @@
 package linkup.linkup.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,29 +17,25 @@ import linkup.linkup.model.Message;
  */
 public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static String TAG = ChatRoomThreadAdapter.class.getSimpleName();
+    //private static String TAG = ChatRoomThreadAdapter.class.getSimpleName();
 
     private String userId;
     private int SELF = 100;
 
-    private Context mContext;
     private ArrayList<Message> messageArrayList;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView message, timestamp;
+        TextView message;
 
         public ViewHolder(View view) {
             super(view);
             message = (TextView) itemView.findViewById(R.id.message);
-            //timestamp = (TextView) itemView.findViewById(timestamp);
         }
     }
 
-    public ChatRoomThreadAdapter(Context mContext, ArrayList<Message> messageArrayList, String userId) {
-        this.mContext = mContext;
+    public ChatRoomThreadAdapter( ArrayList<Message> messageArrayList, String userId) {
         this.messageArrayList = messageArrayList;
         this.userId = userId;
-
     }
 
     @Override
@@ -69,7 +64,7 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemViewType(int position) {
         Message message = messageArrayList.get(position);
-        if (message.getUser().getId().equals(userId)) {
+        if (message.getUserId().equals(userId)) {
             return SELF;
         }
 
@@ -80,13 +75,6 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         Message message = messageArrayList.get(position);
         ((ViewHolder) holder).message.setText(message.getMessage());
-
-        //String timestamp = DateHelper.getTimeStamp(message.getCreatedAt(), mContext);
-
-       // if (message.getUser().getName() != null)
-            //timestamp = message.getUser().getName() + ", " + timestamp;
-
-        //((ViewHolder) holder).timestamp.setText(timestamp);
     }
 
     @Override

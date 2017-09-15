@@ -11,8 +11,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -20,36 +25,37 @@ import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.model.Message;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
-import linkup.linkup.model.User;
 
-/**
- * Created by german on 9/13/2017.
- */
 
 public class ChatRoomActivity extends BaseActivity {
     private EditText inputMessage;
-    private ImageButton btnSend;
+    private FloatingActionButton btnSend;
     private SerializableUser otherUser;
     private RecyclerView recyclerView;
     private ArrayList<Message> messageArrayList;
     private ChatRoomThreadAdapter mAdapter;
+    private String selfUserId;
+    private DatabaseReference databaseReference1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReference1 = database.getReference();
+
         setContentView(R.layout.activity_chat_room);
 
-        FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.fabSendMessage);
         inputMessage = (EditText) findViewById(R.id.message);
-        btnSend = (ImageButton) findViewById(R.id.fabSendMessage);
+        btnSend = (FloatingActionButton) findViewById(R.id.fabSendMessage);
         TextView titleChat = (TextView) findViewById(R.id.title_chat);
         recyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
 
         messageArrayList = new ArrayList<>();
 
         Intent intent = getIntent();
-        String chatRoomId = intent.getStringExtra("chat_room_id");
+        //String chatRoomId = intent.getStringExtra("chat_room_id");
         otherUser = intent.getParcelableExtra("user");
         titleChat.setText(otherUser.getName());
 
@@ -58,10 +64,10 @@ public class ChatRoomActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String selfUserId = SingletonUser.getUser().getSerializableUser().getId();
+        selfUserId = SingletonUser.getUser().getSerializableUser().getId();
         Log.d("ChatRoom",selfUserId + " " + otherUser.getFbId());
 
-        mAdapter = new ChatRoomThreadAdapter(this, messageArrayList, selfUserId);
+        mAdapter = new ChatRoomThreadAdapter(messageArrayList, selfUserId);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -74,6 +80,30 @@ public class ChatRoomActivity extends BaseActivity {
                 sendMessage();
             }
         });
+
+        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                Message map = dataSnapshot.getValue(Message.class);
+
+                //if(!map.getUserId().equals(selfUserId)){
+                    addUIMessage(map);
+                //}
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
     }
 
     /**
@@ -87,12 +117,16 @@ public class ChatRoomActivity extends BaseActivity {
         this.inputMessage.setText("");
 
         Message message = new Message();
-        message.setId("1");
         message.setMessage(messageToSend);
-        message.setCreatedAt("");
-        //message.setUser(SingletonUser.getUser().getSerializableUser());
-        message.setUser(otherUser);
+        message.setUserId(selfUserId);
 
+        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).push().setValue(message);
+        databaseReference1.child("messages").child(otherUser.getId()).child(selfUserId).push().setValue(message);
+
+        //addUIMessage(message);
+    }
+
+    private void addUIMessage(Message message){
         messageArrayList.add(message);
 
         mAdapter.notifyDataSetChanged();
