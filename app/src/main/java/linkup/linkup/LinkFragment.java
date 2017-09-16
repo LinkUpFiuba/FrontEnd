@@ -52,7 +52,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         //testData.add(candidate);
         adapter.notifyDataSetChanged();
     }
-    private void startAnimation() {
+    public void startAnimation() {
         //if it's not running
         if (!rippleBackground1.isRippleAnimationRunning()) {
             rippleBackground1.setVisibility(View.VISIBLE);
@@ -72,17 +72,23 @@ public class LinkFragment extends Fragment implements ViewWithCards {
 
     }
 
+    public void showEmptyCardStack(){
+        showCards(null,false);
+    }
+
     @Override
-    public void showCards(List<User> users) {
-        if(users==null){
-            Toast.makeText(getActivity(), "Hubo un error en la conexion, volve a linkear mas tarde.",
-                    Toast.LENGTH_LONG).show();
-          }else {
-            if( users.size()==0){
-                Toast.makeText(getActivity(), "No hay mas candidatos, intenta mas tarde.",
-                    Toast.LENGTH_LONG).show();
-            }
-          }
+    public void showCards(List<User> users,boolean showToasts) {
+         if(showToasts) {
+             if (users == null) {
+                 Toast.makeText(getActivity(), "Hubo un error en la conexion, vuelve a linkear mas tarde.",
+                         Toast.LENGTH_SHORT).show();
+             } else {
+                 if (users.size() == 0) {
+                     Toast.makeText(getActivity(), "No hay mas candidatos, intenta mas tarde.",
+                             Toast.LENGTH_SHORT).show();
+                 }
+             }
+         }
         adapter = new SwipeDeckAdapter(users, getActivity());
         cardStack.setAdapter(adapter);
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {

@@ -39,8 +39,8 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
 
     private Toolbar toolbar;
 
-    private Fragment linkFragment;
-    private Fragment chatsFragment;
+    private LinkFragment linkFragment;
+    private ChatsFragment chatsFragment;
 
     private DrawerLayout drawerLayout;
     private GPS gps;
@@ -183,7 +183,8 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
             menu_education.setText(user.education);
         }
-
+        linkFragment.showEmptyCardStack();
+        linkFragment.startAnimation();
 
     }
     @Override
