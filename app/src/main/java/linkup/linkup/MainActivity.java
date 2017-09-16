@@ -59,7 +59,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser currentUser = mAuth.getCurrentUser();
         gps = new GPS(this);
-
         linkFragment = new LinkFragment();
         chatsFragment = new ChatsFragment();
 

@@ -403,16 +403,11 @@ public void startLoginActivity(){
     }
 
     public  void updateUser(final User user, final Boolean showMessage){
-        showProgressDialog();
-
+        if(showMessage) {
+            showProgressDialog();
+        }
         Map<String, Object> map = user.toMap();
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        setTimeOutConnectionAction(new Command() {
-            @Override
-            public void excute() {
-                ref.goOffline();
-            }
-        });
 
 
         ref.child("users").child(user.Uid).updateChildren(map, new DatabaseReference.CompletionListener() {

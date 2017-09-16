@@ -19,14 +19,14 @@ import linkup.linkup.model.UserLocation;
 
 public class GPS {
 
-    private static final long MIN_TIME_INTERVAL_MILISECONDS = 600000;//10 Minutes
-    private static final float MIN_DISTANCE_METERS = 1000 ;
+    private static final long MIN_TIME_INTERVAL_MILISECONDS = 30000;//30 segundos
+    private static final float MIN_DISTANCE_METERS = 50 ;
     private IGPSActivity main;
 
     // Helper for GPS-Position
     private LocationListener mlocListener;
     private LocationManager mlocManager;
-
+    private Location currentLocation;
     private boolean isRunning;
 
     public GPS(IGPSActivity main) {
@@ -35,9 +35,20 @@ public class GPS {
         // GPS Position
         mlocManager = (LocationManager) ((Activity) this.main).getSystemService(Context.LOCATION_SERVICE);
         mlocListener = new MyLocationListener();
-        resumeGPS();
-        // GPS Position END
-        this.isRunning = true;
+        if(checkForPermission()) {
+            Location gpsProviderLocation = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location networkProviderLocation=mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if(isBetterLocation(networkProviderLocation,gpsProviderLocation)){
+                currentLocation=networkProviderLocation;
+            }else {
+                currentLocation=gpsProviderLocation;
+            }
+            this.main.locationChanged(currentLocation.getLongitude(),currentLocation.getLatitude());
+            resumeGPS();
+            // GPS Position END
+            this.isRunning = true;
+        }
+
     }
 
     public void stopGPS() {
@@ -47,13 +58,23 @@ public class GPS {
         }
     }
 
+    public Location getCurrentLocation(){
+        return currentLocation;
+    }
 
-    public void resumeGPS() {
+    private boolean checkForPermission(){
         if (ActivityCompat.checkSelfPermission((Context) this.main, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             this.main.displayGPSSettingsDialog();
+            return false;
+        }return true;
+    }
+    public void resumeGPS() {
+        if(!checkForPermission()){
             return;
         }
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_INTERVAL_MILISECONDS, MIN_DISTANCE_METERS, mlocListener);
+        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_INTERVAL_MILISECONDS, MIN_DISTANCE_METERS, mlocListener);
+
         this.isRunning = true;
     }
 
@@ -67,7 +88,10 @@ public class GPS {
 
         @Override
         public void onLocationChanged(Location loc) {
-            GPS.this.main.locationChanged(loc.getLongitude(), loc.getLatitude());
+            if(isBetterLocation(loc,currentLocation)) {
+                GPS.this.main.locationChanged(loc.getLongitude(), loc.getLatitude());
+                currentLocation = loc;
+            }
         }
 
         @Override
@@ -86,5 +110,63 @@ public class GPS {
         }
 
     }
+    //https://developer.android.com/guide/topics/location/strategies.html#BestEstimate
+    private static final int MAX_TIME_OLDER_LOCATION_MILISECONDS = 1000 * 60 * 10;//10 minutos
+    private static final int DISTANCE_TOLERABLE_FOR_ACCURACY = 100;//100 metros
+
+    /** Determines whether one Location reading is better than the current Location fix
+     * @param location  The new Location that you want to evaluate
+     * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+     */
+    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+        if (currentBestLocation == null) {
+            // A new location is always better than no location
+            return true;
+        }
+
+        // Check whether the new location fix is newer or older
+        long timeDelta = location.getTime() - currentBestLocation.getTime();
+        boolean isSignificantlyNewer = timeDelta > MAX_TIME_OLDER_LOCATION_MILISECONDS;
+        boolean isSignificantlyOlder = timeDelta < -MAX_TIME_OLDER_LOCATION_MILISECONDS;
+        boolean isNewer = timeDelta > 0;
+
+        // If it's been more than two minutes since the current location, use the new location
+        // because the user has likely moved
+        if (isSignificantlyNewer) {
+            return true;
+            // If the new location is more than two minutes older, it must be worse
+        } else if (isSignificantlyOlder) {
+            return false;
+        }
+
+        // Check whether the new location fix is more or less accurate
+        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+        boolean isLessAccurate = accuracyDelta > 0;
+        boolean isMoreAccurate = accuracyDelta < 0;
+        boolean isSignificantlyLessAccurate = accuracyDelta > DISTANCE_TOLERABLE_FOR_ACCURACY;
+
+        // Check if the old and new location are from the same provider
+        boolean isFromSameProvider = isSameProvider(location.getProvider(),
+                currentBestLocation.getProvider());
+
+        // Determine location quality using a combination of timeliness and accuracy
+        if (isMoreAccurate) {
+            return true;
+        } else if (isNewer && !isLessAccurate) {
+            return true;
+        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+            return true;
+        }
+        return false;
+    }
+
+    /** Checks whether two providers are the same */
+    private boolean isSameProvider(String provider1, String provider2) {
+        if (provider1 == null) {
+            return provider2 == null;
+        }
+        return provider1.equals(provider2);
+    }
+
 
 }
