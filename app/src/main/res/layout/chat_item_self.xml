@@ -23,15 +23,5 @@
         android:textIsSelectable="true"
         android:textSize="@dimen/text_size_medium"
         android:textColor="@color/icons"/>
-    <TextView
-        android:id="@+id/timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@id/message"
-        android:layout_below="@id/message"
-        android:textColor="@color/secondary_text"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:text="ayer"
-        android:textSize="10dp"/>
 </RelativeLayout>
 

@@ -109,6 +109,9 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             }
         });
     }
+    private void postReadMessage(String key){
+        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(key).child("read").setValue(true);
+    }
 
     private void fetchHistory() {
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).orderByKey().limitToLast(PAGINATION).addChildEventListener(new ChildEventListener() {
@@ -117,6 +120,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 Message map = dataSnapshot.getValue(Message.class);
                 String key = dataSnapshot.getKey();
+                postReadMessage(key);
+
                 if(index == 0){
                     oldestKey = key;
                 }
@@ -182,6 +187,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 String key = dataSnapshot.getKey();
+                postReadMessage(key);
+
                 Log.d(TAG, oldestKey + " " + key );
 
                 if (!lastOldestKey.equals(key)) {

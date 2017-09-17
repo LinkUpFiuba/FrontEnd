@@ -31,7 +31,6 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
             profileImageView = (CircleImageView) view.findViewById(R.id.profile_img);
             name = (TextView) view.findViewById(R.id.name);
             message = (TextView) view.findViewById(R.id.message);
-            timestamp = (TextView) view.findViewById(R.id.timestamp);
             count = (TextView) view.findViewById(R.id.count);
         }
     }
