@@ -117,3 +117,25 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         stopAnimation();
     }
 }
+/*
+ ValueEventListener videoValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String date = dataSnapshot.getKey();
+                String temp = date;
+
+               long count =  dataSnapshot.getChildrenCount();
+                String value = dataSnapshot.getValue().toString();
+                temp = value;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(tag, "database error");
+            }
+        };
+//        videosQuery.addChildEventListener(videosChildEventListener);
+        videosQuery.addValueEventListener(videoValueEventListener);
+
+    }
+ */

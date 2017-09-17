@@ -1,0 +1,25 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    style="?selectableItemBackground"
+    android:id="@+id/containerLoadMore"
+    android:background="@color/primary_dark_traslucent"
+    android:padding="@dimen/activity_vertical_margin_small"
+    android:layout_marginBottom="@dimen/activity_vertical_margin_small"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textIsSelectable="true"
+        android:text="@string/load_more"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        />
+
+</RelativeLayout>
