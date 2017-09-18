@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +66,9 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
         JSONArray dataArray = new JSONArray(data);
         for(int i=0; i<dataArray.length();i++) {
             JSONObject jObj = dataArray.getJSONObject(i);
+            Gson gson=new Gson();
             User user = new User();
+            user.Uid=getString("Uid",jObj);
             user.name = getString("name",jObj);
             user.aboutMe = getString("aboutMe",jObj);
             user.age = getString("age",jObj);
@@ -81,6 +84,7 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
                 JSONArray jArrayLikesList = jObj.getJSONArray("photoList");
                 user.photoList = Photo.photoList(jArrayLikesList);
             }
+            user.gender= getString("gender",jObj);
 
             user.work = getString("work",jObj);
             users.add(user);

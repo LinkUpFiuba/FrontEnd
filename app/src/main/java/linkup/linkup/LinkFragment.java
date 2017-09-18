@@ -14,6 +14,7 @@ import java.util.List;
 import connections.GetUsersAsyncTask;
 import connections.ViewWithCards;
 import fiuba.cardstack.SwipeDeck;
+import linkup.linkup.Utils.DataBase;
 import linkup.linkup.adapter.SwipeDeckAdapter;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
@@ -95,11 +96,15 @@ public class LinkFragment extends Fragment implements ViewWithCards {
             @Override
             public void cardSwipedLeft(int position) {
                 Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
+                User user = (User) adapter.getItem(position);
+                DataBase.saveUnlink(user.Uid);
             }
 
             @Override
             public void cardSwipedRight(int position) {
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
+                User user = (User) adapter.getItem(position);
+                DataBase.saveLink(user.Uid);
             }
 
             @Override
