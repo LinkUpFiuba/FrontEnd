@@ -33,7 +33,7 @@ import linkup.linkup.model.SingletonUser;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "FacebookLogin";
-    private FirebaseAuth mAuth;
+        private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
     private Button facebookView;
     private LoginButton loginButton;
@@ -114,7 +114,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
     // [END on_activity_result]
 
-    // [START auth_with_facebook]
+
+
     private void handleFacebookAccessToken(final AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
         // [START_EXCLUDE silent]
@@ -127,20 +128,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            firebaseUser.getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
-                                @Override
-                                public void onSuccess(GetTokenResult result) {
-                                    String idToken = result.getToken();
-                                    SingletonUser.setToken(idToken);
-                                    Log.d(TAG, "GetTokenResult result = " + idToken);
-                                }
-                            });
-                            showProgressDialog();
-
-                            createOrGetUser(firebaseUser);
+                            getIDToken();
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -148,10 +136,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             Toast.makeText(LoginActivity.this, "Fallo la autentificacion.",
                                     Toast.LENGTH_LONG).show();
                             LoginManager.getInstance().logOut();
+                            hideProgressDialog();
+
                         }
 
                         // [START_EXCLUDE]
-                        hideProgressDialog();
                         // [END_EXCLUDE]
                     }
                 });

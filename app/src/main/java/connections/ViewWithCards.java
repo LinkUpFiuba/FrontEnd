@@ -9,5 +9,5 @@ import linkup.linkup.model.User;
  */
 
 public interface ViewWithCards {
-     void showCards(List<User> users);
+     void showCards(List<User> users,boolean showToasts);
 }

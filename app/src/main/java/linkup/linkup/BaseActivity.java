@@ -35,6 +35,7 @@ import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -131,8 +132,42 @@ public class BaseActivity extends AppCompatActivity {
         super.onStop();
         hideProgressDialog();
     }
+    // [START auth_with_facebook]
+    public void getIDToken(){
+        Log.d(TAG, "signInWithCredential:success");
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public void createOrGetUser(final FirebaseUser firebaseUser){
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        firebaseUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            @Override
+            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                if(task.isSuccessful()) {
+                    String idToken = task.getResult().getToken();
+                    SingletonUser.setToken(idToken);
+                    showProgressDialog();
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+                    createOrGetUser(firebaseUser);
+
+                    Log.d(TAG, "GetTokenResult result = " + idToken);
+                }else{
+                    Log.w(TAG, "signInWithCredential:failure", task.getException());
+                    Toast.makeText(BaseActivity.this, "Fallo la autentificacion.",
+                            Toast.LENGTH_LONG).show();
+                    LoginManager.getInstance().logOut();
+                    hideProgressDialog();
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }
+
+            }
+
+
+        });
+    }
+
+
+    private void createOrGetUser(final FirebaseUser firebaseUser){
         showProgressDialog();
 
 
@@ -158,6 +193,7 @@ public class BaseActivity extends AppCompatActivity {
                         startMissingInformationActivityForResult();
                     }else {
                         SingletonUser.setUser(user);
+                        hideProgressDialog();
 
                         startMainActivity();
                     }
@@ -171,6 +207,7 @@ public class BaseActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
                 AlertDialog.Builder builder =
                         new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
                 builder.setMessage(getResources().getString(R.string.create_user_error_fireabase_get));
@@ -288,7 +325,7 @@ public void startLoginActivity(){
                     }
             ).executeAsync();
         }else{
-            updateUser(SingletonUser.getUser());
+            updateUser(SingletonUser.getUser(),false);
         }
 
     }
@@ -365,17 +402,12 @@ public void startLoginActivity(){
         }
     }
 
-    public  void updateUser(final User user){
-        showProgressDialog();
-
+    public  void updateUser(final User user, final Boolean showMessage){
+        if(showMessage) {
+            showProgressDialog();
+        }
         Map<String, Object> map = user.toMap();
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        setTimeOutConnectionAction(new Command() {
-            @Override
-            public void excute() {
-                ref.goOffline();
-            }
-        });
 
 
         ref.child("users").child(user.Uid).updateChildren(map, new DatabaseReference.CompletionListener() {
@@ -384,24 +416,27 @@ public void startLoginActivity(){
                 if (databaseError != null) {
                     System.out.println("Data could not be saved " + databaseError.getMessage());
                 } else {
-                    Log.d(TAG, "Data saved successfully.");
+                    if(showMessage) {
+                        Log.d(TAG, "Data saved successfully.");
 
-                    AlertDialog.Builder builder =
-                            new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
-                    builder.setTitle(getResources().getString(R.string.edit_success_title));
-                    builder.setMessage(getResources().getString(R.string.edit_success_message));
-                    builder.setIcon(R.drawable.ic_check_white_24dp);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        AlertDialog.Builder builder =
+                                new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
+                        builder.setTitle(getResources().getString(R.string.edit_success_title));
+                        builder.setMessage(getResources().getString(R.string.edit_success_message));
+                        builder.setIcon(R.drawable.ic_check_white_24dp);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                        public void onClick(DialogInterface dialog, int id) {
-                            Log.d(TAG, "Exito");
-                            onBackPressed();
+                            public void onClick(DialogInterface dialog, int id) {
+                                Log.d(TAG, "Exito");
+                                onBackPressed();
+                            }
+
+                        });
+                        if (!isFinishing()) {
+
+                            builder.show();
                         }
 
-                    });
-                    if(!isFinishing()) {
-
-                        builder.show();
                     }
                 }
             }

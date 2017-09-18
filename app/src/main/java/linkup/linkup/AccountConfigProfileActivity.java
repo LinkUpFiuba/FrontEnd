@@ -1,7 +1,6 @@
 package linkup.linkup;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -17,9 +16,11 @@ import android.widget.TextView;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarFinalValueListener;
+import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarFinalValueListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
+import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 
-import linkup.linkup.model.Interests;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
@@ -51,9 +52,13 @@ public class AccountConfigProfileActivity extends BaseActivity {
         setLogOffButton();
         setDeleteButton();
 
-        setSeekBarRange();
+        setSeekBarAgeRange();
+        setSeekBarDistanceRange();
+
 
     }
+
+
 
     private void setDeleteButton() {
         final Button logOffButton = (Button)findViewById(R.id.btnDeleteAccount);
@@ -88,9 +93,9 @@ public class AccountConfigProfileActivity extends BaseActivity {
     }
 
 
-    private void setSeekBarRange() {
+    private void setSeekBarAgeRange() {
         // get seekbar from view
-        final CrystalRangeSeekbar rangeSeekbar = (CrystalRangeSeekbar) findViewById(R.id.rangeSeekbar1);
+        final CrystalRangeSeekbar rangeSeekbar = (CrystalRangeSeekbar) findViewById(R.id.rangeSeekbarAge);
         User user=SingletonUser.getUser();
         rangeSeekbar.setMinStartValue(user.range.minAge);
         rangeSeekbar.setMaxStartValue(user.range.maxAge);
@@ -123,6 +128,38 @@ public class AccountConfigProfileActivity extends BaseActivity {
                 user.range.maxAge= (int) maxValue.intValue();
                 Log.d("CRS=>", String.valueOf(minValue) + " : " + String.valueOf(maxValue));
             }
+        });
+    }
+    private void setSeekBarDistanceRange() {
+        final CrystalSeekbar distanceSeekbar = (CrystalSeekbar) findViewById(R.id.seekbarDistance);
+        User user=SingletonUser.getUser();
+        distanceSeekbar.setMinStartValue(user.maxDistance);
+        distanceSeekbar.apply();
+        // get min and max text view
+        final TextView distanceRangeText = (TextView) findViewById(R.id.distanceRangeText);
+        distanceRangeText.setText(String.valueOf(user.maxDistance));
+
+        // set  value listener
+        distanceSeekbar.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
+            @Override
+            public void valueChanged(Number value) {
+                distanceRangeText.setText(String.valueOf(value));
+            }
+        });
+        // set final value listener
+        distanceSeekbar.setOnSeekbarFinalValueListener(new OnSeekbarFinalValueListener() {
+            @Override
+            public void finalValue(Number value) {
+                distanceRangeText.setText(String.valueOf(value));
+                User user=SingletonUser.getUser();
+                changed=true;
+
+                user.maxDistance= (int) value.intValue();
+
+                Log.d("CRS=>", String.valueOf(user.maxDistance));
+            }
+
+
         });
     }
 
@@ -241,7 +278,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
     }
     private void updateIfChange(){
         if(changed){
-            updateUser(SingletonUser.getUser());
+            updateUser(SingletonUser.getUser(),true);
 
         }
         super.onBackPressed();

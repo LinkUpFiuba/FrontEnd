@@ -9,42 +9,42 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 public class Interests {
     public Interests(){
-        men=false;
-        women=false;
+        male =false;
+        female =false;
         friends=false;
     }
-    public boolean men,women,friends;
+    public boolean male, female,friends;
     public boolean searchesMen(){
-        return men;
+        return male;
     }
     public boolean searchesWomen(){
-        return women;
+        return female;
     }
     public boolean searchesFriends(){
         return friends;
     }
     public void setSearchesMen(boolean searchesMen){
         if(searchesMen) {
-            men = true;
+            male = true;
             friends = false;
         }else {
-            men=false;
+            male =false;
         }
 
     }
 
     public void setSearchesWomen(boolean searchesWomen){
         if(searchesWomen) {
-            women = true;
+            female = true;
             friends = false;
         }else {
-            women=false;
+            female =false;
         }
     }
     public void setSearchesFriends(boolean searchesFriends){
         if(searchesFriends) {
-            women = false;
-            men=false;
+            female = false;
+            male =false;
             friends = true;
         }else {
             friends=false;

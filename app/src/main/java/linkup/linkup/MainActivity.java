@@ -1,8 +1,10 @@
 package linkup.linkup;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,10 +23,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import linkup.linkup.Utils.GPS;
+import linkup.linkup.Utils.IGPSActivity;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
+import linkup.linkup.model.UserLocation;
 
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity implements IGPSActivity {
 
     public static final String CHATS_FRAGMENT = "CHATS_FRAGMENT";
     public static final String LINK_FRAGMENT = "LINK_FRAGMENT";
@@ -34,10 +39,13 @@ public class MainActivity extends BaseActivity  {
 
     private Toolbar toolbar;
 
-    private Fragment linkFragment;
-    private Fragment chatsFragment;
+    private LinkFragment linkFragment;
+    private ChatsFragment chatsFragment;
 
     private DrawerLayout drawerLayout;
+    private GPS gps;
+    private static final int PERMISSION_LOCATION_REQUEST_CODE = 1;
+
 
 
     public enum EnterAnimation {
@@ -50,7 +58,7 @@ public class MainActivity extends BaseActivity  {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser currentUser = mAuth.getCurrentUser();
-
+        gps = new GPS(this);
         linkFragment = new LinkFragment();
         chatsFragment = new ChatsFragment();
 
@@ -159,6 +167,7 @@ public class MainActivity extends BaseActivity  {
     {
         super.onResume();
         User user= SingletonUser.getUser();
+        if(!gps.isRunning()) gps.resumeGPS();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
@@ -174,8 +183,14 @@ public class MainActivity extends BaseActivity  {
             TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
             menu_education.setText(user.education);
         }
+        linkFragment.showEmptyCardStack();
+        linkFragment.startAnimation();
 
-
+    }
+    @Override
+    public void onStop() {
+        gps.stopGPS();
+        super.onStop();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -216,5 +231,27 @@ public class MainActivity extends BaseActivity  {
             toolbar.setTitle(getResources().getString(R.string.icon_chats));
         }
     }
+    @Override
+    public void locationChanged(double longitude, double latitude) {
+        User user=SingletonUser.getUser();
+        UserLocation userLocation=user.location;
+        userLocation.longitude=longitude;
+        userLocation.latitude=latitude;
+        updateUser(user,false);
+    }
+
+    @Override
+    public void displayGPSSettingsDialog() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_LOCATION_REQUEST_CODE);
+
+    }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        if(requestCode==PERMISSION_LOCATION_REQUEST_CODE){
+            this.gps.resumeGPS();
+        }
+
+    }
+
 
 }

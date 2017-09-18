@@ -1,6 +1,7 @@
 package linkup.linkup;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +22,7 @@ import linkup.linkup.model.User;
 public class EditProfileActivity extends BaseActivity {
 
     boolean changed;
+    TextView proffesionText,centerStudyText,about_me_text;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -28,6 +31,10 @@ public class EditProfileActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.edit_profile_menu, menu);
         MenuItem item = (MenuItem) menu.findItem(R.id.make_changes_profile);
         View makeChangesButton = (View) item.getActionView();
+        proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
+        centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
+        about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
+
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
@@ -38,7 +45,13 @@ public class EditProfileActivity extends BaseActivity {
                 checkForChange();
                 if (changed) {
                     changed=false;
-                    updateUser(user);
+                    changeUser();
+                    updateUser(user,true);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Para guardar debes haber realizado algun cambio.",
+                            Toast.LENGTH_LONG).show();
                 }
 
                 return true;
@@ -54,22 +67,31 @@ public class EditProfileActivity extends BaseActivity {
         TextView proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
         String oldWork=proffesionText.getText().toString();
         if ( !oldWork.equals(user.work)) {
-            user.work = proffesionText.getText().toString();
             changed = true;
+            return;
         }
         TextView centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
         String oldEducation=centerStudyText.getText().toString();
         if ( !oldEducation.equals(user.education)) {
-            user.education = centerStudyText.getText().toString();
             changed = true;
+            return;
         }
         TextView about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
         String oldAboutMe=about_me_text.getText().toString();
         if ( !oldAboutMe.equals( user.aboutMe)) {
-            user.aboutMe = about_me_text.getText().toString();
             changed = true;
+            return;
         }
     }
+
+    private void changeUser(){
+        User user = SingletonUser.getUser();
+        user.aboutMe = about_me_text.getText().toString();
+        user.education = centerStudyText.getText().toString();
+        user.work = proffesionText.getText().toString();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,18 +152,22 @@ public class EditProfileActivity extends BaseActivity {
             builder.setPositiveButton(getResources().getString(R.string.edit_profile_discartChanges_positive), new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int id) {
-                    onBackPressed();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
                 }
 
             });
 
             builder.show();
+        }else {
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
         }
     }
     @Override
     public void onBackPressed() {
         discardChanges();
-        super.onBackPressed();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

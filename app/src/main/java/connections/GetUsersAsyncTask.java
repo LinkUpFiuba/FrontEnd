@@ -57,7 +57,7 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
         @Override
         protected void onPostExecute(List<User> users) {
             super.onPostExecute(users);
-            this.viewWithCards.showCards(users);
+            this.viewWithCards.showCards(users,true);
         }
     public static List<User> getUsers(String data) throws JSONException {
         List<User> users = new ArrayList<>();
