@@ -2,6 +2,8 @@ package linkup.linkup.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
@@ -74,6 +76,12 @@ public class SwipeDeckAdapter extends BaseAdapter {
 
             TextView textView3 = (TextView) v.findViewById(R.id.cardEducation);
             textView3.setText(currrentUser.education);
+
+            FloatingActionButton fabLike = (FloatingActionButton) v.findViewById(R.id.fabLike);
+            FloatingActionButton fabDontLike = (FloatingActionButton) v.findViewById(R.id.fabDontLike);
+            FloatingActionButton fabSuperLike = (FloatingActionButton) v.findViewById(R.id.fabSuperLike);
+
+
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override

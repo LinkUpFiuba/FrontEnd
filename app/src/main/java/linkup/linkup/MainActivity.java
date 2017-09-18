@@ -46,8 +46,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     private GPS gps;
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 1;
 
-
-
     public enum EnterAnimation {
         FROM_RIGHT,
         FROM_LEFT
@@ -83,6 +81,18 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             setupDrawerContent(navigationView);
             View headerview = navigationView.getHeaderView(0);
             LinearLayout navigationDrawerHeaderContainer = (LinearLayout) headerview.findViewById(R.id.linearLayoutNavHeader);
+
+            User user = SingletonUser.getUser();
+            ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
+            Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
+
+            TextView menu_name_age=(TextView) headerview.findViewById(R.id.menu_name_age);
+            menu_name_age.setText(user.name+", "+user.age);
+            TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
+            menu_work.setText(user.work);
+            TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
+            menu_education.setText(user.education);
+
             navigationDrawerHeaderContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -98,7 +108,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
                     .commit();
             toolbar.setTitle(getResources().getString(R.string.icon_game));
         }
-
 
 
     }
@@ -166,26 +175,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     protected void onResume()
     {
         super.onResume();
-        User user= SingletonUser.getUser();
         if(!gps.isRunning()) gps.resumeGPS();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-            View headerview = navigationView.getHeaderView(0);
-
-            ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
-            Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
-
-            TextView menu_name_age=(TextView) headerview.findViewById(R.id.menu_name_age);
-            menu_name_age.setText(user.name+", "+user.age);
-            TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
-            menu_work.setText(user.work);
-            TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
-            menu_education.setText(user.education);
-        }
-        linkFragment.showEmptyCardStack();
-        linkFragment.startAnimation();
-
     }
     @Override
     public void onStop() {
