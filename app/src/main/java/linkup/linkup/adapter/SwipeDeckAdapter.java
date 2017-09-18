@@ -2,7 +2,6 @@ package linkup.linkup.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
@@ -24,11 +23,10 @@ import linkup.linkup.ProfileActivity;
 import linkup.linkup.R;
 import linkup.linkup.model.User;
 
-import static android.media.CamcorderProfile.get;
-
 
 public class SwipeDeckAdapter extends BaseAdapter {
 
+    public static final int REQUEST_CODE_PROFILE = 100;
     private final SwipeDeck cardStack;
     private List<User> data;
     private Context context;
@@ -41,7 +39,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(data==null){
+        if (data == null) {
             return 0;
 
         }
@@ -65,7 +63,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
         if (v == null) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.candidate_card, parent, false);
         }
-        if(getItem(position) != null){
+        if (getItem(position) != null) {
             final User currrentUser = (User) getItem(position);
 
             final ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
@@ -86,18 +84,22 @@ public class SwipeDeckAdapter extends BaseAdapter {
             fabLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //TODO: postear el like
                     cardStack.swipeTopCardRight(180);
                 }
             });
             fabSuperLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //TODO: postear el superlike
                     cardStack.swipeTopCardRight(180);
                 }
             });
             fabDontLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    //TODO: postear el nolike
                     cardStack.swipeTopCardLeft(180);
                 }
             });
@@ -110,14 +112,16 @@ public class SwipeDeckAdapter extends BaseAdapter {
                     Intent i = new Intent(v.getContext(), ProfileActivity.class);
                     i.putExtra("user", currrentUser.getSerializableUser());
                     ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation((MainActivity)v.getContext(),
+                            makeSceneTransitionAnimation((MainActivity) v.getContext(),
                                     imageView,
                                     ViewCompat.getTransitionName(imageView));
-                    v.getContext().startActivity(i, options.toBundle());
+                    ((MainActivity) v.getContext()).startActivityForResult(i, REQUEST_CODE_PROFILE, options.toBundle());
                 }
             });
-        };
+        }
+        ;
 
         return v;
     }
+
 }

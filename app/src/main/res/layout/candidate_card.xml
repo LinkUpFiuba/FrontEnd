@@ -77,7 +77,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-
             <ImageView
                 android:id="@+id/right_image"
                 android:layout_width="160dp"
@@ -85,8 +84,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="48dp"
-                android:tint="@color/primary"
-                android:src="@drawable/ic_thumb_up_white_24dp"/>
+                android:src="@drawable/ic_thumb_up_white_24dp"
+                android:tint="@color/primary"/>
 
             <ImageView
                 android:id="@+id/left_image"
@@ -96,9 +95,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="48dp"
                 android:scaleType="centerCrop"
-                android:tint="@color/primary"
-                android:src="@drawable/ic_thumb_down_white_24dp"/>
-
+                android:src="@drawable/ic_thumb_down_white_24dp"
+                android:tint="@color/primary"/>
         </FrameLayout>
     </LinearLayout>
 
@@ -115,10 +113,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/activity_vertical_margin_small"
             android:layout_marginBottom="@dimen/activity_vertical_margin_small"
+            android:layout_marginEnd="@dimen/activity_vertical_margin_small"
             android:backgroundTint="@color/accent"
             android:clickable="true"
+            android:transitionName="simple_activity_transition1"
             android:src="@drawable/ic_favorite_white_24dp"
             app:borderWidth="0dp"
             app:fabSize="normal"
@@ -137,6 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:transitionName="simple_activity_transition2"
                 android:backgroundTint="@color/empty_photo"
                 android:clickable="true"
                 android:src="@drawable/ic_thumb_down_white_24dp"
@@ -152,6 +152,7 @@
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:backgroundTint="@color/empty_photo"
                 android:clickable="true"
+                android:transitionName="simple_activity_transition3"
                 android:src="@drawable/ic_thumb_up_white_24dp"
                 android:tint="@color/primary_text"
                 app:borderWidth="0dp"
