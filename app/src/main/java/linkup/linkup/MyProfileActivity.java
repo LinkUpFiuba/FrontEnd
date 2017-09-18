@@ -23,6 +23,7 @@ public class MyProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
+
         FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.fabEdit);
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,7 +32,6 @@ public class MyProfileActivity extends BaseActivity {
             }
         });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -1,11 +1,15 @@
 package linkup.linkup;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +19,12 @@ import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.User;
 
 public class ProfileActivity extends BaseActivity {
+
+    public static final String LIKE = "1";
+    public static final String SUPER_LIKE = "2";
+    public static final String DONT_LIKE = "3";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +34,9 @@ public class ProfileActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(250);
+        getWindow().setSharedElementEnterTransition(bounds);
 
         SerializableUser user = (SerializableUser) getIntent().getParcelableExtra("user");
 
@@ -34,9 +47,36 @@ public class ProfileActivity extends BaseActivity {
 
         setUserProfile(user,user.getInterests());
 
-        ChangeBounds bounds = new ChangeBounds();
-        bounds.setDuration(250);
-        getWindow().setSharedElementEnterTransition(bounds);
+        FloatingActionButton fabLike = (FloatingActionButton)findViewById(R.id.fabLikeProfile);
+        fabLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", LIKE);
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+            }
+        });
+        FloatingActionButton fabSuperLike = (FloatingActionButton)findViewById(R.id.fabSuperLikeProfile);
+        fabSuperLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent1 = new Intent();
+                returnIntent1.putExtra("result", SUPER_LIKE);
+                setResult(Activity.RESULT_OK,returnIntent1);
+                finish();
+            }
+        });
+        FloatingActionButton fabDontLike = (FloatingActionButton)findViewById(R.id.fabDontLikeProfile);
+        fabDontLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent2 = new Intent();
+                returnIntent2.putExtra("result", DONT_LIKE);
+                setResult(Activity.RESULT_OK,returnIntent2);
+                finish();
+            }
+        });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
