@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import fiuba.cardstack.SwipeDeck;
 import linkup.linkup.MainActivity;
 import linkup.linkup.ProfileActivity;
 import linkup.linkup.R;
@@ -28,12 +29,14 @@ import static android.media.CamcorderProfile.get;
 
 public class SwipeDeckAdapter extends BaseAdapter {
 
+    private final SwipeDeck cardStack;
     private List<User> data;
     private Context context;
 
-    public SwipeDeckAdapter(List<User> data, Context context) {
+    public SwipeDeckAdapter(List<User> data, Context context, SwipeDeck cardStack) {
         this.data = data;
         this.context = context;
+        this.cardStack = cardStack;
     }
 
     @Override
@@ -80,8 +83,24 @@ public class SwipeDeckAdapter extends BaseAdapter {
             FloatingActionButton fabLike = (FloatingActionButton) v.findViewById(R.id.fabLike);
             FloatingActionButton fabDontLike = (FloatingActionButton) v.findViewById(R.id.fabDontLike);
             FloatingActionButton fabSuperLike = (FloatingActionButton) v.findViewById(R.id.fabSuperLike);
-
-
+            fabLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardStack.swipeTopCardRight(180);
+                }
+            });
+            fabSuperLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardStack.swipeTopCardRight(180);
+                }
+            });
+            fabDontLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardStack.swipeTopCardLeft(180);
+                }
+            });
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override

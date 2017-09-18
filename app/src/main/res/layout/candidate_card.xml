@@ -80,21 +80,24 @@
 
             <ImageView
                 android:id="@+id/right_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="left"
+                android:layout_gravity="center_horizontal"
                 android:layout_margin="48dp"
-                android:src="@drawable/like"/>
+                android:tint="@color/primary"
+                android:src="@drawable/ic_thumb_up_white_24dp"/>
 
             <ImageView
                 android:id="@+id/left_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="right"
+                android:layout_gravity="center_horizontal"
                 android:layout_margin="48dp"
-                android:src="@drawable/nope"/>
+                android:scaleType="centerCrop"
+                android:tint="@color/primary"
+                android:src="@drawable/ic_thumb_down_white_24dp"/>
 
         </FrameLayout>
     </LinearLayout>

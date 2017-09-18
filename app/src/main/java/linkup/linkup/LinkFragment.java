@@ -89,7 +89,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
                  }
              }
          }
-        adapter = new SwipeDeckAdapter(users, getActivity());
+        adapter = new SwipeDeckAdapter(users, getActivity(),cardStack);
         cardStack.setAdapter(adapter);
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
