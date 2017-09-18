@@ -409,7 +409,7 @@ public void startLoginActivity(){
     }
 
     public void startMainActivity(){
-    Intent intent = new Intent(this, MainActivity.class);
+    Intent intent = new Intent(this, NewMatchActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(intent);
     finish();
