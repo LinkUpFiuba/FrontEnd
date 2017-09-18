@@ -1,6 +1,7 @@
 package linkup.linkup;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import linkup.linkup.Utils.GPS;
 import linkup.linkup.Utils.IGPSActivity;
+import linkup.linkup.adapter.SwipeDeckAdapter;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 import linkup.linkup.model.UserLocation;
@@ -45,8 +48,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     private DrawerLayout drawerLayout;
     private GPS gps;
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 1;
-
-
 
     public enum EnterAnimation {
         FROM_RIGHT,
@@ -77,12 +78,24 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
             View headerview = navigationView.getHeaderView(0);
             LinearLayout navigationDrawerHeaderContainer = (LinearLayout) headerview.findViewById(R.id.linearLayoutNavHeader);
+
+            User user = SingletonUser.getUser();
+            ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
+            Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
+
+            TextView menu_name_age = (TextView) headerview.findViewById(R.id.menu_name_age);
+            menu_name_age.setText(user.name + ", " + user.age);
+            TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
+            menu_work.setText(user.work);
+            TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
+            menu_education.setText(user.education);
+
             navigationDrawerHeaderContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -100,30 +113,31 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         }
 
 
-
     }
+
     private void selectItem(String menuItem) {
-        if(menuItem == getResources().getString(R.string.nav_item_link)) {
+        if (menuItem == getResources().getString(R.string.nav_item_link)) {
             changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
             toolbar.setTitle(getResources().getString(R.string.nav_item_link));
 
-        }else if (menuItem == getResources().getString(R.string.nav_item_chats)){
+        } else if (menuItem == getResources().getString(R.string.nav_item_chats)) {
             changeFragment(chatsFragment, EnterAnimation.FROM_RIGHT, CHATS_FRAGMENT);
             toolbar.setTitle(getResources().getString(R.string.nav_item_chats));
 
-        }else if (menuItem == getResources().getString(R.string.nav_item_edit_profile)) {
+        } else if (menuItem == getResources().getString(R.string.nav_item_edit_profile)) {
             startMyProfileActivity();
 
-        }else if (menuItem == getResources().getString(R.string.nav_item_edit_account)) {
+        } else if (menuItem == getResources().getString(R.string.nav_item_edit_account)) {
             starEditAccountSettingsActivity();
 
-        }else if (menuItem == getResources().getString(R.string.nav_item_edit_logout)) {
+        } else if (menuItem == getResources().getString(R.string.nav_item_edit_logout)) {
             logOut();
         }
 
         drawerLayout.closeDrawers(); // Cerrar drawer
 
     }
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -141,12 +155,12 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     }
 
 
-    public void changeFragment(Fragment fragment, EnterAnimation animation, String FragmentTag){
+    public void changeFragment(Fragment fragment, EnterAnimation animation, String FragmentTag) {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-        if (animation == EnterAnimation.FROM_LEFT){
+        if (animation == EnterAnimation.FROM_LEFT) {
             transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right);
-        }else {
+        } else {
             transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
         }
         transaction.replace(R.id.contentFragment, fragment, FragmentTag);
@@ -162,36 +176,19 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         }
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        User user= SingletonUser.getUser();
-        if(!gps.isRunning()) gps.resumeGPS();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-            View headerview = navigationView.getHeaderView(0);
-
-            ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
-            Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
-
-            TextView menu_name_age=(TextView) headerview.findViewById(R.id.menu_name_age);
-            menu_name_age.setText(user.name+", "+user.age);
-            TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
-            menu_work.setText(user.work);
-            TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
-            menu_education.setText(user.education);
-        }
-        linkFragment.showEmptyCardStack();
-        linkFragment.startAnimation();
-
+        if (!gps.isRunning()) gps.resumeGPS();
     }
+
     @Override
     public void onStop() {
         gps.stopGPS();
         super.onStop();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -200,7 +197,8 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
                 return true;
             case R.id.icon_game:
                 changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
-                toolbar.setTitle(getResources().getString(R.string.icon_game));                return true;
+                toolbar.setTitle(getResources().getString(R.string.icon_game));
+                return true;
             case R.id.icon_chats:
                 changeFragment(chatsFragment, EnterAnimation.FROM_RIGHT, CHATS_FRAGMENT);
                 toolbar.setTitle(getResources().getString(R.string.icon_chats));
@@ -208,11 +206,13 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    public void startMyProfileActivity(){
+
+    public void startMyProfileActivity() {
         Intent intent = new Intent(this, MyProfileActivity.class);
         startActivity(intent);
     }
-    public void starEditAccountSettingsActivity(){
+
+    public void starEditAccountSettingsActivity() {
         Intent intent = new Intent(this, AccountConfigProfileActivity.class);
         startActivity(intent);
     }
@@ -221,8 +221,8 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Fragment linkFragment = (Fragment)getSupportFragmentManager().findFragmentByTag("LINK_FRAGMENT");
-        Fragment chatsFragment = (Fragment)getSupportFragmentManager().findFragmentByTag("CHATS_FRAGMENT");
+        Fragment linkFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("LINK_FRAGMENT");
+        Fragment chatsFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("CHATS_FRAGMENT");
 
         if (linkFragment != null && linkFragment.isVisible()) {
             toolbar.setTitle(getResources().getString(R.string.icon_game));
@@ -231,27 +231,48 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             toolbar.setTitle(getResources().getString(R.string.icon_chats));
         }
     }
+
     @Override
     public void locationChanged(double longitude, double latitude) {
-        User user=SingletonUser.getUser();
-        UserLocation userLocation=user.location;
-        userLocation.longitude=longitude;
-        userLocation.latitude=latitude;
-        updateUser(user,false);
+        User user = SingletonUser.getUser();
+        UserLocation userLocation = user.location;
+        userLocation.longitude = longitude;
+        userLocation.latitude = latitude;
+        updateUser(user, false);
     }
 
     @Override
     public void displayGPSSettingsDialog() {
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_LOCATION_REQUEST_CODE);
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
 
     }
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-        if(requestCode==PERMISSION_LOCATION_REQUEST_CODE){
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_LOCATION_REQUEST_CODE) {
             this.gps.resumeGPS();
         }
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SwipeDeckAdapter.REQUEST_CODE_PROFILE) {
+            if (resultCode == Activity.RESULT_OK) {
+                LinkFragment linkFragment = (LinkFragment) getSupportFragmentManager().findFragmentByTag("LINK_FRAGMENT");
+                String result = data.getStringExtra("result");
+                Log.d(TAG, result);
+                if (result.equals(ProfileActivity.LIKE)) {
+                    Log.d(TAG, "entra");
+                    linkFragment.swipeRight();
+                } else if (result.equals(ProfileActivity.DONT_LIKE)) {
+                    linkFragment.swipeLeft();
+                } else if (result.equals(ProfileActivity.SUPER_LIKE)) {
+                    linkFragment.swipeSuperLike();
+                }
 
+            }
+        }
+
+    }
 }

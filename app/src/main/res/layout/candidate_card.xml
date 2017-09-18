@@ -1,94 +1,163 @@
 <android.support.v7.widget.CardView
     android:id="@+id/card_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    app:cardCornerRadius="@dimen/cardview_radius"
     android:gravity="center_horizontal"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardCornerRadius="@dimen/cardview_radius">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-            <FrameLayout
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/offer_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dip"
+                    android:layout_weight="1"
                     android:scaleType="centerCrop"
                     android:transitionName="simple_activity_transition"
                     tools:ignore="UnusedAttribute"
                     tools:src="@drawable/p2"/>
 
-                <ImageView
-                    android:id="@+id/right_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="left"
-                    android:layout_margin="48dp"
-                    android:src="@drawable/like"/>
-                <ImageView
-                    android:id="@+id/left_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="48dp"
-                    android:src="@drawable/nope"
-                    android:layout_gravity="right"/>
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/shadow"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:orientation="vertical">
 
-                    >
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/cardNameAndAge"
+                        style="@style/swipeTitle"
+                        android:layout_width="273dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin_small"
+                        android:gravity="start"
+                        android:text="Camila, 21"
+                        android:textColor="@color/primary_text"/>
+
+                    <TextView
+                        android:id="@+id/cardWork"
+                        style="@style/swipeTitle.sub"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/activity_horizontal_margin"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/cardNameAndAge"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="start"
-                            style="@style/swipeTitle"
-                            android:layout_marginBottom="@dimen/activity_vertical_margin_xsmall"
-                            android:shadowColor="#000000"
-                            android:shadowDx="1.5"
-                            android:shadowDy="1.3"
-                            android:shadowRadius="1.6"
-                            android:text=""/>
-                        <TextView
-                            android:id="@+id/cardWork"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/cardNameAndAge"
-                            android:gravity="start"
-                            style="@style/swipeTitle.sub"
-                            android:text=""/>
-                        <TextView
-                            android:id="@+id/cardEducation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/cardNameAndAge"
-                            android:gravity="start"
-                            style="@style/swipeTitle.sub"
-                            android:text=""/>
-                    </LinearLayout>
+                        android:layout_below="@id/cardNameAndAge"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin_xsmall"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:text="Maestra Jardinera"
+                        android:textColor="@color/primary_text"/>
 
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/cardEducation"
+                        style="@style/swipeTitle.sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/cardNameAndAge"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:text="UADE"
+                        android:textColor="@color/primary_text"/>
+                </LinearLayout>
+            </LinearLayout>
 
-            </FrameLayout>
+            <ImageView
+                android:id="@+id/right_image"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="48dp"
+                android:src="@drawable/ic_thumb_up_white_24dp"
+                android:tint="@color/primary"/>
+
+            <ImageView
+                android:id="@+id/left_image"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_thumb_down_white_24dp"
+                android:tint="@color/primary"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right|end"
+        android:layout_marginBottom="30dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabSuperLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/activity_vertical_margin_small"
+            android:layout_marginEnd="@dimen/activity_vertical_margin_small"
+            android:backgroundTint="@color/accent"
+            android:clickable="true"
+            android:transitionName="simple_activity_transition1"
+            android:src="@drawable/ic_favorite_white_24dp"
+            app:borderWidth="0dp"
+            app:fabSize="normal"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right|end"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabDontLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:transitionName="simple_activity_transition2"
+                android:backgroundTint="@color/empty_photo"
+                android:clickable="true"
+                android:src="@drawable/ic_thumb_down_white_24dp"
+                android:tint="@color/primary_text"
+                app:borderWidth="0dp"
+                app:fabSize="mini"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:backgroundTint="@color/empty_photo"
+                android:clickable="true"
+                android:transitionName="simple_activity_transition3"
+                android:src="@drawable/ic_thumb_up_white_24dp"
+                android:tint="@color/primary_text"
+                app:borderWidth="0dp"
+                app:fabSize="mini"/>
+        </LinearLayout>
+
     </LinearLayout>
 </android.support.v7.widget.CardView>

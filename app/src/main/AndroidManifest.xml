@@ -63,8 +63,11 @@
                   android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
         <activity android:name=".FillMissingInformationActivity" android:configChanges="orientation"
                   android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
+        <activity android:name=".ChatRoomActivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
 
-
+        <activity android:name=".NewMatchActivity" android:configChanges="orientation"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

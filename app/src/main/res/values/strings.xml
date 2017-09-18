@@ -88,5 +88,14 @@
     <string name="edit_profile_discartChanges">¿Está seguro que desea descartar los cambios?</string>
     <string name="edit_profile_discartChanges_negative">Cancelar</string>
     <string name="edit_profile_discartChanges_positive">Descartar</string>
+    <string name="enter_message">Ingrese el mensaje</string>
+
+    <string name="label_yesterday">Ayer</string>
+    <string name="load_more">Cargar más</string>
+    <string name="activity_new_match_title">¡Nuevo link!</string>
+    <string name="activity_new_match_subtitle">también quiere linkear contigo</string>
+    <string name="activity_new_match_btn_chat">Iniciar chat</string>
+<string name="activity_new_match_title_later">Chatear más tarde</string>
+
 
 </resources>
