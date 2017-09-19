@@ -1,26 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="linkup.linkup.MainActivity">
 
-            <android.support.v7.widget.Toolbar
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                   android:id="@+id/toolbar"
-                   android:layout_width="match_parent"
-                   android:layout_height="?attr/actionBarSize"
-                   android:background="@color/primary"
-                   app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                   app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <ImageButton
+                android:id="@+id/chats_icon_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:background="@null"
+                android:src="@drawable/ic_chat_bubble_white_24dp"
+                />
+
+            <ImageButton
+                android:id="@+id/game_icon_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_gravity="right"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:background="@null"
+                android:src="@drawable/ic_content_copy_white_24dp"
+                />
+        </android.support.v7.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/contentFragment"
@@ -29,6 +55,7 @@
 
         </FrameLayout>
     </LinearLayout>
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -36,7 +63,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@color/secondary_text"
         app:itemBackground="?attr/selectableItemBackground"
-        app:menu="@menu/nav_menu" />
+        app:itemIconTint="@color/secondary_text"
+        app:menu="@menu/nav_menu"/>
 </android.support.v4.widget.DrawerLayout>

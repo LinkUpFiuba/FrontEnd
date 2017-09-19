@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     private DrawerLayout drawerLayout;
     private GPS gps;
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 1;
+    private ImageButton icChatsToolbar;
 
     public enum EnterAnimation {
         FROM_RIGHT,
@@ -102,6 +104,26 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
                     startMyProfileActivity();
                 }
             });
+
+            ImageButton icGameToolbar = (ImageButton) findViewById(R.id.game_icon_toolbar);
+            icGameToolbar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
+                    toolbar.setTitle(getResources().getString(R.string.icon_game));
+                }
+            });
+
+            icChatsToolbar = (ImageButton) findViewById(R.id.chats_icon_toolbar);
+            icChatsToolbar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_white_24dp);
+                    changeFragment(chatsFragment, EnterAnimation.FROM_RIGHT, CHATS_FRAGMENT);
+                    toolbar.setTitle(getResources().getString(R.string.icon_chats));
+                }
+            });
+            iconChatsToolbarSetAtention();
         }
 
         if (savedInstanceState == null) {
@@ -113,6 +135,10 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         }
 
 
+    }
+
+    public void iconChatsToolbarSetAtention() {
+        //icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_black_24dp);
     }
 
     private void selectItem(String menuItem) {
@@ -171,7 +197,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            getMenuInflater().inflate(R.menu.menu_main, menu);
+            //getMenuInflater().inflate(R.menu.menu_main, menu);
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -195,14 +221,14 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
-            case R.id.icon_game:
+            /*case R.id.icon_game:
                 changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
                 toolbar.setTitle(getResources().getString(R.string.icon_game));
                 return true;
             case R.id.icon_chats:
                 changeFragment(chatsFragment, EnterAnimation.FROM_RIGHT, CHATS_FRAGMENT);
                 toolbar.setTitle(getResources().getString(R.string.icon_chats));
-                return true;
+                return true;*/
         }
         return super.onOptionsItemSelected(item);
     }

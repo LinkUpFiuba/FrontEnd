@@ -85,6 +85,7 @@ public class ChatsFragment extends Fragment {
 
             }
         }));
+
     }
 
     private void updateRowLastMessage(String chatRoomId, String lastMessage) {
