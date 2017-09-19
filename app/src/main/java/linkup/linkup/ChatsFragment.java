@@ -56,6 +56,7 @@ public class ChatsFragment extends Fragment {
     }
     private void init(View view) {
 
+
         context = getActivity().getApplicationContext();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.conversations_recycler_view);

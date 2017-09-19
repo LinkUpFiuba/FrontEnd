@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -50,7 +52,7 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ChatRoom chatRoom = chatRoomArrayList.get(position);
-        //Picasso.with(mContext).load(chatRoom.getUser().getPhotoURL()).fit().centerCrop().into(holder.profileImageView);
+        Picasso.with(mContext).load(chatRoom.getUser().getPhotoURL()).fit().centerCrop().into(holder.profileImageView);
         holder.name.setText(chatRoom.getUser().getName());
         holder.message.setText(chatRoom.getLastMessage());
 

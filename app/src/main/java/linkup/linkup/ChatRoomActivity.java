@@ -3,12 +3,15 @@ package linkup.linkup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,14 +22,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
 import linkup.linkup.model.Message;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
+
+import static linkup.linkup.adapter.SwipeDeckAdapter.REQUEST_CODE_PROFILE;
 
 
 public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessages {
@@ -58,6 +65,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         TextView titleChat = (TextView) findViewById(R.id.title_chat);
         recyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
 
+        final CircleImageView profileImageView = (CircleImageView) findViewById(R.id.profile_img_toolbar);
+
         messageArrayList = new ArrayList<>();
 
         Intent intent = getIntent();
@@ -65,13 +74,30 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         otherUser = intent.getParcelableExtra("user");
         titleChat.setText(otherUser.getName());
 
+        Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);
+
+        profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ChatRoomActivity.this, ViewProfileActivity.class);
+                i.putExtra("user", otherUser);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(ChatRoomActivity.this,
+                                profileImageView,
+                                ViewCompat.getTransitionName(profileImageView));
+
+                startActivity(i,options.toBundle());
+            }
+        });
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         selfUserId = SingletonUser.getUser().getSerializableUser().getId();
-        Log.d("ChatRoom",selfUserId + " " + otherUser.getFbId());
+        //Log.d("ChatRoom",selfUserId + " " + otherUser.getFbId());
 
         mAdapter = new ChatRoomThreadAdapter(this,messageArrayList, selfUserId);
 
@@ -233,6 +259,16 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     @Override
     public void onLoadMore() {
         loadMoreHistory();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 /*
