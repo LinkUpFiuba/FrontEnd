@@ -2,8 +2,12 @@ package linkup.linkup;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -41,7 +45,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     private FirebaseAuth mAuth;
 
     private Toolbar toolbar;
-
+    private AlertDialog gpsAlertDialog;
     private LinkFragment linkFragment;
     private ChatsFragment chatsFragment;
 
@@ -246,6 +250,30 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
 
+    }
+
+    @Override
+    public void displayGPSEnabledDialog() {
+        if(gpsAlertDialog!=null&&gpsAlertDialog.isShowing()){
+            return;
+        }
+        AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
+        final Context context=getBaseContext();
+        builder.setMessage("Para poder usar esta aplicacion debe tener habilitada la localización.");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                context.startActivity(myIntent);
+                //get gps
+            }
+        });
+        gpsAlertDialog=builder.create();
+        gpsAlertDialog.show();
+        if(this.linkFragment!=null &&this.linkFragment.isTaskRunning()) {
+            this.linkFragment.stopTask();
+        }
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

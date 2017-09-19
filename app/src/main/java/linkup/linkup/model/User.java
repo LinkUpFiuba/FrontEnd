@@ -26,6 +26,7 @@ public class User {
     public String birthday = "";
     public String age = "";
     public String gender = "";
+    public String tokenFCM="";
     public Range range = new Range(18);
     public int maxDistance = MAX_DISTANCE_ALLOWED;
     public List<Like> likesList = new ArrayList<>();
@@ -110,7 +111,7 @@ public class User {
         result.put("getNotifications",getNotifications);
         result.put("maxDistance",maxDistance);
         result.put("location", location);
-
+        result.put("tokenFCM",tokenFCM);
         return result;
     }
     @Exclude

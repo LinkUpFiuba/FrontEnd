@@ -2,12 +2,16 @@ package linkup.linkup.Utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 import linkup.linkup.model.UserLocation;
@@ -35,7 +39,7 @@ public class GPS {
         // GPS Position
         mlocManager = (LocationManager) ((Activity) this.main).getSystemService(Context.LOCATION_SERVICE);
         mlocListener = new MyLocationListener();
-        if(checkForPermission()) {
+        if(checkForPermission()&&checkIfLocationIsEnabled()) {
             Location gpsProviderLocation = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             Location networkProviderLocation=mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if(isBetterLocation(networkProviderLocation,gpsProviderLocation)){
@@ -62,6 +66,25 @@ public class GPS {
         return currentLocation;
     }
 
+    private boolean checkIfLocationIsEnabled(){
+
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = mlocManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+        if(!gps_enabled || !network_enabled) {
+            // notify user
+            this.main.displayGPSEnabledDialog();
+            return false;
+        }
+        return true;
+        }
     private boolean checkForPermission(){
         if (ActivityCompat.checkSelfPermission((Context) this.main, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             this.main.displayGPSSettingsDialog();
@@ -69,7 +92,7 @@ public class GPS {
         }return true;
     }
     public void resumeGPS() {
-        if(!checkForPermission()){
+        if(!checkForPermission()&&checkIfLocationIsEnabled()){
             return;
         }
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_INTERVAL_MILISECONDS, MIN_DISTANCE_METERS, mlocListener);
@@ -96,7 +119,11 @@ public class GPS {
 
         @Override
         public void onProviderDisabled(String provider) {
-            GPS.this.main.displayGPSSettingsDialog();
+            if(!GPS.this.checkForPermission()) {
+                GPS.this.main.displayGPSSettingsDialog();
+            }else {
+                GPS.this.main.displayGPSEnabledDialog();
+            }
         }
 
         @Override

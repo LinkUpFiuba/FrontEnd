@@ -1,5 +1,6 @@
 package linkup.linkup;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import bolts.Task;
 import connections.GetUsersAsyncTask;
 import connections.ViewWithCards;
 import fiuba.cardstack.SwipeDeck;
@@ -24,7 +26,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
     RippleAnimation rippleBackground1;
     private SwipeDeck cardStack;
     private SwipeDeckAdapter adapter;
-
+    private GetUsersAsyncTask task;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         }
         Log.d(TAG, "token" + SingletonUser.getToken());
 
-        GetUsersAsyncTask task = new GetUsersAsyncTask(this);
+        task = new GetUsersAsyncTask(this);
         task.execute();
     }
 
@@ -81,15 +83,22 @@ public class LinkFragment extends Fragment implements ViewWithCards {
             rippleBackground1.stopRippleAnimation();
             rippleBackground1.setVisibility(View.GONE);
         }
-
     }
 
+    public void stopTask(){
+        task.cancel(true);
+    }
+    public boolean isTaskRunning(){
+        return (task.getStatus()== AsyncTask.Status.RUNNING);
+
+    }
     public void showEmptyCardStack() {
         showCards(null, false);
     }
 
     @Override
     public void showCards(List<User> users, boolean showToasts) {
+
         if (showToasts) {
             if (users == null) {
                 Toast.makeText(getActivity(), "Hubo un error en la conexion, vuelve a linkear mas tarde.",

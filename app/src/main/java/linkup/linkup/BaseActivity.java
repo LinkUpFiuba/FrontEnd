@@ -41,6 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
@@ -186,6 +187,7 @@ public class BaseActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     user =(User)dataSnapshot.getValue(User.class);
                     Log.d(TAG, "Usuario existente");
+                    user.tokenFCM= FirebaseInstanceId.getInstance().getToken();
 
                     hideProgressDialog();
                     if(!(user.gender.equalsIgnoreCase("male") || user.gender.equalsIgnoreCase("female"))){
@@ -200,9 +202,9 @@ public class BaseActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "Usuario no existente");
                     user = new User(firebaseUser);
+                    user.tokenFCM= FirebaseInstanceId.getInstance().getToken();
                     getFbInformationForUser(user);
                 }
-
             }
 
             @Override

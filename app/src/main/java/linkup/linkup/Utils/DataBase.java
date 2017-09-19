@@ -26,13 +26,13 @@ public class DataBase {
 
     private static final String TAG = "Database";
 
-    public static User getUser(String Uid){
+    public static User getUser(String Uid) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         final User[] user = new User[1];
         ref.child("users").child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                user[0] =(User)dataSnapshot.getValue(User.class);
+                user[0] = (User) dataSnapshot.getValue(User.class);
 
             }
 
@@ -43,6 +43,7 @@ public class DataBase {
         });
         return user[0];
     }
+
     public static void saveLink(final String Uid) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         final User myUser = SingletonUser.getUser();
@@ -68,7 +69,8 @@ public class DataBase {
             }
         });
     }
-    public static void saveUnlink(final String Uid){
+
+    public static void saveUnlink(final String Uid) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         final User myUser = SingletonUser.getUser();
         databaseReference.child("unlinks").child(myUser.Uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,4 +96,12 @@ public class DataBase {
         });
     }
 
+    public static void updateUser(final User user) {
+
+        Map<String, Object> map = user.toMap();
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+
+        ref.child("users").child(user.Uid).updateChildren(map);
+    }
 }
