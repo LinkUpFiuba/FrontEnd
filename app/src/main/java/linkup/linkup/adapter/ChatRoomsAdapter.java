@@ -19,11 +19,13 @@ import linkup.linkup.model.ChatRoom;
 
 
 public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.ViewHolder> {
+    private static final int UNREAD =100;
+    private static final int READ = 200;
     private Context mContext;
     private ArrayList<ChatRoom> chatRoomArrayList;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, message, timestamp, count;
+        public TextView name, message, count;
         public CircleImageView profileImageView;
 
         public ViewHolder(View view) {
@@ -43,8 +45,14 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.chat_rooms_list_row, parent, false);
+        View itemView;
+        if (viewType == UNREAD) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.chat_rooms_list_row_new, parent, false);
+        } else {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.chat_rooms_list_row, parent, false);
+        }
 
         return new ViewHolder(itemView);
     }
@@ -52,7 +60,7 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ChatRoom chatRoom = chatRoomArrayList.get(position);
-        //Picasso.with(mContext).load(chatRoom.getUser().getPhotoURL()).fit().centerCrop().into(holder.profileImageView);
+        Picasso.with(mContext).load(chatRoom.getUser().getPhotoURL()).fit().centerCrop().into(holder.profileImageView);
         holder.name.setText(chatRoom.getUser().getName());
         holder.message.setText(chatRoom.getLastMessage());
 
@@ -119,6 +127,17 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+            ChatRoom chatRoom = chatRoomArrayList.get(position);
+            if (chatRoom.isRead() == false) {
+                return UNREAD;
+            }else {
+                return READ;
+            }
+
     }
 
 }
