@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Message implements Serializable {
     String message, userId;
-    boolean read, sent;
+    boolean read;
 
     public boolean isRead() {
         return read;
@@ -14,24 +14,14 @@ public class Message implements Serializable {
         this.read = read;
     }
 
-    public boolean isSent() {
-        return sent;
-    }
-
-    public void setSent(boolean sent) {
-        this.sent = sent;
-    }
-
     public Message() {
         this.read = false;
-        this.sent = false;
     }
 
-    public Message(String message, String userId, boolean read, boolean sent) {
+    public Message(String message, String userId, boolean read) {
         this.message = message;
         this.userId = userId;
         this.read = read;
-        this.sent = sent;
     }
 
     public String getMessage() {

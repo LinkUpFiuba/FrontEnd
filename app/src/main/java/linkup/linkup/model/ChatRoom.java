@@ -5,18 +5,17 @@ import java.io.Serializable;
 import static android.R.attr.name;
 
 public class ChatRoom implements Serializable {
-    String id, lastMessage, timestamp;
+    String id, lastMessage;
     SerializableUser user;
     int unreadCount;
 
     public ChatRoom() {
     }
 
-    public ChatRoom(String id, String lastMessage, String timestamp, int unreadCount, SerializableUser user) {
+    public ChatRoom(String id, String lastMessage, int unreadCount, SerializableUser user) {
         this.id = id;
         this.user = user;
         this.lastMessage = lastMessage;
-        this.timestamp = timestamp;
         this.unreadCount = unreadCount;
     }
 
@@ -50,18 +49,5 @@ public class ChatRoom implements Serializable {
 
     public void setUnreadCount(int unreadCount) {
         this.unreadCount = unreadCount;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public Long getTimestampLong() {
-        return Long.parseLong(timestamp);
-    }
-
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
     }
 }

@@ -51,8 +51,6 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReference1 = database.getReference();
 
-
-
         setContentView(R.layout.activity_chat_room);
 
         inputMessage = (EditText) findViewById(R.id.message);
@@ -83,6 +81,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(mAdapter);
+
         oldestKey = "";
         ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
             @Override
@@ -92,6 +91,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
 
                 if(count > 0 && messageArrayList.size() == 0 ){
                     fetchHistory();
+                }else{
+                    mAdapter.setLoadEarlierMsgs(false);
                 }
 
             }
@@ -129,6 +130,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                 addUIMessage(map);
                 if( messageArrayList.size() == count ){
                     mAdapter.setLoadEarlierMsgs(false);
+                }else {
+                    mAdapter.setLoadEarlierMsgs(true);
                 }
             }
 
@@ -205,6 +208,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                         }
                         if( messageArrayList.size() == count ){
                             mAdapter.setLoadEarlierMsgs(false);
+                        }else {
+                            mAdapter.setLoadEarlierMsgs(true);
                         }
                     }
                     index = index + 1;

@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,7 +21,7 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
     private ArrayList<ChatRoom> chatRoomArrayList;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, message, timestamp, count;
+        public TextView name, message, count;
         public CircleImageView profileImageView;
 
         public ViewHolder(View view) {
