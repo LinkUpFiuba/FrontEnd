@@ -75,7 +75,7 @@ public class ChatsFragment extends Fragment {
             public void onClick(View view, int position) {
                 ChatRoom chatRoom = chatRoomArrayList.get(position);
                 Intent intent = new Intent(context, ChatRoomActivity.class);
-                intent.putExtra("chat_room_id", chatRoom.getId());
+                intent.putExtra("chatRead", chatRoom.isRead());
                 intent.putExtra("user", chatRoom.getUser());
                 startActivity(intent);
             }
@@ -92,6 +92,19 @@ public class ChatsFragment extends Fragment {
             if (cr.getId().equals(chatRoomId)) {
                 int index = chatRoomArrayList.indexOf(cr);
                 cr.setLastMessage(lastMessage);
+                chatRoomArrayList.remove(index);
+                chatRoomArrayList.add(index, cr);
+                break;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void updateRowUnreadChatRoom(String chatRoomId, boolean read) {
+        for (ChatRoom cr : chatRoomArrayList) {
+            if (cr.getId().equals(chatRoomId)) {
+                int index = chatRoomArrayList.indexOf(cr);
+                cr.setRead(read);
                 chatRoomArrayList.remove(index);
                 chatRoomArrayList.add(index, cr);
                 break;
@@ -163,6 +176,7 @@ public class ChatsFragment extends Fragment {
                     fetchLastMessageData(cr);
 
                     fetchUnreadCount(cr);
+                    fetchChatRoomRead(cr);
                 }
             }
 
@@ -179,7 +193,7 @@ public class ChatsFragment extends Fragment {
 
         Log.d(TAG, SingletonUser.getUser().getSerializableUser().getId() + " " + cr.getUser().getId());
 
-        ref.child("messages").child(SingletonUser.getUser().getSerializableUser().getId()).child(cr.getUser().getId()).orderByKey().limitToLast(1).addChildEventListener(new ChildEventListener() {
+        ref.child("messages").child(SingletonUser.getUser().getSerializableUser().getId()).child(cr.getUser().getId()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String key = dataSnapshot.getKey();
@@ -202,6 +216,24 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void fetchChatRoomRead(final ChatRoom cr) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        ref.child("matches").child(SingletonUser.getUser().getSerializableUser().getId()).child(cr.getUser().getId()).child("read").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean data = (boolean) dataSnapshot.getValue();
+                Log.d(TAG,Boolean.toString(data));
+                updateRowUnreadChatRoom(cr.getId(),data);
             }
 
             @Override

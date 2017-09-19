@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
+import linkup.linkup.model.ChatRoom;
 import linkup.linkup.model.Message;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
@@ -50,6 +51,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     private String oldestKey = "";
 
     private long count = 0;
+    private boolean chatRoomIsRead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         messageArrayList = new ArrayList<>();
 
         Intent intent = getIntent();
-        //String chatRoomId = intent.getStringExtra("chat_room_id");
+        chatRoomIsRead = intent.getBooleanExtra("chatRead",false);
+
         otherUser = intent.getParcelableExtra("user");
         titleChat.setText(otherUser.getName());
 
@@ -140,6 +143,12 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(key).child("read").setValue(true);
     }
 
+    private void postReadChatRoom(){
+        if(!chatRoomIsRead){
+            databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("read").setValue(true);
+        }
+    }
+
     private void fetchHistory() {
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).orderByKey().limitToLast(PAGINATION).addChildEventListener(new ChildEventListener() {
             int index = 0;
@@ -147,6 +156,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 Message map = dataSnapshot.getValue(Message.class);
                 String key = dataSnapshot.getKey();
+                postReadChatRoom();
                 postReadMessage(key);
 
                 if(index == 0){

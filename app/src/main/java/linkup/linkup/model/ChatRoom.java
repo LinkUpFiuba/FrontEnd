@@ -2,11 +2,10 @@ package linkup.linkup.model;
 
 import java.io.Serializable;
 
-import static android.R.attr.name;
-
 public class ChatRoom implements Serializable {
     String id, lastMessage;
     SerializableUser user;
+    boolean read = false;
     int unreadCount;
 
     public ChatRoom() {
@@ -17,7 +16,17 @@ public class ChatRoom implements Serializable {
         this.user = user;
         this.lastMessage = lastMessage;
         this.unreadCount = unreadCount;
+        this.read = false;
     }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
 
     public String getId() {
         return id;
