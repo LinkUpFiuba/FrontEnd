@@ -41,7 +41,10 @@ public class User {
     public Interests interests = new Interests();
     public List<Photo> photoList = new ArrayList<>();
     public UserLocation location =new UserLocation();
-
+    @Exclude
+    public Float distance;
+    @Exclude
+    public List<Like> commonLikes;
     public User(){
 
     }
@@ -60,6 +63,11 @@ public class User {
         interests=new Interests();
         aboutMe="";
     }
+    @Exclude
+    public Link link(User linkedUser){
+        return new Link(this,linkedUser);
+    }
+
     @Exclude
     public String getLikesString(){
         String likesString="";
@@ -121,5 +129,10 @@ public class User {
         }else{
             interests.setSearchesMen(true);
         }
+    }
+    @Exclude
+
+    public Unlink unlink(User user) {
+        return new Unlink(this,user);
     }
 }

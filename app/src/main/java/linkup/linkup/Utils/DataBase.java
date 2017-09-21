@@ -1,8 +1,12 @@
 package linkup.linkup.Utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,8 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 import linkup.linkup.model.Interests;
+import linkup.linkup.model.Link;
 import linkup.linkup.model.Photo;
 import linkup.linkup.model.SingletonUser;
+import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
 
 
@@ -44,20 +50,18 @@ public class DataBase {
         return user[0];
     }
 
-    public static void saveLink(final String Uid) {
+    public static void saveLink(final Link link) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        final User myUser = SingletonUser.getUser();
-        databaseReference.child("links").child(myUser.Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("links").child(link.LinkingUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user;
                 if (dataSnapshot.exists()) {
 
                     Map<String, Object> update = new HashMap<String, Object>();
-                    update.put(Uid, true);
+                    update.put(link.LinkedUid, true);
                     dataSnapshot.getRef().updateChildren(update);
                 } else {
-                    dataSnapshot.getRef().child(Uid).setValue(true);
+                    dataSnapshot.getRef().child(link.LinkedUid).setValue(true);
 
                 }
 
@@ -68,23 +72,41 @@ public class DataBase {
 
             }
         });
+        DatabaseReference possibleMatchesReference= databaseReference.child("possibleMatches");
+        DatabaseReference  linkReference=possibleMatchesReference.push();
+        linkReference.setValue(link).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.d(TAG,"Link completo");
+                }else{
+                }
+            }
+        });
+
     }
 
-    public static void saveUnlink(final String Uid) {
+    public static void saveUnlink(final Unlink unlink) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        final User myUser = SingletonUser.getUser();
-        databaseReference.child("unlinks").child(myUser.Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("unlinks").child(unlink.unlinkingUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user;
                 if (dataSnapshot.exists()) {
 
                     Map<String, Object> update = new HashMap<String, Object>();
-                    update.put(Uid, true);
+                    update.put(unlink.unlinkedUid, true);
                     dataSnapshot.getRef().updateChildren(update);
                 } else {
-                    dataSnapshot.getRef().child(Uid).setValue(true);
-
+                    dataSnapshot.getRef().child(unlink.unlinkedUid).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Log.d(TAG,"Unlink completo");
+                            }else{
+                            }
+                        }
+                    });
                 }
 
             }

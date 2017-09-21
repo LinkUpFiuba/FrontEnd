@@ -11,13 +11,13 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import bolts.Task;
 import connections.GetUsersAsyncTask;
 import connections.ViewWithCards;
 import fiuba.cardstack.SwipeDeck;
 import linkup.linkup.Utils.DataBase;
 import linkup.linkup.adapter.SwipeDeckAdapter;
 import linkup.linkup.model.SingletonUser;
+import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
 
 
@@ -33,12 +33,10 @@ public class LinkFragment extends Fragment implements ViewWithCards {
     }
 
     public void swipeRight() {
-        like();
         this.cardStack.swipeTopCardRight(180);
     }
 
     public void swipeLeft() {
-        dontLike();
         this.cardStack.swipeTopCardLeft(180);
     }
 
@@ -115,18 +113,16 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
-                dontLike();
+                dontLike(adapter,position);
                 Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
-                User user = (User) adapter.getItem(position);
-                DataBase.saveUnlink(user.Uid);
+
             }
 
             @Override
             public void cardSwipedRight(int position) {
-                like();
+                like(adapter,position);
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
-                User user = (User) adapter.getItem(position);
-                DataBase.saveLink(user.Uid);
+
             }
 
             @Override
@@ -150,9 +146,12 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         stopAnimation();
     }
 
-    public void like() {
+    public void like(SwipeDeckAdapter adapter, int position) {
         //TODO: postear el like
         Log.i("MainActivity", "Like");
+        User user = (User) adapter.getItem(position);
+        User myUser= SingletonUser.getUser();
+        DataBase.saveLink(myUser.link(user));
     }
 
     public void superLike() {
@@ -161,9 +160,13 @@ public class LinkFragment extends Fragment implements ViewWithCards {
 
     }
 
-    public void dontLike() {
+    public void dontLike(SwipeDeckAdapter adapter, int position) {
         //TODO: postear el nolike
         Log.i("MainActivity", "DontLike");
+        User user = (User) adapter.getItem(position);
+        User myUser= SingletonUser.getUser();
+        Unlink unlink= myUser.unlink(user);
+        DataBase.saveUnlink(unlink);
 
     }
 }

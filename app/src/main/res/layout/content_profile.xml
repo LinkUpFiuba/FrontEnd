@@ -60,6 +60,27 @@
                         android:gravity="start|center_vertical"
                         android:text="Universidad de Buenos Aires"/>
                 </LinearLayout>
+            <LinearLayout
+                android:id="@+id/distance_Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/activity_vertical_margin_large"
+                    android:tint="@color/secondary_text"
+                    android:src="@drawable/ic_map_marker_black_24dp"/>
+                <TextView
+                    android:id="@+id/distance_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/profileTitle.sub"
+                    android:gravity="start|center_vertical"
+                    android:text="A 10 km de distancia"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/aboutMe_Layout"
@@ -83,7 +104,28 @@
                     android:gravity="start|center_vertical"
                     android:text="American actress, model and singer. Most commonly famous as Black Widow."/>
             </LinearLayout>
-
+            <LinearLayout
+                android:id="@+id/commonLikes_Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/activity_vertical_margin_large"
+                    android:tint="@color/secondary_text"
+                    android:layout_gravity="top"
+                    android:src="@drawable/ic_thumbs_up_down_white_24dp"/>
+                <TextView
+                    android:id="@+id/commonLikes_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/profileTitle.sub"
+                    android:gravity="start|center_vertical"
+                    android:text="Tenis, UBA, FIUBA, Modelaje, dientes, pelo, dr pelo"/>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/likes_Layout"
                 android:layout_width="match_parent"
