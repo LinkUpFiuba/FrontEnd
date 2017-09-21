@@ -115,7 +115,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="48dp"
                 android:src="@drawable/ic_thumb_up_white_24dp"
-                android:tint="@color/primary"/>
+                android:tint="@color/like"/>
 
             <ImageView
                 android:id="@+id/left_image"
