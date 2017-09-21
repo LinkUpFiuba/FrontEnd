@@ -87,7 +87,7 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
             user.gender= getString("gender",jObj);
 
             user.work = getString("work",jObj);
-            user.distance=getFloat("distance",jObj);
+            user.distance=Math.round( getFloat("distance",jObj));
             if(jObj.has("commonInterests")){
                 JSONArray jArrayLikesList = jObj.getJSONArray("commonInterests");
                 user.commonLikes = Like.likesList(jArrayLikesList);

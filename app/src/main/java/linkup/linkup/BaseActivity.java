@@ -395,6 +395,20 @@ public void startLoginActivity(){
             LinearLayout likes_Layout=(LinearLayout) findViewById(R.id.likes_Layout);
             likes_Layout.setVisibility(View.GONE);
         }
+        if(!user.getCommonLikes().trim().isEmpty()){
+            TextView commonLTextView = (TextView) findViewById(R.id.commonLikes_text);
+            commonLTextView.setText(user.getCommonLikes());
+        }else{
+            LinearLayout commonLikesLayout=(LinearLayout) findViewById(R.id.commonLikes_Layout);
+            commonLikesLayout.setVisibility(View.GONE);
+        }
+        if(user.getDistance()!="-1"&&!user.getDistance().isEmpty()){
+            TextView distanceTextView = (TextView) findViewById(R.id.distance_text);
+            distanceTextView.setText(user.getDistanceString());
+        }else{
+            LinearLayout distance_Layout=(LinearLayout) findViewById(R.id.distance_Layout);
+            distance_Layout.setVisibility(View.GONE);
+        }
         if(!user.getAboutMe().trim().isEmpty()) {
             TextView about_me_text = (TextView) findViewById(R.id.about_me_text);
             about_me_text.setText(user.getAboutMe());

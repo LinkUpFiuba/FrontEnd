@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class User {
     private static final int MAX_DISTANCE_ALLOWED = 100;
+    public static final int DISTANCE_OWN_USER = -1;
     public String Uid = "";
     public String photoUrl = "";
     public String name = "" ;
@@ -42,15 +43,15 @@ public class User {
     public List<Photo> photoList = new ArrayList<>();
     public UserLocation location =new UserLocation();
     @Exclude
-    public Float distance;
+    public int distance= DISTANCE_OWN_USER;
     @Exclude
-    public List<Like> commonLikes;
+    public List<Like> commonLikes=new ArrayList<>();
     public User(){
 
     }
     @Exclude
     public SerializableUser getSerializableUser(){
-        return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education,getLikesString(),this.photoUrl);
+        return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education, getNotCommonLikesString(),this.photoUrl,getCommonLikesString(),String.valueOf( this.distance));
     }
     public User(FirebaseUser firebaseUser){
 
@@ -69,12 +70,24 @@ public class User {
     }
 
     @Exclude
-    public String getLikesString(){
+    public String getNotCommonLikesString(){
         String likesString="";
         if(likesList == null) return "";
-        for (Like like: likesList ){
-            likesString+=(like.name+", ");
+        likesList.removeAll(commonLikes);
+        for (int i=0; i<likesList.size()-2;i++ ){
+                likesString += (likesList.get(i).name + ", ");
         }
+        likesString += (likesList.get(likesList.size()-1).name + ".");
+        return likesString;
+    }
+    @Exclude
+    public String getCommonLikesString(){
+        String likesString="";
+        if(commonLikes == null||commonLikes.isEmpty()) return "";
+        for (int i=0; i<commonLikes.size()-2;i++ ){
+            likesString += (commonLikes.get(i).name + ", ");
+        }
+        likesString += (commonLikes.get(commonLikes.size()-1).name + ".");
         return likesString;
     }
     @Exclude

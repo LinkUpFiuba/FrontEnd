@@ -5,18 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import linkup.linkup.model.SerializableUser;
-import linkup.linkup.model.User;
 
 public class ProfileActivity extends BaseActivity {
 
@@ -45,7 +42,7 @@ public class ProfileActivity extends BaseActivity {
         ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
         Picasso.with(this).load(user.getPhotoURL()).fit().centerCrop().into(imageView1);
 
-        setUserProfile(user,user.getInterests());
+        setUserProfile(user,user.getLikes());
 
         FloatingActionButton fabLike = (FloatingActionButton)findViewById(R.id.fabLikeProfile);
         fabLike.setOnClickListener(new View.OnClickListener() {

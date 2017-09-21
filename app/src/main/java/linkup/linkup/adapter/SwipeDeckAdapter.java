@@ -78,6 +78,13 @@ public class SwipeDeckAdapter extends BaseAdapter {
             TextView textView3 = (TextView) v.findViewById(R.id.cardEducation);
             textView3.setText(currrentUser.education);
 
+            TextView cardDistance = (TextView) v.findViewById(R.id.cardDistance);
+            cardDistance.setText(String.valueOf( Math.round( currrentUser.distance))+" km");
+
+            TextView cardcommonLikes = (TextView) v.findViewById(R.id.cardcommonLikes);
+            cardcommonLikes.setText(String.valueOf(currrentUser.commonLikes.size()));
+
+
             FloatingActionButton fabLike = (FloatingActionButton) v.findViewById(R.id.fabLike);
             FloatingActionButton fabDontLike = (FloatingActionButton) v.findViewById(R.id.fabDontLike);
             FloatingActionButton fabSuperLike = (FloatingActionButton) v.findViewById(R.id.fabSuperLike);

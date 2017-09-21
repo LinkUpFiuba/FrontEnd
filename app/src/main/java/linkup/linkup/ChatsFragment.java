@@ -96,7 +96,7 @@ public class ChatsFragment extends Fragment {
      */
     private void fetchChatRooms() {
 
-        SerializableUser user = new SerializableUser("1","1","German","","", "", "", "", "", "");
+        SerializableUser user = new SerializableUser("1","1","German","","", "", "", "", "", "","","");
 
         ChatRoom cr = new ChatRoom();
         cr.setId("1");

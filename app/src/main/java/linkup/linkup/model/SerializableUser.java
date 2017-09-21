@@ -15,9 +15,10 @@ import java.io.Serializable;
  */
 
 public class SerializableUser implements Parcelable {
-    String id, fbId, name,aboutMe, birthday, genre,work, formation, interests, photoURL;
 
-    public SerializableUser(String id, String fbId, String name,String aboutMe, String birthday, String genre, String work, String formation, String interests, String photoURL) {
+    String id, fbId, name,aboutMe, birthday, genre,work, formation, likes ,photoURL,commonLikes,distance;
+
+    public SerializableUser(String id, String fbId, String name,String aboutMe, String birthday, String genre, String work, String formation, String likes, String photoURL,String commonLikes,String distance) {
         this.id = id;
         this.fbId = fbId;
         this.name = name;
@@ -26,8 +27,10 @@ public class SerializableUser implements Parcelable {
         this.genre = genre;
         this.work = work;
         this.formation = formation;
-        this.interests = interests;
+        this.likes = likes;
         this.photoURL = photoURL;
+        this.commonLikes=commonLikes;
+        this.distance=distance;
     }
 
     public String getId() {
@@ -35,6 +38,8 @@ public class SerializableUser implements Parcelable {
         return id;
     }
 
+    public String getDistance(){return distance;}
+    public String getDistanceString(){return "A "+distance+" km de distancia";}
     public String getAboutMe() {
         return aboutMe;
     }
@@ -104,12 +109,16 @@ public class SerializableUser implements Parcelable {
         this.formation = formation;
     }
 
-    public String getInterests() {
-        return interests;
+    public String getLikes() {
+        return likes;
     }
 
-    public void setInterests(String interests) {
-        this.interests = interests;
+    public String getCommonLikes() {
+        return commonLikes;
+    }
+
+    public void setLikes(String interests) {
+        this.likes = interests;
     }
 
     public String getPhotoURL() {
@@ -137,8 +146,10 @@ public class SerializableUser implements Parcelable {
         genre = in.readString();
         work = in.readString();
         formation = in.readString();
-        interests = in.readString();
+        likes = in.readString();
         photoURL = in.readString();
+        commonLikes =in.readString();
+        distance=in.readString();
     }
 
     public static final Creator<SerializableUser> CREATOR = new Creator<SerializableUser>() {
@@ -174,7 +185,11 @@ public class SerializableUser implements Parcelable {
         dest.writeString(this.genre);
         dest.writeString(this.work);
         dest.writeString(this.formation);
-        dest.writeString(this.interests);
+        dest.writeString(this.likes);
         dest.writeString(this.photoURL);
+        dest.writeString(this.commonLikes);
+
+        dest.writeString(this.distance);
+
     }
 }

@@ -31,4 +31,12 @@ public class Like implements Serializable{
         }
         return likeList;
     }
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Like){
+            Like otherLike=(Like)o;
+            return this.id==otherLike.id;
+        }
+        return false;
+    }
 }
