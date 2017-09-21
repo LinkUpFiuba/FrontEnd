@@ -47,7 +47,7 @@ public class GPS {
             }else {
                 currentLocation=gpsProviderLocation;
             }
-            this.main.locationChanged(currentLocation.getLongitude(),currentLocation.getLatitude());
+            //this.main.locationChanged(currentLocation.getLongitude(),currentLocation.getLatitude());
             resumeGPS();
             // GPS Position END
             this.isRunning = true;

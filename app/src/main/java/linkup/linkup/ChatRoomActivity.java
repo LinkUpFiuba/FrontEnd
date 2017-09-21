@@ -3,12 +3,15 @@ package linkup.linkup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,14 +22,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
+import linkup.linkup.model.ChatRoom;
 import linkup.linkup.model.Message;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
+
+import static linkup.linkup.adapter.SwipeDeckAdapter.REQUEST_CODE_PROFILE;
 
 
 public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessages {
@@ -43,6 +51,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     private String oldestKey = "";
 
     private long count = 0;
+    private boolean chatRoomIsRead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +60,6 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReference1 = database.getReference();
 
-
-
         setContentView(R.layout.activity_chat_room);
 
         inputMessage = (EditText) findViewById(R.id.message);
@@ -60,12 +67,32 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         TextView titleChat = (TextView) findViewById(R.id.title_chat);
         recyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
 
+        final CircleImageView profileImageView = (CircleImageView) findViewById(R.id.profile_img_toolbar);
+
         messageArrayList = new ArrayList<>();
 
         Intent intent = getIntent();
-        //String chatRoomId = intent.getStringExtra("chat_room_id");
+        chatRoomIsRead = intent.getBooleanExtra("chatRead",false);
+
         otherUser = intent.getParcelableExtra("user");
         titleChat.setText(otherUser.getName());
+
+        Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);
+
+        profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ChatRoomActivity.this, ViewProfileActivity.class);
+                i.putExtra("user", otherUser);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(ChatRoomActivity.this,
+                                profileImageView,
+                                ViewCompat.getTransitionName(profileImageView));
+
+                startActivity(i,options.toBundle());
+            }
+        });
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,7 +100,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         selfUserId = SingletonUser.getUser().getSerializableUser().getId();
-        Log.d("ChatRoom",selfUserId + " " + otherUser.getFbId());
+        //Log.d("ChatRoom",selfUserId + " " + otherUser.getFbId());
 
         mAdapter = new ChatRoomThreadAdapter(this,messageArrayList, selfUserId);
 
@@ -83,6 +110,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(mAdapter);
+
         oldestKey = "";
         ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
             @Override
@@ -92,6 +120,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
 
                 if(count > 0 && messageArrayList.size() == 0 ){
                     fetchHistory();
+                }else{
+                    mAdapter.setLoadEarlierMsgs(false);
                 }
 
             }
@@ -113,6 +143,12 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(key).child("read").setValue(true);
     }
 
+    private void postReadChatRoom(){
+        if(!chatRoomIsRead){
+            databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("read").setValue(true);
+        }
+    }
+
     private void fetchHistory() {
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).orderByKey().limitToLast(PAGINATION).addChildEventListener(new ChildEventListener() {
             int index = 0;
@@ -120,6 +156,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 Message map = dataSnapshot.getValue(Message.class);
                 String key = dataSnapshot.getKey();
+                postReadChatRoom();
                 postReadMessage(key);
 
                 if(index == 0){
@@ -129,6 +166,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                 addUIMessage(map);
                 if( messageArrayList.size() == count ){
                     mAdapter.setLoadEarlierMsgs(false);
+                }else {
+                    mAdapter.setLoadEarlierMsgs(true);
                 }
             }
 
@@ -205,6 +244,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                         }
                         if( messageArrayList.size() == count ){
                             mAdapter.setLoadEarlierMsgs(false);
+                        }else {
+                            mAdapter.setLoadEarlierMsgs(true);
                         }
                     }
                     index = index + 1;
@@ -228,6 +269,16 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     @Override
     public void onLoadMore() {
         loadMoreHistory();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 /*
