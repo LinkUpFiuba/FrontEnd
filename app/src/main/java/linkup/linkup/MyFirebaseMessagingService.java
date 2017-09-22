@@ -34,6 +34,8 @@ package linkup.linkup;
         import com.google.firebase.messaging.FirebaseMessagingService;
         import com.google.firebase.messaging.RemoteMessage;
 
+        import java.util.Map;
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
@@ -69,7 +71,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 scheduleJob();
             } else {
                 // Handle message within 10 seconds
-                handleNow();
+                handleNow(remoteMessage.getData());
             }
 
         }
@@ -100,10 +102,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     /**
      * Handle time allotted to BroadcastReceivers.
+     * @param data
      */
-    private void handleNow() {
+    private void handleNow(Map<String, String> data) {
         Log.d(TAG, "Short lived task is done.");
         Intent intent = new Intent(getApplicationContext(), NewMatchActivity.class);
+        intent.putExtra("Name",data.get("Name"));
+        intent.putExtra("Photo",data.get("Photo"));
+
         startActivity(intent);
     }
 

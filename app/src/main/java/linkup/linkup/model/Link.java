@@ -5,13 +5,13 @@ package linkup.linkup.model;
  */
 
 public class Link {
-    public String LinkingUid;
-    public String LinkedUid;
+    public String linkingUid;
+    public String linkedUid;
     public Link(){
 
     }
     public Link(User linkingUser,User linkedUser){
-        LinkingUid=linkingUser.Uid;
-        LinkedUid=linkedUser.Uid;
+        linkingUid =linkingUser.Uid;
+        linkedUid =linkedUser.Uid;
     }
 }

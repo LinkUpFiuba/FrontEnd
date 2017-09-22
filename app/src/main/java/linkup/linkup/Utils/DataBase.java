@@ -1,28 +1,20 @@
 package linkup.linkup.Utils;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import linkup.linkup.model.Interests;
 import linkup.linkup.model.Link;
-import linkup.linkup.model.Photo;
-import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
 
@@ -52,16 +44,16 @@ public class DataBase {
 
     public static void saveLink(final Link link) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("links").child(link.LinkingUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("links").child(link.linkingUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
                     Map<String, Object> update = new HashMap<String, Object>();
-                    update.put(link.LinkedUid, true);
+                    update.put(link.linkedUid, true);
                     dataSnapshot.getRef().updateChildren(update);
                 } else {
-                    dataSnapshot.getRef().child(link.LinkedUid).setValue(true);
+                    dataSnapshot.getRef().child(link.linkedUid).setValue(true);
 
                 }
 
