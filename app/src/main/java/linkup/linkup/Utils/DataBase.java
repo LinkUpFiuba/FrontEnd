@@ -44,16 +44,16 @@ public class DataBase {
 
     public static void saveLink(final Link link) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("links").child(link.linkingUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("links").child(link.linkingUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
                     Map<String, Object> update = new HashMap<String, Object>();
-                    update.put(link.linkedUid, true);
+                    update.put(link.linkedUser, true);
                     dataSnapshot.getRef().updateChildren(update);
                 } else {
-                    dataSnapshot.getRef().child(link.linkedUid).setValue(true);
+                    dataSnapshot.getRef().child(link.linkedUser).setValue(true);
 
                 }
 
@@ -80,17 +80,17 @@ public class DataBase {
 
     public static void saveUnlink(final Unlink unlink) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("unlinks").child(unlink.unlinkingUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("unlinks").child(unlink.unlinkingUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user;
                 if (dataSnapshot.exists()) {
 
                     Map<String, Object> update = new HashMap<String, Object>();
-                    update.put(unlink.unlinkedUid, true);
+                    update.put(unlink.unlinkedUser, true);
                     dataSnapshot.getRef().updateChildren(update);
                 } else {
-                    dataSnapshot.getRef().child(unlink.unlinkedUid).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    dataSnapshot.getRef().child(unlink.unlinkedUser).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){

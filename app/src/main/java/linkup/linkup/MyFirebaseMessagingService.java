@@ -24,6 +24,7 @@ package linkup.linkup;
         import android.media.RingtoneManager;
         import android.net.Uri;
         import android.support.v4.app.NotificationCompat;
+        import android.support.v4.util.ArrayMap;
         import android.util.Log;
 
         import com.firebase.jobdispatcher.Constraint;
@@ -107,8 +108,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleNow(Map<String, String> data) {
         Log.d(TAG, "Short lived task is done.");
         Intent intent = new Intent(getApplicationContext(), NewMatchActivity.class);
-        intent.putExtra("Name",data.get("Name"));
-        intent.putExtra("Photo",data.get("Photo"));
+        intent.putExtra("Name",data.get("name"));
+        intent.putExtra("Photo",data.get("photo"));
 
         startActivity(intent);
     }

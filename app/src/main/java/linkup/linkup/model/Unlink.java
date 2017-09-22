@@ -5,13 +5,13 @@ package linkup.linkup.model;
  */
 
 public class Unlink {
-    public String unlinkingUid;
-    public String unlinkedUid;
+    public String unlinkingUser;
+    public String unlinkedUser;
     public Unlink(){
 
     }
     public Unlink(User unlinkingUser, User unlinkedUser){
-        unlinkingUid =unlinkingUser.Uid;
-        unlinkedUid =unlinkedUser.Uid;
+        this.unlinkingUser =unlinkingUser.Uid;
+        this.unlinkedUser =unlinkedUser.Uid;
     }
 }
