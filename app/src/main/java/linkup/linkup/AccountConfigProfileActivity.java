@@ -26,6 +26,8 @@ import linkup.linkup.model.User;
 
 public class AccountConfigProfileActivity extends BaseActivity {
 
+    public static final int MIN_VALUE = 18;
+    public static final int MAX_VALUE = 100;
     private User user;
     private static String TAG="AccountConfig";
     boolean changed=false;
@@ -99,8 +101,8 @@ public class AccountConfigProfileActivity extends BaseActivity {
         User user=SingletonUser.getUser();
         rangeSeekbar.setMinStartValue(user.range.minAge);
         rangeSeekbar.setMaxStartValue(user.range.maxAge);
-        rangeSeekbar.setMinValue(18);
-        rangeSeekbar.setMaxValue(69);
+        rangeSeekbar.setMinValue(MIN_VALUE);
+        rangeSeekbar.setMaxValue(MAX_VALUE);
         rangeSeekbar.apply();
         // get min and max text view
         final TextView ageRangeText = (TextView) findViewById(R.id.ageRangeText);
@@ -156,7 +158,6 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
                 user.maxDistance= (int) value.intValue();
 
-                Log.d("CRS=>", String.valueOf(user.maxDistance));
             }
 
 
@@ -296,7 +297,6 @@ public class AccountConfigProfileActivity extends BaseActivity {
     }
     @Override
     public void onBackPressed() {
-        Log.d("CDA", "onBackPressed Called");
         updateIfChange();
     }
 
