@@ -295,6 +295,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
                 //get gps
             }
         });
+        builder.setCancelable(false);
         gpsAlertDialog=builder.create();
         gpsAlertDialog.show();
         if(this.linkFragment!=null &&this.linkFragment.isTaskRunning()) {
