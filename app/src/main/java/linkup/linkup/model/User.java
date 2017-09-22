@@ -74,7 +74,7 @@ public class User {
         String likesString="";
         if(likesList == null) return "";
         likesList.removeAll(commonLikes);
-        for (int i=0; i<likesList.size()-2;i++ ){
+        for (int i=0; i<likesList.size()-1;i++ ){
                 likesString += (likesList.get(i).name + ", ");
         }
         likesString += (likesList.get(likesList.size()-1).name + ".");
@@ -84,7 +84,7 @@ public class User {
     public String getCommonLikesString(){
         String likesString="";
         if(commonLikes == null||commonLikes.isEmpty()) return "";
-        for (int i=0; i<commonLikes.size()-2;i++ ){
+        for (int i=0; i<commonLikes.size()-1;i++ ){
             likesString += (commonLikes.get(i).name + ", ");
         }
         likesString += (commonLikes.get(commonLikes.size()-1).name + ".");

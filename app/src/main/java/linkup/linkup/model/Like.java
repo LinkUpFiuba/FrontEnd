@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by andres on 9/5/17.
@@ -35,8 +36,15 @@ public class Like implements Serializable{
     public boolean equals(Object o){
         if(o instanceof Like){
             Like otherLike=(Like)o;
-            return this.id==otherLike.id;
+            if( this.id.equals(otherLike.id)){
+                return true;
+            }
+            return false;
         }
         return false;
+    }
+    @Override
+    public  int hashCode(){
+        return Objects.hash(id,name);
     }
 }
