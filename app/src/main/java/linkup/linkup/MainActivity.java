@@ -210,6 +210,8 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        linkFragment.showEmptyCardStack();
+        linkFragment.startAnimation();
         if (!gps.isRunning()) gps.resumeGPS();
     }
 
