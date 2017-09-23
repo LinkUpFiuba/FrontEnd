@@ -32,10 +32,19 @@ package linkup.linkup;
         import com.firebase.jobdispatcher.GooglePlayDriver;
         import com.firebase.jobdispatcher.Job;
         import com.firebase.jobdispatcher.SimpleJobService;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
+        import com.google.firebase.database.ValueEventListener;
         import com.google.firebase.messaging.FirebaseMessagingService;
         import com.google.firebase.messaging.RemoteMessage;
 
         import java.util.Map;
+
+        import linkup.linkup.model.ChatRoom;
+        import linkup.linkup.model.SerializableUser;
+        import linkup.linkup.model.User;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -106,12 +115,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param data
      */
     private void handleNow(Map<String, String> data) {
-        Log.d(TAG, "Short lived task is done.");
-        Intent intent = new Intent(getApplicationContext(), NewMatchActivity.class);
-        intent.putExtra("Name",data.get("name"));
-        intent.putExtra("Photo",data.get("photo"));
+        String userId = data.get("userId");
+        Log.d(TAG,userId);
 
-        startActivity(intent);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+
+        ref.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user;
+                if(dataSnapshot.exists()) {
+                    user = (User) dataSnapshot.getValue(User.class);
+                    SerializableUser userSerial = user.getSerializableUser();
+                    Log.d(TAG,userSerial.getName() + userSerial.getAge() + userSerial.getPhotoURL());
+
+                    Intent intent = new Intent(getApplicationContext(), NewMatchActivity.class);
+                    intent.putExtra("user", user.getSerializableUser());
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**

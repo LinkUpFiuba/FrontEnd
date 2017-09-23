@@ -194,7 +194,7 @@ public class ChatsFragment extends Fragment {
 
         Log.d(TAG, SingletonUser.getUser().getSerializableUser().getId() + " " + cr.getUser().getId());
 
-        ref.child("messages").child(SingletonUser.getUser().getSerializableUser().getId()).child(cr.getUser().getId()).addChildEventListener(new ChildEventListener() {
+        ref.child("messages").child(SingletonUser.getUser().getSerializableUser().getId()).child(cr.getUser().getId()).orderByKey().limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String key = dataSnapshot.getKey();
