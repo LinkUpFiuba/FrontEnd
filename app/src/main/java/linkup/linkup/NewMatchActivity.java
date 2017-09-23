@@ -60,9 +60,11 @@ public class NewMatchActivity extends BaseActivity {
         cr.setUnreadCount(0);
 
         Intent intent = new Intent(this, ChatRoomActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         intent.putExtra("chatRead", cr.isRead());
         intent.putExtra("user", cr.getUser());
         startActivity(intent);
+        finish();
     }
 }
