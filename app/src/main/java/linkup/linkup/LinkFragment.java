@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.List;
@@ -27,6 +29,8 @@ public class LinkFragment extends Fragment implements ViewWithCards {
     private SwipeDeck cardStack;
     private SwipeDeckAdapter adapter;
     private GetUsersAsyncTask task;
+    private RelativeLayout backgroundNoMoreCandidates;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +66,19 @@ public class LinkFragment extends Fragment implements ViewWithCards {
 
         cardStack.setLeftImage(R.id.left_image);
         cardStack.setRightImage(R.id.right_image);
+
+        backgroundNoMoreCandidates = (RelativeLayout) view.findViewById(R.id.contentNoMoreCandidates);
+        Button retry = (Button) view.findViewById(R.id.btn_retry_candidates);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAnimation();
+            }
+        });
     }
 
     public void startAnimation() {
+        backgroundNoMoreCandidates.setVisibility(View.INVISIBLE);
         //if it's not running
         if (!rippleBackground1.isRippleAnimationRunning()) {
             rippleBackground1.setVisibility(View.VISIBLE);
@@ -99,12 +113,14 @@ public class LinkFragment extends Fragment implements ViewWithCards {
 
         if (showToasts) {
             if (users == null) {
+                backgroundNoMoreCandidates.setVisibility(View.VISIBLE);
                 Toast.makeText(getActivity(), "Hubo un error en la conexion, vuelve a linkear mas tarde.",
                         Toast.LENGTH_SHORT).show();
             } else {
                 if (users.size() == 0) {
-                    Toast.makeText(getActivity(), "No hay mas candidatos, intenta mas tarde.",
-                            Toast.LENGTH_SHORT).show();
+                    backgroundNoMoreCandidates.setVisibility(View.VISIBLE);
+                }else {
+                    backgroundNoMoreCandidates.setVisibility(View.INVISIBLE);
                 }
             }
         }

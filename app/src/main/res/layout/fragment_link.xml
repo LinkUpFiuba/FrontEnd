@@ -7,4 +7,7 @@
     <include layout="@layout/content_swipe_deck"/>
 
     <include layout="@layout/background_ripple_layout"/>
+    <include layout="@layout/background_no_more_candidates"/>
+
+
 </FrameLayout>
