@@ -92,6 +92,9 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             LinearLayout navigationDrawerHeaderContainer = (LinearLayout) headerview.findViewById(R.id.linearLayoutNavHeader);
 
             User user = SingletonUser.getUser();
+            if(user==null){
+                startLoginActivity();
+            }
             ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
             Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
 
