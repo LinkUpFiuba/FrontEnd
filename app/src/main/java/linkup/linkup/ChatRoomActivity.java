@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -52,6 +53,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
 
     private long count = 0;
     private boolean chatRoomIsRead;
+    private RelativeLayout backgroundNoMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,12 +113,23 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
 
         recyclerView.setAdapter(mAdapter);
 
+        backgroundNoMessages = (RelativeLayout) findViewById(R.id.contentNoMessages);
+
         oldestKey = "";
         ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 count =  dataSnapshot.getChildrenCount();
                 Log.d(TAG, Long.toString(count));
+
+                backgroundNoMessages.setVisibility(View.INVISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+
+                if(count == 0 && messageArrayList.size() == 0 ) {
+                    backgroundNoMessages.setVisibility(View.VISIBLE);
+                    mAdapter.setLoadEarlierMsgs(false);
+                    recyclerView.setVisibility(View.INVISIBLE);
+                }
 
                 if(count > 0 && messageArrayList.size() == 0 ){
                     fetchHistory();
@@ -204,7 +217,11 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     }
 
     private void addUIMessage(Message message){
-        if(messageArrayList!= null) messageArrayList.add(message);
+        backgroundNoMessages.setVisibility(View.INVISIBLE);
+
+        if(messageArrayList!= null){
+            messageArrayList.add(message);
+        }
 
         if (mAdapter != null && mAdapter!= null ){
             mAdapter.notifyDataSetChanged();
@@ -238,6 +255,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                     }
                     if(messageArrayList!= null) messageArrayList.add(index, map);
                     if (mAdapter != null && mAdapter!= null ) {
+                        backgroundNoMessages.setVisibility(View.INVISIBLE);
                         mAdapter.notifyDataSetChanged();
                         if (mAdapter.getItemCount() > 1) {
                             recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, index);
