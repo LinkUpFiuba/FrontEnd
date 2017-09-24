@@ -295,7 +295,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
 
     @Override
     public void displayGPSSettingsDialog() {
-
+    //https://medium.com/@muthuraj57/handling-runtime-permissions-in-android-d9de2e18d18f
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             // Show an expanation to the user *asynchronously* -- don't block
