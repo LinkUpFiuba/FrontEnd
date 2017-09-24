@@ -108,6 +108,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             User user = SingletonUser.getUser();
             if(user==null){
                 startLoginActivity();
+                return;
             }
             ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
             Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
