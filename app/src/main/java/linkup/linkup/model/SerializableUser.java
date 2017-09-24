@@ -49,7 +49,7 @@ public class SerializableUser implements Parcelable {
     }
 
     public String getAge(){
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
         DateTime dt = formatter.parseDateTime(birthday);
         DateTime today= DateTime.now();
         Period period=new Period(dt,today);
