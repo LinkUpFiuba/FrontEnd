@@ -54,6 +54,7 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
 
+import linkup.linkup.Utils.App;
 import linkup.linkup.model.Education;
 import linkup.linkup.model.Like;
 import linkup.linkup.model.Photo;
@@ -490,6 +491,7 @@ public void startLoginActivity(){
     }
 
     public void logOut(){
+        App.get().getPrefManager().clear();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 

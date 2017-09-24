@@ -8,11 +8,20 @@ import android.app.Application;
 
 public class App extends Application {
     private static App instance;
+    private MyPreferenceManager pref;
+
     public static App get() { return instance; }
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+    }
+
+    public MyPreferenceManager getPrefManager() {
+        if (pref == null) {
+            pref = new MyPreferenceManager(this);
+        }
+        return pref;
     }
 }

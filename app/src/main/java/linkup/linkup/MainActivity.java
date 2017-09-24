@@ -3,9 +3,11 @@ package linkup.linkup;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
@@ -13,10 +15,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,20 +32,33 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Map;
+
+import linkup.linkup.Utils.Config;
 import linkup.linkup.Utils.GPS;
 import linkup.linkup.Utils.IGPSActivity;
+import linkup.linkup.Utils.NotificationUtils;
 import linkup.linkup.adapter.SwipeDeckAdapter;
+import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 import linkup.linkup.model.UserLocation;
+
+import static android.R.attr.data;
 
 public class MainActivity extends BaseActivity implements IGPSActivity {
 
     public static final String CHATS_FRAGMENT = "CHATS_FRAGMENT";
     public static final String LINK_FRAGMENT = "LINK_FRAGMENT";
     private static final String TAG = "MainActivity";
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     private FirebaseAuth mAuth;
 
@@ -63,6 +80,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initNotificationBroadcastReceiver();
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser currentUser = mAuth.getCurrentUser();
         gps = new GPS(this);
@@ -210,6 +228,8 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        registerNotificationBroadcastReceiver();
+        //NotificationUtils.clearNotifications();
         linkFragment.showEmptyCardStack();
         linkFragment.startAnimation();
         if (!gps.isRunning()) gps.resumeGPS();
@@ -219,6 +239,12 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     public void onStop() {
         gps.stopGPS();
         super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterNotificationBroadcastreceiver();
     }
 
     @Override
@@ -331,5 +357,71 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             }
         }
 
+    }
+
+    /**
+     * Handles new push notification
+     */
+    private void handlePushNotification( Intent intent) {
+        if (intent.hasExtra("type")) {
+            String type = intent.getStringExtra("type");
+
+            if(type == Config.PUSH_TYPE_NEW_MATCH){
+                String userId = intent.getStringExtra("userId");
+                if (TextUtils.equals(userId,"")) return;
+                showNewMatchActivity(userId);
+
+            }
+        }
+    }
+
+    private void showNewMatchActivity(String userId) {
+        Log.d(TAG, userId);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+
+        ref.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user;
+                if (dataSnapshot.exists()) {
+                    user = (User) dataSnapshot.getValue(User.class);
+                    SerializableUser userSerial = user.getSerializableUser();
+                    Log.d(TAG, userSerial.getName() + userSerial.getAge() + userSerial.getPhotoURL());
+
+                    Intent intent = new Intent(getApplicationContext(), NewMatchActivity.class);
+                    intent.putExtra("user", user.getSerializableUser());
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void initNotificationBroadcastReceiver() {
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    Log.d(TAG,"handlePushNotification: " );
+                    handlePushNotification(intent);
+                }
+
+            }
+        };
+    }
+    private void registerNotificationBroadcastReceiver() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+    }
+
+    private void unregisterNotificationBroadcastreceiver() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 }
