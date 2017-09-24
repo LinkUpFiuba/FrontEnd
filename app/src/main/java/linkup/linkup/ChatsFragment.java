@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,9 +31,6 @@ import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
-import static android.R.id.message;
-import static linkup.linkup.R.id.count;
-
 
 public class ChatsFragment extends Fragment {
     private static final String TAG = "ChatsFragment";
@@ -40,6 +38,7 @@ public class ChatsFragment extends Fragment {
     private ChatRoomsAdapter mAdapter;
     private RecyclerView recyclerView;
     private Context context;
+    private RelativeLayout backgroundNoChats;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +53,7 @@ public class ChatsFragment extends Fragment {
 
         return view;
     }
+
     private void init(View view) {
 
 
@@ -85,6 +85,7 @@ public class ChatsFragment extends Fragment {
 
             }
         }));
+        backgroundNoChats = (RelativeLayout) view.findViewById(R.id.contentNoChatRooms);
 
     }
 
@@ -113,6 +114,7 @@ public class ChatsFragment extends Fragment {
         }
         mAdapter.notifyDataSetChanged();
     }
+
     private void updateUnreadCount(String chatRoomId, int unreadCount) {
         for (ChatRoom cr : chatRoomArrayList) {
             if (cr.getId().equals(chatRoomId)) {
@@ -130,26 +132,49 @@ public class ChatsFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
         User user = SingletonUser.getUser();
+
+        databaseReference.child("matches").child(user.getSerializableUser().getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long count = dataSnapshot.getChildrenCount();
+                Log.d(TAG, Long.toString(count));
+
+                if (count == 0 && chatRoomArrayList.size() == 0) {
+                    backgroundNoChats.setVisibility(View.VISIBLE);
+                } else {
+                    backgroundNoChats.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
         databaseReference.child("matches").child(user.getSerializableUser().getId()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 String key = dataSnapshot.getKey();
                 Match match = dataSnapshot.getValue(Match.class);
                 Log.d(TAG, key);
-                fetchUserInformation(key,match.isRead());
+                fetchUserInformation(key, match.isRead());
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+            }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {
+            }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
@@ -161,10 +186,10 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user;
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     user = (User) dataSnapshot.getValue(User.class);
                     SerializableUser userSerial = user.getSerializableUser();
-                    Log.d(TAG,userSerial.getName() + userSerial.getAge() + userSerial.getPhotoURL());
+                    Log.d(TAG, userSerial.getName() + userSerial.getAge() + userSerial.getPhotoURL());
 
                     ChatRoom cr = new ChatRoom();
                     cr.setId(userSerial.getId());
@@ -174,6 +199,8 @@ public class ChatsFragment extends Fragment {
                     chatRoomArrayList.add(cr);
 
                     mAdapter.notifyDataSetChanged();
+                    backgroundNoChats.setVisibility(View.INVISIBLE);
+
                     fetchLastMessageData(cr);
 
                     fetchUnreadCount(cr);
@@ -188,7 +215,7 @@ public class ChatsFragment extends Fragment {
         });
     }
 
-    public void fetchLastMessageData(final ChatRoom cr){
+    public void fetchLastMessageData(final ChatRoom cr) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
@@ -199,9 +226,9 @@ public class ChatsFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String key = dataSnapshot.getKey();
                 Message map = dataSnapshot.getValue(Message.class);
-                Log.d(TAG,map.getMessage());
+                Log.d(TAG, map.getMessage());
 
-                updateRowLastMessage(cr.getId(),map.getMessage());
+                updateRowLastMessage(cr.getId(), map.getMessage());
             }
 
             @Override
@@ -233,8 +260,8 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean data = (boolean) dataSnapshot.getValue();
-                Log.d(TAG,Boolean.toString(data));
-                updateRowUnreadChatRoom(cr.getId(),data);
+                Log.d(TAG, Boolean.toString(data));
+                updateRowUnreadChatRoom(cr.getId(), data);
             }
 
             @Override
@@ -251,8 +278,8 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final int size = (int) dataSnapshot.getChildrenCount();
-                Log.d(TAG,String.valueOf(size));
-                updateUnreadCount(cr.getId(),size);
+                Log.d(TAG, String.valueOf(size));
+                updateUnreadCount(cr.getId(), size);
             }
 
             @Override
@@ -262,13 +289,13 @@ public class ChatsFragment extends Fragment {
         });
     }
 
-        /**
-         * Ahora esta hardCodeado pero luego debe hacer el fetch
-         * fetching the chat rooms by making http call
-         */
+    /**
+     * Ahora esta hardCodeado pero luego debe hacer el fetch
+     * fetching the chat rooms by making http call
+     */
     private void fetchChatRoomsExample() {
 
-        SerializableUser user = new SerializableUser("1","1","German","","", "", "", "", "", "","","");
+        SerializableUser user = new SerializableUser("1", "1", "German", "", "", "", "", "", "", "", "", "");
 
         ChatRoom cr = new ChatRoom();
         cr.setId("1");
