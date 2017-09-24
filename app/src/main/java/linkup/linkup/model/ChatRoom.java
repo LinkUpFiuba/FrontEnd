@@ -9,6 +9,7 @@ public class ChatRoom implements Serializable {
     int unreadCount;
 
     public ChatRoom() {
+        this.read = false;
     }
 
     public ChatRoom(String id, String lastMessage, int unreadCount, SerializableUser user) {
