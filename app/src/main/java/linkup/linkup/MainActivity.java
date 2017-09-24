@@ -292,7 +292,26 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         updateUser(user, false);
     }
 
+    private void createAndShowPermissionsAlertDialog(){
+        if(permissionsAlertDialog!=null&&permissionsAlertDialog.isShowing()){
+            return;
+        }
+        AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("Para poder usar esta aplicacion debes darle permiso para usar tu localización.");
+        final Activity thisActivity=this;
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                ActivityCompat.requestPermissions(thisActivity,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
+            }
+        });
+        builder.setCancelable(false);
+        permissionsAlertDialog=builder.create();
+        permissionsAlertDialog.show();
 
+    }
     @Override
     public void displayGPSSettingsDialog() {
     //https://medium.com/@muthuraj57/handling-runtime-permissions-in-android-d9de2e18d18f
@@ -301,23 +320,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             // Show an expanation to the user *asynchronously* -- don't block
             // this thread waiting for the user's response! After the user
             // sees the explanation, try again to request the permission.
-            if(permissionsAlertDialog!=null&&permissionsAlertDialog.isShowing()){
-                return;
-            }
-            AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
-            builder.setMessage("Para poder usar esta aplicacion debes darle permiso para usar tu localización.");
-            final Activity thisActivity=this;
-            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    // TODO Auto-generated method stub
-                    ActivityCompat.requestPermissions(thisActivity,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
-                }
-            });
-            builder.setCancelable(false);
-            permissionsAlertDialog=builder.create();
-            permissionsAlertDialog.show();
+            createAndShowPermissionsAlertDialog();
 
         } else {
             if(isFirstTimeAskingPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)){
@@ -330,6 +333,8 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             } else {
+                createAndShowPermissionsAlertDialog();
+
                 //Permission disable by device policy or user denied permanently. Show proper error message
             }
         }
