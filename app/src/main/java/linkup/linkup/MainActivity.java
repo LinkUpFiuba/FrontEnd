@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
@@ -51,12 +52,14 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     public static final String CHATS_FRAGMENT = "CHATS_FRAGMENT";
     public static final String LINK_FRAGMENT = "LINK_FRAGMENT";
     private static final String TAG = "MainActivity";
+    private static final String PREFS_FILE_NAME = "PREFS_FILE_NAME";
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     private FirebaseAuth mAuth;
 
     private Toolbar toolbar;
     private AlertDialog gpsAlertDialog;
+    private AlertDialog permissionsAlertDialog;
     private LinkFragment linkFragment;
     private ChatsFragment chatsFragment;
 
@@ -289,13 +292,59 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         updateUser(user, false);
     }
 
+
     @Override
     public void displayGPSSettingsDialog() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Show an expanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+            if(permissionsAlertDialog!=null&&permissionsAlertDialog.isShowing()){
+                return;
+            }
+            AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage("Para poder usar esta aplicacion debes darle permiso para usar tu localización.");
+            final Activity thisActivity=this;
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    ActivityCompat.requestPermissions(thisActivity,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
+                }
+            });
+            builder.setCancelable(false);
+            permissionsAlertDialog=builder.create();
+            permissionsAlertDialog.show();
+
+        } else {
+            if(isFirstTimeAskingPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+                firstTimeAskingPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION, false);
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_REQUEST_CODE);
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            } else {
+                //Permission disable by device policy or user denied permanently. Show proper error message
+            }
+        }
+
 
     }
 
+    public static void firstTimeAskingPermission(Context context, String permission, boolean isFirstTime){
+        SharedPreferences sharedPreference = context.getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE);
+        sharedPreference.edit().putBoolean(permission, isFirstTime).apply();
+    }
+
+    public static boolean isFirstTimeAskingPermission(Context context, String permission){
+        return context.getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE).getBoolean(permission, true);
+    }
     @Override
     public void displayGPSEnabledDialog() {
         if(gpsAlertDialog!=null&&gpsAlertDialog.isShowing()){
