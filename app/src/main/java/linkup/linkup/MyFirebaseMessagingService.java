@@ -24,7 +24,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
 
 
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
@@ -57,7 +56,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "New match received from user_id: " + userId);
             NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
             notificationUtils.playNotificationSound();
-            
+
             showNewMatchActivity(data);
         } else {
 

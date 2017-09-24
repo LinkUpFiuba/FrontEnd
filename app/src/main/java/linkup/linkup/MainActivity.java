@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
@@ -15,12 +14,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,12 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.Map;
-
-import linkup.linkup.Utils.Config;
 import linkup.linkup.Utils.GPS;
 import linkup.linkup.Utils.IGPSActivity;
-import linkup.linkup.Utils.NotificationUtils;
 import linkup.linkup.adapter.SwipeDeckAdapter;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
@@ -80,7 +73,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initNotificationBroadcastReceiver();
+
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser currentUser = mAuth.getCurrentUser();
         gps = new GPS(this);
@@ -231,8 +224,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerNotificationBroadcastReceiver();
-        //NotificationUtils.clearNotifications();
         linkFragment.showEmptyCardStack();
         linkFragment.startAnimation();
         if (!gps.isRunning()) gps.resumeGPS();
@@ -244,11 +235,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         super.onStop();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterNotificationBroadcastreceiver();
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -362,21 +349,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
 
     }
 
-    /**
-     * Handles new push notification
-     */
-    private void handlePushNotification( Intent intent) {
-        if (intent.hasExtra("type")) {
-            String type = intent.getStringExtra("type");
-
-            if(type == Config.PUSH_TYPE_NEW_MATCH){
-                String userId = intent.getStringExtra("userId");
-                if (TextUtils.equals(userId,"")) return;
-                showNewMatchActivity(userId);
-
-            }
-        }
-    }
 
     private void showNewMatchActivity(String userId) {
         Log.d(TAG, userId);
@@ -406,25 +378,4 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         });
     }
 
-    private void initNotificationBroadcastReceiver() {
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
-                    Log.d(TAG,"handlePushNotification: " );
-                    handlePushNotification(intent);
-                }
-
-            }
-        };
-    }
-    private void registerNotificationBroadcastReceiver() {
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.PUSH_NOTIFICATION));
-    }
-
-    private void unregisterNotificationBroadcastreceiver() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-    }
 }
