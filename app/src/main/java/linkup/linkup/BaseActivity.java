@@ -491,7 +491,6 @@ public void startLoginActivity(){
     }
 
     public void logOut(){
-        App.get().getPrefManager().clear();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 

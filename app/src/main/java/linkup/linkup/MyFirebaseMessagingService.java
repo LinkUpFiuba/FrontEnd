@@ -69,7 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showNewMatchActivity(Map<String, String> data) {
-        String userId = data.get("userId");
+        String userId = data.get("Uid");
         Log.d(TAG, userId);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
