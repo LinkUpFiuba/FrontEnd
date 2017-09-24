@@ -403,7 +403,7 @@ public void startLoginActivity(){
             LinearLayout commonLikesLayout=(LinearLayout) findViewById(R.id.commonLikes_Layout);
             commonLikesLayout.setVisibility(View.GONE);
         }
-        if(user.getDistance()!="-1"&&!user.getDistance().isEmpty()){
+        if((!user.getDistance().equals("-1"))&&!user.getDistance().isEmpty()){
             TextView distanceTextView = (TextView) findViewById(R.id.distance_text);
             distanceTextView.setText(user.getDistanceString());
         }else{
