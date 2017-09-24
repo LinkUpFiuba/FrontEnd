@@ -30,12 +30,9 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
-import linkup.linkup.model.ChatRoom;
 import linkup.linkup.model.Message;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
-
-import static linkup.linkup.adapter.SwipeDeckAdapter.REQUEST_CODE_PROFILE;
 
 
 public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessages {
@@ -54,6 +51,20 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     private long count = 0;
     private boolean chatRoomIsRead;
     private RelativeLayout backgroundNoMessages;
+
+    private boolean acitivityInForegraund = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        acitivityInForegraund = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        acitivityInForegraund = false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +85,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         messageArrayList = new ArrayList<>();
 
         Intent intent = getIntent();
-        chatRoomIsRead = intent.getBooleanExtra("chatRead",false);
+        chatRoomIsRead = intent.getBooleanExtra("chatRead", false);
 
         otherUser = intent.getParcelableExtra("user");
         titleChat.setText(otherUser.getName());
@@ -91,7 +102,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                                 profileImageView,
                                 ViewCompat.getTransitionName(profileImageView));
 
-                startActivity(i,options.toBundle());
+                startActivity(i, options.toBundle());
             }
         });
 
@@ -104,7 +115,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         selfUserId = SingletonUser.getUser().getSerializableUser().getId();
         //Log.d("ChatRoom",selfUserId + " " + otherUser.getFbId());
 
-        mAdapter = new ChatRoomThreadAdapter(this,messageArrayList, selfUserId);
+        mAdapter = new ChatRoomThreadAdapter(this, messageArrayList, selfUserId);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -119,25 +130,26 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                count =  dataSnapshot.getChildrenCount();
+                count = dataSnapshot.getChildrenCount();
                 Log.d(TAG, Long.toString(count));
 
                 backgroundNoMessages.setVisibility(View.INVISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                if(count == 0 && messageArrayList.size() == 0 ) {
+                if (count == 0 && messageArrayList.size() == 0) {
                     backgroundNoMessages.setVisibility(View.VISIBLE);
                     mAdapter.setLoadEarlierMsgs(false);
                     recyclerView.setVisibility(View.INVISIBLE);
                 }
 
-                if(count > 0 && messageArrayList.size() == 0 ){
+                if (count > 0 && messageArrayList.size() == 0) {
                     fetchHistory();
-                }else{
+                } else {
                     mAdapter.setLoadEarlierMsgs(false);
                 }
 
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -152,12 +164,16 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             }
         });
     }
-    private void postReadMessage(String key){
-        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(key).child("read").setValue(true);
+
+    private void postReadMessage(String key, Message map) {
+        if (!map.isRead() && acitivityInForegraund) {
+            Log.d(TAG, "posteo mensaje leido");
+            databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(key).child("read").setValue(true);
+        }
     }
 
-    private void postReadChatRoom(){
-        if(!chatRoomIsRead){
+    private void postReadChatRoom() {
+        if (!chatRoomIsRead) {
             databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("read").setValue(true);
         }
     }
@@ -165,42 +181,49 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     private void fetchHistory() {
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).orderByKey().limitToLast(PAGINATION).addChildEventListener(new ChildEventListener() {
             int index = 0;
+
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 Message map = dataSnapshot.getValue(Message.class);
                 String key = dataSnapshot.getKey();
-                postReadChatRoom();
-                postReadMessage(key);
 
-                if(index == 0){
+
+                postReadChatRoom();
+                postReadMessage(key, map);
+
+                if (index == 0) {
                     oldestKey = key;
                 }
                 index = index + 1;
                 addUIMessage(map);
-                if( messageArrayList.size() == count ){
+                if (messageArrayList.size() == count) {
                     mAdapter.setLoadEarlierMsgs(false);
-                }else {
+                } else {
                     mAdapter.setLoadEarlierMsgs(true);
                 }
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+            }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {
+            }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
     /**
      * Post de un nuevo mensaje
-     * */
+     */
     private void sendMessage() {
         final String messageToSend = this.inputMessage.getText().toString().trim();
         if (TextUtils.isEmpty(messageToSend)) {
@@ -216,14 +239,14 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         databaseReference1.child("messages").child(otherUser.getId()).child(selfUserId).push().setValue(message);
     }
 
-    private void addUIMessage(Message message){
+    private void addUIMessage(Message message) {
         backgroundNoMessages.setVisibility(View.INVISIBLE);
 
-        if(messageArrayList!= null){
+        if (messageArrayList != null) {
             messageArrayList.add(message);
         }
 
-        if (mAdapter != null && mAdapter!= null ){
+        if (mAdapter != null && mAdapter != null) {
             mAdapter.notifyDataSetChanged();
             if (mAdapter.getItemCount() > 1) {
                 // scrolling to bottom of the recycler view
@@ -233,7 +256,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         }
     }
 
-    private void loadMoreHistory(){
+    private void loadMoreHistory() {
 
         final String lastOldestKey = oldestKey;
         Log.d(TAG, oldestKey);
@@ -243,26 +266,27 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 String key = dataSnapshot.getKey();
-                postReadMessage(key);
 
-                Log.d(TAG, oldestKey + " " + key );
+
+                Log.d(TAG, oldestKey + " " + key);
 
                 if (!lastOldestKey.equals(key)) {
                     Message map = dataSnapshot.getValue(Message.class);
+                    postReadMessage(key,map);
 
-                    if(index == 0){
+                    if (index == 0) {
                         oldestKey = key;
                     }
-                    if(messageArrayList!= null) messageArrayList.add(index, map);
-                    if (mAdapter != null && mAdapter!= null ) {
+                    if (messageArrayList != null) messageArrayList.add(index, map);
+                    if (mAdapter != null && mAdapter != null) {
                         backgroundNoMessages.setVisibility(View.INVISIBLE);
                         mAdapter.notifyDataSetChanged();
                         if (mAdapter.getItemCount() > 1) {
                             recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, index);
                         }
-                        if( messageArrayList.size() == count ){
+                        if (messageArrayList.size() == count) {
                             mAdapter.setLoadEarlierMsgs(false);
-                        }else {
+                        } else {
                             mAdapter.setLoadEarlierMsgs(true);
                         }
                     }
@@ -271,16 +295,20 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+            }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {
+            }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
