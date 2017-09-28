@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import linkup.linkup.model.Link;
+import linkup.linkup.model.Report;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
 
@@ -76,6 +77,43 @@ public class DataBase {
             }
         });
 
+    }
+    public static void saveBlock(final String uIdBlocking,final String uIdBlocked) {
+
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("block").child(uIdBlocking).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    Map<String, Object> update = new HashMap<String, Object>();
+                    update.put(uIdBlocked, true);
+                    dataSnapshot.getRef().updateChildren(update);
+                } else {
+                    dataSnapshot.getRef().child(uIdBlocked).setValue(true);
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public static void saveReport(Report report) {
+
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference  reportReference= databaseReference.child("complaints").child(report.idReported).push();
+        reportReference.setValue(report).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
     }
 
     public static void saveUnlink(final Unlink unlink) {

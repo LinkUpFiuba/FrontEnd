@@ -84,4 +84,14 @@ public class ProfileActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    @Override
+    protected void goToBlockActivity() {
+        Intent returnIntent2 = new Intent();
+        returnIntent2.putExtra("result", DONT_LIKE);
+        setResult(Activity.RESULT_OK,returnIntent2);
+        finish();
+    }
 }

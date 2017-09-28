@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:src="@drawable/ic_block_white_24dp"
+    android:background="@color/primary"
+
+    />
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        
+
+        >
+
+    <TextView
+            android:id="@+id/dialog_blockText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#000000"
+        android:text="Si bloqueas a este usuario no podras hablar ni ponerte en contacto con el.
+ ¿Deseas bloquearlo?"
+            />
+        <Button
+            android:id="@+id/btn_blockDialog"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp"
+            android:height="@dimen/button_height"
+            android:background="#f44336"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:text="BLOQUEAR"
+            android:textColor="@color/icons"
+            android:paddingTop="5dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

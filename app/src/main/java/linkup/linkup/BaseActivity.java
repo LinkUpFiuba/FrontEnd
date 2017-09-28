@@ -15,9 +15,12 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,10 +59,12 @@ import java.util.List;
 import java.util.Map;
 
 import linkup.linkup.Utils.App;
+import linkup.linkup.Utils.DataBase;
 import linkup.linkup.model.Education;
 import linkup.linkup.model.Like;
 import linkup.linkup.model.Photo;
 import linkup.linkup.model.Range;
+import linkup.linkup.model.Report;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
@@ -429,7 +434,95 @@ public void startLoginActivity(){
         }else{
             btnMap.setVisibility(View.GONE);
         }
+        /**SACAR DE ACA**/
+        Button btnBlock = (Button) findViewById(R.id.btn_block);
+        btnBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blockUser(user.getId(),user.getName());
+            }
+        });
+
+        Button btnReport = (Button) findViewById(R.id.btn_report);
+        btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reportUser(user.getId(),user.getName());
+            }
+        });
     }
+
+    private void blockUser(final String id, final String name) {
+        final User user=SingletonUser.getUser();
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
+        builder.setCancelable(true);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View mView = inflater.inflate(R.layout.dialog_block, null);
+        builder.setView(mView);
+        Button blockButton=(Button) mView.findViewById(R.id.btn_blockDialog);
+        TextView textBlock=(TextView) mView.findViewById(R.id.dialog_blockText);
+        textBlock.setText("Si bloqueas a "+name+" no podras hablar, ni ponerte en contacto.\n¿Deseas bloquear a "+name+ "?");
+        blockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataBase.saveBlock(user.Uid,id);
+                AlertDialog.Builder builder=new AlertDialog.Builder(BaseActivity.this).setTitle("Exito").setMessage("Has bloqueado a "+name+".");
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        goToBlockActivity();
+
+                    }
+
+                }).show();
+            }
+        });
+        builder.show();
+
+    }
+
+    protected void goToBlockActivity(){
+        startMainActivity();
+    }
+
+    private void reportUser(final String id, final String name) {
+        final User user=SingletonUser.getUser();
+        final AlertDialog.Builder builder =
+                new AlertDialog.Builder(BaseActivity.this);
+        builder.setCancelable(true);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View mView = inflater.inflate(R.layout.dialog_report, null);
+        builder.setView(mView);
+        final AlertDialog alertDialog = builder.create();
+        final EditText input = (EditText)mView.findViewById(R.id.dialog_reportInput);
+        TextView textBlock=(TextView) mView.findViewById(R.id.dialog_reportText);
+        textBlock.setHint("Razones de la denuncia");
+        textBlock.setText("Explique las razones por la cual quieres denunciar a "+name+", esto puede resultar en que su cuenta sea eliminada de la aplicacion.");
+        Button reportButton=(Button) mView.findViewById(R.id.btn_reportDialog);
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Report report =new Report(user.Uid,id,input.getText().toString());
+                DataBase.saveReport(report);
+                alertDialog.dismiss();
+                AlertDialog.Builder builder=new AlertDialog.Builder(BaseActivity.this).setTitle("Denuncia Procesada").setMessage("Tu denuncia ha sido enviada y pronto sera revisada por nuestros sexys administradores.");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                       dialog.dismiss();
+                    }
+
+                }).show();
+            }
+        });
+        alertDialog.show();
+    }
+
+
+
     private  void goToMapActivity(String distance){
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("distance",distance);
