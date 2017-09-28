@@ -95,7 +95,7 @@
     <string name="activity_new_match_title">¡Nuevo link!</string>
     <string name="activity_new_match_subtitle"> también quiere linkear contigo</string>
     <string name="activity_new_match_btn_chat">Iniciar chat</string>
-<string name="activity_new_match_title_later">Chatear más tarde</string>
+    <string name="activity_new_match_title_later">Chatear más tarde</string>
     <string name="no_chat_room_open">Todavía no tienes chats abiertos</string>
     <string name="no_more_candidates">Por el momento no hay candidatos,</string>
     <string name="came_back_later">vuelve más tarde</string>
@@ -103,5 +103,7 @@
     <string name="no_messages_yet_woman">No seas tímida y comienza la conversación</string>
 
     <string name="retry">Buscar candidatos</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="see_in_map">Ver en mapa</string>
 
 </resources>

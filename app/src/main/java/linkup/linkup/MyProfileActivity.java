@@ -29,7 +29,7 @@ public class MyProfileActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         User user=SingletonUser.getUser();
-        setUserProfile(user.getSerializableUser(),user.getNotCommonLikesString());
+        setUserProfile(user.getSerializableUser(),user.getNotCommonLikesString(),false);
 
         ChangeBounds bounds = new ChangeBounds();
         bounds.setDuration(250);
@@ -41,7 +41,7 @@ public class MyProfileActivity extends BaseActivity {
     {
         super.onResume();
         User user=SingletonUser.getUser();
-        setUserProfile(user.getSerializableUser(),user.getNotCommonLikesString());
+        setUserProfile(user.getSerializableUser(),user.getNotCommonLikesString(),false);
     }
 
     @Override

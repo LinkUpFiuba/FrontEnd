@@ -42,7 +42,7 @@ public class ProfileActivity extends BaseActivity {
         ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
         Picasso.with(this).load(user.getPhotoURL()).fit().centerCrop().into(imageView1);
 
-        setUserProfile(user,user.getLikes());
+        setUserProfile(user,user.getLikes(),true);
 
         FloatingActionButton fabLike = (FloatingActionButton)findViewById(R.id.fabLikeProfile);
         fabLike.setOnClickListener(new View.OnClickListener() {

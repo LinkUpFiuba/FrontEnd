@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -369,7 +370,7 @@ public void startLoginActivity(){
             }
         });
     }
-    protected void setUserProfile(SerializableUser user,String likes){
+    protected void setUserProfile(final SerializableUser user, String likes, final Boolean setMapButton){
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
 
@@ -417,8 +418,23 @@ public void startLoginActivity(){
             LinearLayout aboutMe_Layout=(LinearLayout) findViewById(R.id.aboutMe_Layout);
             aboutMe_Layout.setVisibility(View.GONE);
         }
+        Button btnMap = (Button) findViewById(R.id.btn_map);
+        if(setMapButton){
+            btnMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   goToMapActivity(user.getDistance());
+                }
+            });
+        }else{
+            btnMap.setVisibility(View.GONE);
+        }
     }
-
+    private  void goToMapActivity(String distance){
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("distance",distance);
+        startActivity(intent);
+    }
     public  void updateUser(final User user, final Boolean showMessage){
         if(showMessage) {
             showProgressDialog();
