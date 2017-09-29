@@ -12,6 +12,7 @@
         <!-- Habilitar la Toolbar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:popupBackground">@color/primary</item>
 
         <item name="actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
         <item name="selectableItemBackground">?android:selectableItemBackground</item>

@@ -106,4 +106,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="see_in_map">Ver en mapa</string>
 
+    <string name="report">Denunciar</string>
+    <string name="block">Bloquear</string>
 </resources>
