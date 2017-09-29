@@ -81,7 +81,7 @@ public class DataBase {
     public static void saveBlock(final String uIdBlocking,final String uIdBlocked) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("block").child(uIdBlocking).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("blocks").child(uIdBlocking).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
