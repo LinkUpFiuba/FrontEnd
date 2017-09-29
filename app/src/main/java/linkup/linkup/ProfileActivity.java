@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -20,7 +23,7 @@ public class ProfileActivity extends BaseActivity {
     public static final String LIKE = "1";
     public static final String SUPER_LIKE = "2";
     public static final String DONT_LIKE = "3";
-
+    SerializableUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class ProfileActivity extends BaseActivity {
         bounds.setDuration(250);
         getWindow().setSharedElementEnterTransition(bounds);
 
-        SerializableUser user = (SerializableUser) getIntent().getParcelableExtra("user");
+        user = (SerializableUser) getIntent().getParcelableExtra("user");
 
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
 
@@ -74,6 +77,23 @@ public class ProfileActivity extends BaseActivity {
                 finish();
             }
         });
+
+        /**SACAR DE ACA**/
+        Button btnBlock = (Button) findViewById(R.id.btn_block);
+        btnBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blockUser(user.getId(),user.getName());
+            }
+        });
+
+        Button btnReport = (Button) findViewById(R.id.btn_report);
+        btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reportUser(user.getId(),user.getName());
+            }
+        });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -81,6 +101,14 @@ public class ProfileActivity extends BaseActivity {
             case android.R.id.home:
                 onBackPressed();
             break;
+
+            case R.id.denuncia:
+                blockUser(user.getId(),user.getName());
+                break;
+
+            case R.id.bloqueo:
+                reportUser(user.getId(),user.getName());
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -93,5 +121,12 @@ public class ProfileActivity extends BaseActivity {
         returnIntent2.putExtra("result", DONT_LIKE);
         setResult(Activity.RESULT_OK,returnIntent2);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
