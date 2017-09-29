@@ -434,25 +434,9 @@ public void startLoginActivity(){
         }else{
             btnMap.setVisibility(View.GONE);
         }
-        /**SACAR DE ACA**/
-        Button btnBlock = (Button) findViewById(R.id.btn_block);
-        btnBlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                blockUser(user.getId(),user.getName());
-            }
-        });
-
-        Button btnReport = (Button) findViewById(R.id.btn_report);
-        btnReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reportUser(user.getId(),user.getName());
-            }
-        });
     }
 
-    private void blockUser(final String id, final String name) {
+    protected void blockUser(final String id, final String name) {
         final User user=SingletonUser.getUser();
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
@@ -488,7 +472,7 @@ public void startLoginActivity(){
         startMainActivity();
     }
 
-    private void reportUser(final String id, final String name) {
+    protected void reportUser(final String id, final String name) {
         final User user=SingletonUser.getUser();
         final AlertDialog.Builder builder =
                 new AlertDialog.Builder(BaseActivity.this);

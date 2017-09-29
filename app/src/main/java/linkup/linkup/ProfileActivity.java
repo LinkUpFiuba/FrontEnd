@@ -78,22 +78,6 @@ public class ProfileActivity extends BaseActivity {
             }
         });
 
-        /**SACAR DE ACA**/
-        Button btnBlock = (Button) findViewById(R.id.btn_block);
-        btnBlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                blockUser(user.getId(),user.getName());
-            }
-        });
-
-        Button btnReport = (Button) findViewById(R.id.btn_report);
-        btnReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reportUser(user.getId(),user.getName());
-            }
-        });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -103,11 +87,11 @@ public class ProfileActivity extends BaseActivity {
             break;
 
             case R.id.denuncia:
-                blockUser(user.getId(),user.getName());
+                reportUser(user.getId(),user.getName());
                 break;
 
             case R.id.bloqueo:
-                reportUser(user.getId(),user.getName());
+                blockUser(user.getId(),user.getName());
                 break;
         }
         return super.onOptionsItemSelected(item);
