@@ -77,5 +77,9 @@
     <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="MyDarkToolbarStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/primary</item>
+        <item name="android:textColor">@color/icons</item>
+    </style>
 
 </resources>
