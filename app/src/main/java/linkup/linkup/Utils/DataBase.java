@@ -102,6 +102,23 @@ public class DataBase {
 
             }
         });
+        databaseReference.child("messages").child(uIdBlocking).child(uIdBlocked).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    dataSnapshot.getRef().removeValue();
+                    databaseReference.child("messages").child(uIdBlocked).child(uIdBlocking).child("blocked").setValue(true);
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
     public static void saveReport(Report report) {
 
