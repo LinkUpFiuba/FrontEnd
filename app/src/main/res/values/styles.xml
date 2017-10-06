@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
@@ -27,9 +28,9 @@
         <item name="android:background">@color/white</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="swipeTitle">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
@@ -47,16 +48,19 @@
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="profileTitle.sub" parent="profileTitle">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:textStyle">normal</item>
     </style>
+
     <style name="profileTitle.sub.black" parent="profileTitle">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textStyle">normal</item>
     </style>
+
     <style name="profileTitle.sub.accent" parent="profileTitle.sub">
         <item name="android:textColor">@color/accent</item>
     </style>
@@ -66,20 +70,34 @@
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="editProfileTitle.sub" parent="editProfileTitle">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:textStyle">normal</item>
     </style>
+
     <style name="editAccountTitle">
-    <item name="android:textSize">@dimen/text_size_small</item>
-    <item name="android:textColor">@color/primary_text</item>
-    <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="MyDarkToolbarStyle" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/primary</item>
         <item name="android:textColor">@color/icons</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>

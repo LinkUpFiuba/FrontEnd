@@ -24,10 +24,12 @@
     <color name="colorAccent">#9C27B0</color>
     <color name="colorAccentLight">#E040FB</color>
 
-<color name="profile_back_gray">#FAFAFA</color>
+    <color name="profile_back_gray">#FAFAFA</color>
     <color name="colorText">#212121</color>
     <color name="gray_text">#616161</color>
     <color name="white">#FFFFFF</color>
     <color name="white_text">#FAFAFA</color>
     <color name="circle_back_stroke">#ECEFF1</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

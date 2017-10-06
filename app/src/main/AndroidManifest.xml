@@ -130,7 +130,17 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".BlockedActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_blocked"
+            android:parentActivityName=".BaseActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="linkup.linkup.BaseActivity" />
+        </activity>
     </application>
 
 </manifest>
