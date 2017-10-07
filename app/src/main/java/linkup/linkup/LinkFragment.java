@@ -144,7 +144,6 @@ public class LinkFragment extends Fragment implements ViewWithCards {
             @Override
             public void cardsDepleted() {
                 Log.i("MainActivity", "no more cards");
-                startAnimation();
                 //TODO aca va de nuevo la petición al http server, ojo que si supera el max hay que mostrar otra pantalla
             }
 
@@ -167,7 +166,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         Log.i("MainActivity", "Like");
         User user = (User) adapter.getItem(position);
         User myUser= SingletonUser.getUser();
-        DataBase.saveLink(myUser.link(user));
+        DataBase.saveLink(myUser.link(user),this);
     }
 
     public void superLike() {
@@ -182,8 +181,14 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         User user = (User) adapter.getItem(position);
         User myUser= SingletonUser.getUser();
         Unlink unlink= myUser.unlink(user);
-        DataBase.saveUnlink(unlink);
+        DataBase.saveUnlink(unlink,this);
 
+    }
+
+    public void ifCardsDepletedStartAnimation() {
+        if(cardStack.getChildCount()<=0){
+            startAnimation();
+        }
     }
 }
 /*

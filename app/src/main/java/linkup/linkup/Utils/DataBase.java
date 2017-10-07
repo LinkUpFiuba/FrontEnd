@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import linkup.linkup.LinkFragment;
 import linkup.linkup.model.Link;
 import linkup.linkup.model.Report;
 import linkup.linkup.model.Unlink;
@@ -43,7 +44,7 @@ public class DataBase {
         return user[0];
     }
 
-    public static void saveLink(final Link link) {
+    public static void saveLink(final Link link, final LinkFragment linkFragment) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("links").child(link.linkingUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -52,9 +53,19 @@ public class DataBase {
 
                     Map<String, Object> update = new HashMap<String, Object>();
                     update.put(link.linkedUser, true);
-                    dataSnapshot.getRef().updateChildren(update);
+                    dataSnapshot.getRef().updateChildren(update).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            linkFragment.ifCardsDepletedStartAnimation();
+                        }
+                    });
                 } else {
-                    dataSnapshot.getRef().child(link.linkedUser).setValue(true);
+                    dataSnapshot.getRef().child(link.linkedUser).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            linkFragment.ifCardsDepletedStartAnimation();
+                        }
+                    });
 
                 }
 
@@ -133,7 +144,7 @@ public class DataBase {
         });
     }
 
-    public static void saveUnlink(final Unlink unlink) {
+    public static void saveUnlink(final Unlink unlink, final LinkFragment linkFragment) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("unlinks").child(unlink.unlinkingUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -143,15 +154,19 @@ public class DataBase {
 
                     Map<String, Object> update = new HashMap<String, Object>();
                     update.put(unlink.unlinkedUser, true);
-                    dataSnapshot.getRef().updateChildren(update);
+                    dataSnapshot.getRef().updateChildren(update).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            linkFragment.ifCardsDepletedStartAnimation();
+                        }
+                    });
                 } else {
                     dataSnapshot.getRef().child(unlink.unlinkedUser).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Log.d(TAG,"Unlink completo");
-                            }else{
-                            }
+
+                                linkFragment.ifCardsDepletedStartAnimation();
+                            
                         }
                     });
                 }
