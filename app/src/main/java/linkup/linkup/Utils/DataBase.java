@@ -81,7 +81,7 @@ public class DataBase {
     public static void saveBlock(final String uIdBlocking,final String uIdBlocked) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("block").child(uIdBlocking).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("blocks").child(uIdBlocking).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -102,6 +102,23 @@ public class DataBase {
 
             }
         });
+        databaseReference.child("messages").child(uIdBlocking).child(uIdBlocked).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    dataSnapshot.getRef().removeValue();
+                    databaseReference.child("messages").child(uIdBlocked).child(uIdBlocking).child("blocked").setValue(true);
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
     public static void saveReport(Report report) {
 

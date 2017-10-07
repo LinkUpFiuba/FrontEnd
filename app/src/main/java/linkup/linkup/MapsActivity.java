@@ -60,6 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition,zoom));
         uiSettings = mMap.getUiSettings();
         uiSettings.setAllGesturesEnabled(false);
+        uiSettings.setZoomGesturesEnabled(true);
 
 
     }
