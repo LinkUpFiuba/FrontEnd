@@ -163,32 +163,7 @@
             android:text="@string/see_in_map"
             android:textColor="@color/icons"/>
 
-        <Button
-            android:id="@+id/btn_block"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_vertical_margin"
-            android:layout_marginStart="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"                android:height="@dimen/button_height"
-            android:background="@color/accent"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:text="Bloquear"
-            android:textColor="@color/icons"/>
-        <Button
-            android:id="@+id/btn_report"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_vertical_margin"
-            android:layout_marginStart="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"                android:height="@dimen/button_height"
-            android:background="@color/accent"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:text="Denunciar"
-            android:textColor="@color/icons"/>
+
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -434,7 +434,6 @@ public void startLoginActivity(){
         }else{
             btnMap.setVisibility(View.GONE);
         }
-
     }
 
     protected void blockUser(final String id, final String name) {

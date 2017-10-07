@@ -7,6 +7,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import static linkup.linkup.ProfileActivity.LIKE;
 import static linkup.linkup.ProfileActivity.SUPER_LIKE;
 
 public class ViewProfileActivity extends BaseActivity {
+    private SerializableUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class ViewProfileActivity extends BaseActivity {
         bounds.setDuration(250);
         getWindow().setSharedElementEnterTransition(bounds);
 
-        SerializableUser user = (SerializableUser) getIntent().getParcelableExtra("user");
+        user = (SerializableUser) getIntent().getParcelableExtra("user");
 
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
 
@@ -52,13 +54,28 @@ public class ViewProfileActivity extends BaseActivity {
         FloatingActionButton fabDontLike = (FloatingActionButton)findViewById(R.id.fabDontLikeProfile);
         fabDontLike.setVisibility(View.GONE);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-            break;
+                break;
+
+            case R.id.denuncia:
+                reportUser(user.getId(),user.getName());
+                break;
+
+            case R.id.bloqueo:
+                blockUser(user.getId(),user.getName());
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
