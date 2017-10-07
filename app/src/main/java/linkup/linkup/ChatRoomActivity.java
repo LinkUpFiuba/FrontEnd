@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
+import linkup.linkup.model.ChatRoom;
 import linkup.linkup.model.Message;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
@@ -178,6 +179,19 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         }
     }
 
+    private void updateRowLiked(String messageKeyId, boolean liked) {
+        for (Message msg : messageArrayList) {
+            if (msg.getKey().equals(messageKeyId)) {
+                int index = messageArrayList.indexOf(msg);
+                msg.setLiked(liked);
+                messageArrayList.remove(index);
+                messageArrayList.add(index, msg);
+                break;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
     private void fetchHistory() {
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).orderByKey().limitToLast(PAGINATION).addChildEventListener(new ChildEventListener() {
             int index = 0;
@@ -186,7 +200,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 Message map = dataSnapshot.getValue(Message.class);
                 String key = dataSnapshot.getKey();
-
+                map.setKey(key);
 
                 postReadChatRoom();
                 postReadMessage(key, map);
@@ -205,6 +219,10 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+                Message map = dataSnapshot.getValue(Message.class);
+                String key = dataSnapshot.getKey();
+                map.setKey(key);
+                updateRowLiked(key,map.isLiked());
             }
 
             @Override
@@ -267,11 +285,11 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 String key = dataSnapshot.getKey();
 
-
                 Log.d(TAG, oldestKey + " " + key);
 
                 if (!lastOldestKey.equals(key)) {
                     Message map = dataSnapshot.getValue(Message.class);
+                    map.setKey(key);
                     postReadMessage(key,map);
 
                     if (index == 0) {
@@ -296,6 +314,10 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+                Message map = dataSnapshot.getValue(Message.class);
+                String key = dataSnapshot.getKey();
+                map.setKey(key);
+                updateRowLiked(key,map.isLiked());
             }
 
             @Override
@@ -315,6 +337,20 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     @Override
     public void onLoadMore() {
         loadMoreHistory();
+    }
+
+    @Override
+    public void postLikeMessage(Message message) {
+        Log.d(TAG, "posteo mensaje like");
+        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(message.getKey()).child("liked").setValue(true);
+        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(message.getKey()).child("liked").setValue(true);
+    }
+
+    @Override
+    public void postUnLikeMessage(Message message) {
+        Log.d(TAG, "posteo mensaje unlike");
+        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(message.getKey()).child("liked").setValue(false);
+        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(message.getKey()).child("liked").setValue(false);
     }
 
     @Override

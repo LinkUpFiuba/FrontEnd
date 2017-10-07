@@ -1,9 +1,10 @@
 package linkup.linkup.adapter;
 
-/**
- * Created by german on 9/16/2017.
- */
+import linkup.linkup.model.Message;
 
 public interface LoadEarlierMessages {
     void onLoadMore();
+    void postLikeMessage(Message message);
+    void postUnLikeMessage(Message message);
+
 }

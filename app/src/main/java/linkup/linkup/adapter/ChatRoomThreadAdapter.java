@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 
 import linkup.linkup.R;
 import linkup.linkup.model.Message;
+
+import static com.facebook.login.widget.ProfilePictureView.TAG;
 
 /**
  * Esta clase adapter alinea a la derecha y a la izquierda inflando 2 layouts diferentes
@@ -44,10 +47,14 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView message;
+        ImageButton favNotChecked;
+        ImageButton favChecked;
 
         public ViewHolder(View view) {
             super(view);
             message = (TextView) itemView.findViewById(R.id.message);
+            favNotChecked = (ImageButton) itemView.findViewById(R.id.likeChatNotChecked);
+            favChecked = (ImageButton) itemView.findViewById(R.id.likeChatChecked);
         }
     }
 
@@ -114,10 +121,39 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Message message = messageArrayList.get(position -1);
 
             ((ViewHolder) holder).message.setText(message.getMessage());
+
+            ((ViewHolder) holder).favNotChecked.setVisibility(View.INVISIBLE);
+
+            if(message.isLiked()){
+                ((ViewHolder) holder).favChecked.setVisibility(View.VISIBLE);
+            }
         }else {
-            Message message = messageArrayList.get(position -1);
+            final Message message = messageArrayList.get(position -1);
 
             ((ViewHolder) holder).message.setText(message.getMessage());
+
+            if(message.isLiked()){
+                ((ViewHolder) holder).favChecked.setVisibility(View.VISIBLE);
+            }else {
+                ((ViewHolder) holder).favChecked.setVisibility(View.INVISIBLE);
+            }
+
+            ((ViewHolder) holder).favNotChecked.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ViewHolder) holder).favNotChecked.setVisibility(View.INVISIBLE);
+                    ((ViewHolder) holder).favChecked.setVisibility(View.VISIBLE);
+                    mLoadEarlierMessages.postLikeMessage(message);
+                }
+            });
+            ((ViewHolder) holder).favChecked.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ViewHolder) holder).favNotChecked.setVisibility(View.VISIBLE);
+                    ((ViewHolder) holder).favChecked.setVisibility(View.INVISIBLE);
+                    mLoadEarlierMessages.postUnLikeMessage(message);
+                }
+            });
         }
     }
 
@@ -125,5 +161,4 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemCount() {
         return messageArrayList.size() + 1;
     }
-
 }
