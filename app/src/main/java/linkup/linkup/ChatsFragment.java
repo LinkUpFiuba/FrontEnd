@@ -157,7 +157,9 @@ public class ChatsFragment extends Fragment {
                 String key = dataSnapshot.getKey();
                 Match match = dataSnapshot.getValue(Match.class);
                 Log.d(TAG, key);
-                fetchUserInformation(key, match.isRead());
+                if(match.getBlock() == null){
+                    fetchUserInformation(key, match.isRead());
+                }
             }
 
             @Override

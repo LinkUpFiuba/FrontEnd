@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import linkup.linkup.LinkFragment;
+import linkup.linkup.model.Block;
 import linkup.linkup.model.Link;
 import linkup.linkup.model.Report;
 import linkup.linkup.model.Unlink;
@@ -92,6 +93,16 @@ public class DataBase {
     public static void saveBlock(final String uIdBlocking,final String uIdBlocked) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("blocks").child(uIdBlocking).child(uIdBlocked).child("by").setValue(uIdBlocking);
+        databaseReference.child("blocks").child(uIdBlocked).child(uIdBlocking).child("by").setValue(uIdBlocking);
+
+        Block block = new Block(false,uIdBlocking);
+
+        databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").setValue(block);
+        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").setValue(block);
+
+        /*
         databaseReference.child("blocks").child(uIdBlocking).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -113,6 +124,8 @@ public class DataBase {
 
             }
         });
+        */
+        /*
         databaseReference.child("messages").child(uIdBlocking).child(uIdBlocked).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -127,10 +140,11 @@ public class DataBase {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
     }
+
     public static void saveReport(Report report) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
