@@ -15,10 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import linkup.linkup.LinkFragment;
+import linkup.linkup.model.Block;
 import linkup.linkup.model.Link;
 import linkup.linkup.model.Report;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
+
+import static linkup.linkup.R.string.block;
+import static linkup.linkup.R.string.report;
 
 
 public class DataBase {
@@ -89,48 +93,25 @@ public class DataBase {
         });
 
     }
+    public static void postReadNotificationBloquedByOtherUser(final String uIdBlocking,final String uIdBlocked){
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").child("read").setValue(true);
+        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").child("read").setValue(true);
+    }
     public static void saveBlock(final String uIdBlocking,final String uIdBlocked) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("blocks").child(uIdBlocking).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
 
-                    Map<String, Object> update = new HashMap<String, Object>();
-                    update.put(uIdBlocked, true);
-                    dataSnapshot.getRef().updateChildren(update);
-                } else {
-                    dataSnapshot.getRef().child(uIdBlocked).setValue(true);
+        databaseReference.child("blocks").child(uIdBlocking).child(uIdBlocked).child("by").setValue(uIdBlocking);
+        databaseReference.child("blocks").child(uIdBlocked).child(uIdBlocking).child("by").setValue(uIdBlocking);
 
-                }
+        Block block = new Block(false, uIdBlocking);
 
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        databaseReference.child("messages").child(uIdBlocking).child(uIdBlocked).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-                    dataSnapshot.getRef().removeValue();
-                    databaseReference.child("messages").child(uIdBlocked).child(uIdBlocking).child("blocked").setValue(true);
-                }
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").setValue(block);
+        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").setValue(block);
 
     }
+
     public static void saveReport(Report report) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();

@@ -76,6 +76,7 @@ public class ChatsFragment extends Fragment {
                 ChatRoom chatRoom = chatRoomArrayList.get(position);
                 Intent intent = new Intent(context, ChatRoomActivity.class);
                 intent.putExtra("chatRead", chatRoom.isRead());
+                intent.putExtra("notifyBloqued", chatRoom.isNotifyBloquedByOtherUser());
                 intent.putExtra("user", chatRoom.getUser());
                 startActivity(intent);
             }
@@ -109,6 +110,17 @@ public class ChatsFragment extends Fragment {
                 cr.setRead(read);
                 chatRoomArrayList.remove(index);
                 chatRoomArrayList.add(index, cr);
+                break;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void removeUserFromView(String chatRoomId) {
+        for (ChatRoom cr : chatRoomArrayList) {
+            if (cr.getId().equals(chatRoomId)) {
+                int index = chatRoomArrayList.indexOf(cr);
+                chatRoomArrayList.remove(index);
                 break;
             }
         }
@@ -156,12 +168,29 @@ public class ChatsFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 String key = dataSnapshot.getKey();
                 Match match = dataSnapshot.getValue(Match.class);
-                Log.d(TAG, key);
-                fetchUserInformation(key, match.isRead());
+                //Log.d(TAG, key);
+                if(match.getBlock() == null){
+                    fetchUserInformation(key, false);
+                }else {
+                    if((!match.getBlock().getBy().equals(SingletonUser.getUser().getSerializableUser().getId())) && match.getBlock().isRead() == false){
+                        fetchUserInformation(key, true);
+                    }
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+                String key = dataSnapshot.getKey();
+                Match match = dataSnapshot.getValue(Match.class);
+                if(match.getBlock() != null) {
+                    //Si no soy yo el que bloquea y todavia no lo lei
+                    if((!match.getBlock().getBy().equals(SingletonUser.getUser().getSerializableUser().getId())) && match.getBlock().isRead() == false){
+                        //TODO: No mostrar la foto de perfil del usuario, ni informacion de ultimo mensaje y unreadCount
+                    }else{
+                        //TODO: Quitar al usuario de la lista
+                        removeUserFromView(key);
+                    }
+                }
             }
 
             @Override
@@ -178,7 +207,7 @@ public class ChatsFragment extends Fragment {
         });
     }
 
-    private void fetchUserInformation(String key, boolean read) {
+    private void fetchUserInformation(String key, final boolean bloqued) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
@@ -196,6 +225,7 @@ public class ChatsFragment extends Fragment {
                     cr.setUser(userSerial);
                     cr.setLastMessage("");
                     cr.setUnreadCount(0);
+                    cr.setNotifyBloquedByOtherUser(bloqued);
                     chatRoomArrayList.add(cr);
 
                     mAdapter.notifyDataSetChanged();
@@ -289,36 +319,5 @@ public class ChatsFragment extends Fragment {
         });
     }
 
-    /**
-     * Ahora esta hardCodeado pero luego debe hacer el fetch
-     * fetching the chat rooms by making http call
-     */
-    private void fetchChatRoomsExample() {
 
-        SerializableUser user = new SerializableUser("1", "1", "German", "", "", "", "", "", "", "", "", "");
-
-        ChatRoom cr = new ChatRoom();
-        cr.setId("1");
-        cr.setUser(user);
-        cr.setLastMessage("Hola camila!");
-        cr.setUnreadCount(0);
-
-        chatRoomArrayList.add(cr);
-
-        ChatRoom cr2 = new ChatRoom();
-        cr2.setId("2");
-        cr2.setUser(user);
-        cr2.setLastMessage("Hola camila!");
-        cr2.setUnreadCount(1);
-
-        chatRoomArrayList.add(cr2);
-
-        ChatRoom cr3 = new ChatRoom();
-        cr3.setId("3");
-        cr3.setUser(user);
-        cr3.setLastMessage("chau loco");
-        cr3.setUnreadCount(2);
-
-        chatRoomArrayList.add(cr3);
-    }
 }

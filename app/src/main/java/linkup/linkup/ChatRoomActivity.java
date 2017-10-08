@@ -1,10 +1,12 @@
 package linkup.linkup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +30,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import linkup.linkup.Utils.DataBase;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
 import linkup.linkup.model.ChatRoom;
@@ -86,27 +89,9 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         messageArrayList = new ArrayList<>();
 
         Intent intent = getIntent();
-        chatRoomIsRead = intent.getBooleanExtra("chatRead", false);
-
         otherUser = intent.getParcelableExtra("user");
-        titleChat.setText(otherUser.getName());
-
-        Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);
-
-        profileImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ChatRoomActivity.this, ViewProfileActivity.class);
-                i.putExtra("user", otherUser);
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(ChatRoomActivity.this,
-                                profileImageView,
-                                ViewCompat.getTransitionName(profileImageView));
-
-                startActivity(i, options.toBundle());
-            }
-        });
-
+        chatRoomIsRead = intent.getBooleanExtra("chatRead", false);
+        boolean notifyBloqued = intent.getBooleanExtra("notifyBloqued", false);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -114,56 +99,87 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         selfUserId = SingletonUser.getUser().getSerializableUser().getId();
-        //Log.d("ChatRoom",selfUserId + " " + otherUser.getFbId());
 
-        mAdapter = new ChatRoomThreadAdapter(this, messageArrayList, selfUserId);
+        titleChat.setText(otherUser.getName());
+        if(notifyBloqued){
+            AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        recyclerView.setAdapter(mAdapter);
-
-        backgroundNoMessages = (RelativeLayout) findViewById(R.id.contentNoMessages);
-
-        oldestKey = "";
-        ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                count = dataSnapshot.getChildrenCount();
-                Log.d(TAG, Long.toString(count));
-
-                backgroundNoMessages.setVisibility(View.INVISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-
-                if (count == 0 && messageArrayList.size() == 0) {
-                    backgroundNoMessages.setVisibility(View.VISIBLE);
-                    mAdapter.setLoadEarlierMsgs(false);
-                    recyclerView.setVisibility(View.INVISIBLE);
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    DataBase.postReadNotificationBloquedByOtherUser(otherUser.getId(),SingletonUser.getUser().getSerializableUser().getId());
+                    onBackPressed();
+                    finish();
                 }
 
-                if (count > 0 && messageArrayList.size() == 0) {
-                    fetchHistory();
-                } else {
-                    mAdapter.setLoadEarlierMsgs(false);
+            }).show();
+        }else {
+            Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);
+
+            profileImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(ChatRoomActivity.this, ViewProfileActivity.class);
+                    i.putExtra("user", otherUser);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(ChatRoomActivity.this,
+                                    profileImageView,
+                                    ViewCompat.getTransitionName(profileImageView));
+
+                    startActivity(i, options.toBundle());
+                }
+            });
+
+            mAdapter = new ChatRoomThreadAdapter(this, messageArrayList, selfUserId);
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            recyclerView.setAdapter(mAdapter);
+
+            backgroundNoMessages = (RelativeLayout) findViewById(R.id.contentNoMessages);
+
+            oldestKey = "";
+            ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    count = dataSnapshot.getChildrenCount();
+                    Log.d(TAG, Long.toString(count));
+
+                    backgroundNoMessages.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                    if (count == 0 && messageArrayList.size() == 0) {
+                        backgroundNoMessages.setVisibility(View.VISIBLE);
+                        mAdapter.setLoadEarlierMsgs(false);
+                        recyclerView.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (count > 0 && messageArrayList.size() == 0) {
+                        fetchHistory();
+                    } else {
+                        mAdapter.setLoadEarlierMsgs(false);
+                    }
+
                 }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            };
+            databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).addValueEventListener(messagesCountValueEventListener);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).addValueEventListener(messagesCountValueEventListener);
-
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage();
-                //loadMoreHistory();
-            }
-        });
+            btnSend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendMessage();
+                    //loadMoreHistory();
+                }
+            });
+        }
     }
 
     private void postReadMessage(String key, Message map) {
