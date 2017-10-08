@@ -22,6 +22,7 @@ import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
 
 import static linkup.linkup.R.string.block;
+import static linkup.linkup.R.string.report;
 
 
 public class DataBase {
@@ -104,51 +105,10 @@ public class DataBase {
         databaseReference.child("blocks").child(uIdBlocking).child(uIdBlocked).child("by").setValue(uIdBlocking);
         databaseReference.child("blocks").child(uIdBlocked).child(uIdBlocking).child("by").setValue(uIdBlocking);
 
-        Block block = new Block(false,uIdBlocking);
+        Block block = new Block(false, uIdBlocking);
 
         databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").setValue(block);
         databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").setValue(block);
-
-        /*
-        databaseReference.child("blocks").child(uIdBlocking).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-                    Map<String, Object> update = new HashMap<String, Object>();
-                    update.put(uIdBlocked, true);
-                    dataSnapshot.getRef().updateChildren(update);
-                } else {
-                    dataSnapshot.getRef().child(uIdBlocked).setValue(true);
-
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        */
-        /*
-        databaseReference.child("messages").child(uIdBlocking).child(uIdBlocked).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-                    dataSnapshot.getRef().removeValue();
-                    databaseReference.child("messages").child(uIdBlocked).child(uIdBlocking).child("blocked").setValue(true);
-                }
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
 
     }
 

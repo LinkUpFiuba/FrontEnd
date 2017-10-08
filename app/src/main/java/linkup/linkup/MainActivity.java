@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,9 +38,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Iterator;
+
 import linkup.linkup.Utils.GPS;
 import linkup.linkup.Utils.IGPSActivity;
 import linkup.linkup.adapter.SwipeDeckAdapter;
+import linkup.linkup.model.Message;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
@@ -156,12 +160,10 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             toolbar.setTitle(getResources().getString(R.string.icon_game));
         }
 
-
+        registerOnNewActivityNotify();
     }
 
-    public void iconChatsToolbarSetAtention() {
-        //icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_black_24dp);
-    }
+
 
     private void selectItem(String menuItem) {
         if (menuItem == getResources().getString(R.string.nav_item_link)) {
@@ -247,14 +249,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
-            /*case R.id.icon_game:
-                changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
-                toolbar.setTitle(getResources().getString(R.string.icon_game));
-                return true;
-            case R.id.icon_chats:
-                changeFragment(chatsFragment, EnterAnimation.FROM_RIGHT, CHATS_FRAGMENT);
-                toolbar.setTitle(getResources().getString(R.string.icon_chats));
-                return true;*/
         }
         return super.onOptionsItemSelected(item);
     }
@@ -404,25 +398,19 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
 
     }
 
-
-    private void showNewMatchActivity(String userId) {
-        Log.d(TAG, userId);
-
+    public void registerOnNewActivityNotify(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
-        ref.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.child("matches").child(SingletonUser.getUser().getSerializableUser().getId()).orderByChild("read").equalTo(false).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user;
-                if (dataSnapshot.exists()) {
-                    user = (User) dataSnapshot.getValue(User.class);
-                    SerializableUser userSerial = user.getSerializableUser();
-                    Log.d(TAG, userSerial.getName() + userSerial.getAge() + userSerial.getPhotoURL());
-
-                    Intent intent = new Intent(getApplicationContext(), NewMatchActivity.class);
-                    intent.putExtra("user", user.getSerializableUser());
-                    startActivity(intent);
+                final int size = (int) dataSnapshot.getChildrenCount();
+                Log.d(TAG, String.valueOf(size));
+                if(size > 0){
+                    iconChatsToolbarSetAtention();
+                }else {
+                    iconChatsToolbarUnSetAtention();
                 }
             }
 
@@ -431,6 +419,52 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
 
             }
         });
-    }
 
+        ref.child("messages").child(SingletonUser.getUser().getSerializableUser().getId()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Message msg = snapshot.getValue(Message.class);
+                    if(!msg.isRead()) {
+                        iconChatsToolbarSetAtention();
+                        return;
+                    }
+                }
+                iconChatsToolbarUnSetAtention();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Message msg = snapshot.getValue(Message.class);
+                    if(!msg.isRead()) {
+                        iconChatsToolbarSetAtention();
+                        return;
+                    }
+                }
+                iconChatsToolbarUnSetAtention();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void iconChatsToolbarSetAtention() {
+        icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_black_24dp);
+    }
+    public void iconChatsToolbarUnSetAtention() {
+        icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_white_24dp);
+    }
 }

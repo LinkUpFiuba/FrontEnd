@@ -235,12 +235,12 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
     }
-public void startLoginActivity(){
+
+    public void startLoginActivity(){
     Intent i = new Intent(this, LoginActivity.class);
     startActivity(i);
     finish();
 }
-
 
     public void getFbInformationForUser(final User user){
         GraphRequest request = GraphRequest.newMeRequest(
