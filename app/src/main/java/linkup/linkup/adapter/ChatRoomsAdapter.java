@@ -60,17 +60,26 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ChatRoom chatRoom = chatRoomArrayList.get(position);
-        Picasso.with(mContext).load(chatRoom.getUser().getPhotoURL()).fit().centerCrop().into(holder.profileImageView);
         holder.name.setText(chatRoom.getUser().getName());
-        holder.message.setText(chatRoom.getLastMessage());
 
-        //Ahow
-        if (chatRoom.getUnreadCount() > 0) {
-            holder.count.setText(String.valueOf(chatRoom.getUnreadCount()));
+        if(chatRoom.isNotifyBloquedByOtherUser() == false){
+            Picasso.with(mContext).load(chatRoom.getUser().getPhotoURL()).fit().centerCrop().into(holder.profileImageView);
+            holder.message.setText(chatRoom.getLastMessage());
+
+            //Ahow
+            if (chatRoom.getUnreadCount() > 0) {
+                holder.count.setText(String.valueOf(chatRoom.getUnreadCount()));
+                holder.count.setVisibility(View.VISIBLE);
+            } else {
+                holder.count.setVisibility(View.GONE);
+            }
+        }else {
+            holder.message.setText("Has sido bloqueado por el usuario");
+            //holder.count.setVisibility(View.GONE);
+            holder.count.setText("!");
             holder.count.setVisibility(View.VISIBLE);
-        } else {
-            holder.count.setVisibility(View.GONE);
         }
+
 
         //holder.timestamp.setText(DateHelper.convertTimeToDateString(mContext, chatRoom.getTimestampLong(), true,true,true,false,false,true,false));
     }

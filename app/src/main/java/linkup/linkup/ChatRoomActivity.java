@@ -93,6 +93,14 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         chatRoomIsRead = intent.getBooleanExtra("chatRead", false);
         boolean notifyBloqued = intent.getBooleanExtra("notifyBloqued", false);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        selfUserId = SingletonUser.getUser().getSerializableUser().getId();
+
+        titleChat.setText(otherUser.getName());
         if(notifyBloqued){
             AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
             builder.setCancelable(false);
@@ -106,83 +114,72 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                 }
 
             }).show();
+        }else {
+            Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);
+
+            profileImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(ChatRoomActivity.this, ViewProfileActivity.class);
+                    i.putExtra("user", otherUser);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(ChatRoomActivity.this,
+                                    profileImageView,
+                                    ViewCompat.getTransitionName(profileImageView));
+
+                    startActivity(i, options.toBundle());
+                }
+            });
+
+            mAdapter = new ChatRoomThreadAdapter(this, messageArrayList, selfUserId);
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            recyclerView.setAdapter(mAdapter);
+
+            backgroundNoMessages = (RelativeLayout) findViewById(R.id.contentNoMessages);
+
+            oldestKey = "";
+            ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    count = dataSnapshot.getChildrenCount();
+                    Log.d(TAG, Long.toString(count));
+
+                    backgroundNoMessages.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                    if (count == 0 && messageArrayList.size() == 0) {
+                        backgroundNoMessages.setVisibility(View.VISIBLE);
+                        mAdapter.setLoadEarlierMsgs(false);
+                        recyclerView.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (count > 0 && messageArrayList.size() == 0) {
+                        fetchHistory();
+                    } else {
+                        mAdapter.setLoadEarlierMsgs(false);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            };
+            databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).addValueEventListener(messagesCountValueEventListener);
+
+            btnSend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendMessage();
+                    //loadMoreHistory();
+                }
+            });
         }
-
-        titleChat.setText(otherUser.getName());
-
-        Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);
-
-        profileImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ChatRoomActivity.this, ViewProfileActivity.class);
-                i.putExtra("user", otherUser);
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(ChatRoomActivity.this,
-                                profileImageView,
-                                ViewCompat.getTransitionName(profileImageView));
-
-                startActivity(i, options.toBundle());
-            }
-        });
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        selfUserId = SingletonUser.getUser().getSerializableUser().getId();
-        //Log.d("ChatRoom",selfUserId + " " + otherUser.getFbId());
-
-        mAdapter = new ChatRoomThreadAdapter(this, messageArrayList, selfUserId);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        recyclerView.setAdapter(mAdapter);
-
-        backgroundNoMessages = (RelativeLayout) findViewById(R.id.contentNoMessages);
-
-        oldestKey = "";
-        ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                count = dataSnapshot.getChildrenCount();
-                Log.d(TAG, Long.toString(count));
-
-                backgroundNoMessages.setVisibility(View.INVISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-
-                if (count == 0 && messageArrayList.size() == 0) {
-                    backgroundNoMessages.setVisibility(View.VISIBLE);
-                    mAdapter.setLoadEarlierMsgs(false);
-                    recyclerView.setVisibility(View.INVISIBLE);
-                }
-
-                if (count > 0 && messageArrayList.size() == 0) {
-                    fetchHistory();
-                } else {
-                    mAdapter.setLoadEarlierMsgs(false);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).addValueEventListener(messagesCountValueEventListener);
-
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage();
-                //loadMoreHistory();
-            }
-        });
     }
 
     private void postReadMessage(String key, Message map) {
