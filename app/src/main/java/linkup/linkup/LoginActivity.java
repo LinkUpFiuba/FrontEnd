@@ -134,8 +134,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Fallo la autentificacion.",
-                                    Toast.LENGTH_LONG).show();
+
+                            Exception exception=task.getException();
+                            String message=exception.getMessage();
+                            if(message.equals("The user account has been disabled by an administrator.")){
+                                Toast.makeText(LoginActivity.this, "Tu cuenta ha sido bloqueada por un administrador debido a denuncias realizadas por otros usuarios.",
+                                        Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(LoginActivity.this, "Fallo la autentificacion.",
+                                        Toast.LENGTH_LONG).show();
+                            }
                             LoginManager.getInstance().logOut();
                             hideProgressDialog();
 
