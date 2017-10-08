@@ -116,6 +116,17 @@ public class ChatsFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
+    private void removeUserFromView(String chatRoomId) {
+        for (ChatRoom cr : chatRoomArrayList) {
+            if (cr.getId().equals(chatRoomId)) {
+                int index = chatRoomArrayList.indexOf(cr);
+                chatRoomArrayList.remove(index);
+                break;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
     private void updateUnreadCount(String chatRoomId, int unreadCount) {
         for (ChatRoom cr : chatRoomArrayList) {
             if (cr.getId().equals(chatRoomId)) {
@@ -157,7 +168,7 @@ public class ChatsFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 String key = dataSnapshot.getKey();
                 Match match = dataSnapshot.getValue(Match.class);
-                Log.d(TAG, key);
+                //Log.d(TAG, key);
                 if(match.getBlock() == null){
                     fetchUserInformation(key, false);
                 }else {
@@ -169,6 +180,17 @@ public class ChatsFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+                String key = dataSnapshot.getKey();
+                Match match = dataSnapshot.getValue(Match.class);
+                if(match.getBlock() != null) {
+                    //Si no soy yo el que bloquea y todavia no lo lei
+                    if((!match.getBlock().getBy().equals(SingletonUser.getUser().getSerializableUser().getId())) && match.getBlock().isRead() == false){
+                        //TODO: No mostrar la foto de perfil del usuario, ni informacion de ultimo mensaje y unreadCount
+                    }else{
+                        //TODO: Quitar al usuario de la lista
+                        removeUserFromView(key);
+                    }
+                }
             }
 
             @Override
