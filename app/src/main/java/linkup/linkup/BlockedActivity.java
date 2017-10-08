@@ -28,7 +28,7 @@ public class BlockedActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_match);
+        setContentView(R.layout.activity_blocked);
 
         Button btn_blocked = (Button) findViewById(R.id.btn_blocked);
         btn_blocked.setOnClickListener(new View.OnClickListener() {

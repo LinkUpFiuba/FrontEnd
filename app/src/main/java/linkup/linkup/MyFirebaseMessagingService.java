@@ -28,10 +28,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
         notificationUtils.playNotificationSound();
-        processNewMatchReceived(remoteMessage);
+        processNewNotification(remoteMessage);
     }
 
-    private void processNewMatchReceived(RemoteMessage message) {
+    private void processNewNotification(RemoteMessage message) {
         RemoteMessage.Notification notification = message.getNotification();
         String notificationBody = "";
         String notificationTitle = "";
@@ -44,7 +44,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         Map<String, String> data = message.getData();
-
+        String type = data.get("type");
+        if(type!=null) {
+            if (type.equals("disable")) {
+                processNewDisableNotification(data, notificationBody, notificationTitle, notifitacionTimestamp);
+            }
+            if (type.equals("match")) {
+                processNewMatchNotification(data, notificationBody, notificationTitle, notifitacionTimestamp);
+            }
+            if (type.equals("message")) {
+                //TODO
+            }
+        }
+    }
+    private void processNewMatchNotification(Map<String, String> data,String notificationBody,String notificationTitle,String notifitacionTimestamp){
         String userId = data.get("userId");
         String photoUrl = data.get("photo");
         String name = data.get("name");
@@ -67,10 +80,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             showNotificationMessageWithBigImage(getApplicationContext(), notificationTitle, notificationBody, notifitacionTimestamp, resultIntent,photoUrl);
         }
     }
+    private void processNewDisableNotification(Map<String, String> data,String notificationBody,String notificationTitle,String notifitacionTimestamp){
+        Intent resultIntent = new Intent(getApplicationContext(), BlockedActivity.class);
+        showNotificationMessage(getApplicationContext(), notificationTitle, notificationBody, notifitacionTimestamp, resultIntent);
+        startActivity(resultIntent);
 
+    }
     private void showNewMatchActivity(Map<String, String> data) {
-        String userId = data.get("Uid");
-        Log.d(TAG, userId);
+        String userId = data.get("userId");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
