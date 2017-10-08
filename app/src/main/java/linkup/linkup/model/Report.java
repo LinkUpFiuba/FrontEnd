@@ -18,7 +18,7 @@ public class Report {
         this.idReported=idReported;
         this.idReporting=idReporting;
         this.message=message;
-        this.state="pending";
+        this.state="new";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.timeStamp=dateFormat.format(new Date());
     }
