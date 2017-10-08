@@ -76,6 +76,7 @@ public class ChatsFragment extends Fragment {
                 ChatRoom chatRoom = chatRoomArrayList.get(position);
                 Intent intent = new Intent(context, ChatRoomActivity.class);
                 intent.putExtra("chatRead", chatRoom.isRead());
+                intent.putExtra("notifyBloqued", chatRoom.isNotifyBloquedByOtherUser());
                 intent.putExtra("user", chatRoom.getUser());
                 startActivity(intent);
             }
@@ -158,7 +159,11 @@ public class ChatsFragment extends Fragment {
                 Match match = dataSnapshot.getValue(Match.class);
                 Log.d(TAG, key);
                 if(match.getBlock() == null){
-                    fetchUserInformation(key, match.isRead());
+                    fetchUserInformation(key, false);
+                }else {
+                    if((!match.getBlock().getBy().equals(SingletonUser.getUser().getSerializableUser().getId())) && match.getBlock().isRead() == false){
+                        fetchUserInformation(key, true);
+                    }
                 }
             }
 
@@ -180,7 +185,7 @@ public class ChatsFragment extends Fragment {
         });
     }
 
-    private void fetchUserInformation(String key, boolean read) {
+    private void fetchUserInformation(String key, final boolean bloqued) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
@@ -198,6 +203,7 @@ public class ChatsFragment extends Fragment {
                     cr.setUser(userSerial);
                     cr.setLastMessage("");
                     cr.setUnreadCount(0);
+                    cr.setNotifyBloquedByOtherUser(bloqued);
                     chatRoomArrayList.add(cr);
 
                     mAdapter.notifyDataSetChanged();
@@ -291,36 +297,5 @@ public class ChatsFragment extends Fragment {
         });
     }
 
-    /**
-     * Ahora esta hardCodeado pero luego debe hacer el fetch
-     * fetching the chat rooms by making http call
-     */
-    private void fetchChatRoomsExample() {
 
-        SerializableUser user = new SerializableUser("1", "1", "German", "", "", "", "", "", "", "", "", "");
-
-        ChatRoom cr = new ChatRoom();
-        cr.setId("1");
-        cr.setUser(user);
-        cr.setLastMessage("Hola camila!");
-        cr.setUnreadCount(0);
-
-        chatRoomArrayList.add(cr);
-
-        ChatRoom cr2 = new ChatRoom();
-        cr2.setId("2");
-        cr2.setUser(user);
-        cr2.setLastMessage("Hola camila!");
-        cr2.setUnreadCount(1);
-
-        chatRoomArrayList.add(cr2);
-
-        ChatRoom cr3 = new ChatRoom();
-        cr3.setId("3");
-        cr3.setUser(user);
-        cr3.setLastMessage("chau loco");
-        cr3.setUnreadCount(2);
-
-        chatRoomArrayList.add(cr3);
-    }
 }

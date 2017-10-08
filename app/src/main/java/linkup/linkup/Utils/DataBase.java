@@ -21,6 +21,8 @@ import linkup.linkup.model.Report;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
 
+import static linkup.linkup.R.string.block;
+
 
 public class DataBase {
 
@@ -89,6 +91,11 @@ public class DataBase {
             }
         });
 
+    }
+    public static void postReadNotificationBloquedByOtherUser(final String uIdBlocking,final String uIdBlocked){
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").child("read").setValue(true);
+        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").child("read").setValue(true);
     }
     public static void saveBlock(final String uIdBlocking,final String uIdBlocked) {
 

@@ -1,10 +1,12 @@
 package linkup.linkup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +30,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import linkup.linkup.Utils.DataBase;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
 import linkup.linkup.model.ChatRoom;
@@ -86,9 +89,25 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         messageArrayList = new ArrayList<>();
 
         Intent intent = getIntent();
-        chatRoomIsRead = intent.getBooleanExtra("chatRead", false);
-
         otherUser = intent.getParcelableExtra("user");
+        chatRoomIsRead = intent.getBooleanExtra("chatRead", false);
+        boolean notifyBloqued = intent.getBooleanExtra("notifyBloqued", false);
+
+        if(notifyBloqued){
+            AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    DataBase.postReadNotificationBloquedByOtherUser(otherUser.getId(),SingletonUser.getUser().getSerializableUser().getId());
+                    onBackPressed();
+                    finish();
+                }
+
+            }).show();
+        }
+
         titleChat.setText(otherUser.getName());
 
         Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);

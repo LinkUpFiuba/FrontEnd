@@ -4,6 +4,15 @@ import java.io.Serializable;
 
 public class Match implements Serializable {
     boolean read;
+    Block block;
+
+    public Block getBlock() {
+        return block;
+    }
+
+    public void setBlock(Block block) {
+        this.block = block;
+    }
 
     public boolean isRead() {
         return read;

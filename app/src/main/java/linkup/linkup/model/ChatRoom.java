@@ -1,8 +1,11 @@
 package linkup.linkup.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 
 public class ChatRoom implements Serializable {
+
     String id, lastMessage;
     SerializableUser user;
     boolean read = false;
@@ -59,5 +62,18 @@ public class ChatRoom implements Serializable {
 
     public void setUnreadCount(int unreadCount) {
         this.unreadCount = unreadCount;
+    }
+
+    @Exclude
+    boolean notifyBloquedByOtherUser = false;
+
+    @Exclude
+    public boolean isNotifyBloquedByOtherUser() {
+        return notifyBloquedByOtherUser;
+    }
+
+    @Exclude
+    public void setNotifyBloquedByOtherUser(boolean notifyBloquedByOtherUser) {
+        this.notifyBloquedByOtherUser = notifyBloquedByOtherUser;
     }
 }
