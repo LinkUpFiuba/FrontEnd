@@ -55,7 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng userPosition = new LatLng(user.location.latitude, user.location.longitude);
 
         mMap.addMarker(new MarkerOptions().position(userPosition));
-        Circle circle=mMap.addCircle(new CircleOptions().center(userPosition).radius(Integer.valueOf(distance)*1000).strokeColor(R.color.primary_dark_traslucent).fillColor(R.color.primary_light));
+        Circle circle=mMap.addCircle(new CircleOptions().center(userPosition).radius(Integer.valueOf(distance)*1000).fillColor(Color.argb(50, 0, 50, 240)).strokeColor(Color.argb(50, 0, 50, 240)));
+
         int zoom=getZoomLevel(circle);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition,zoom));
         uiSettings = mMap.getUiSettings();
