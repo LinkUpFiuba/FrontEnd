@@ -170,11 +170,16 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                 }
             });
 
-            databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("block").child("read").equalTo(true).addValueEventListener(new ValueEventListener() {
+            databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("block").child("read").addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    youHasBennBloqued();
+                    if(dataSnapshot.exists()){
+                        Boolean read = (Boolean) dataSnapshot.getValue();
+                        if(read == false){
+                            youHasBennBloqued();
+                        }
+                    }
                 }
 
                 @Override
