@@ -269,8 +269,12 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         message.setMessage(messageToSend);
         message.setUserId(selfUserId);
 
-        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).push().setValue(message);
-        databaseReference1.child("messages").child(otherUser.getId()).child(selfUserId).push().setValue(message);
+        DatabaseReference ref = databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).push();
+        String key = ref.getKey();
+        Log.d(TAG,key);
+        ref.setValue(message);
+
+        databaseReference1.child("messages").child(otherUser.getId()).child(selfUserId).child(key).setValue(message);
     }
 
     private void addUIMessage(Message message) {
