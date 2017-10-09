@@ -58,7 +58,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
     private void processNewMatchNotification(Map<String, String> data,String notificationBody,String notificationTitle,String notifitacionTimestamp){
-        String userId = data.get("userId");
+        String userId = data.get("Uid");
         String photoUrl = data.get("photo");
         String name = data.get("name");
         Log.d(TAG, "name " + name + " photo " + photoUrl);
@@ -87,7 +87,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
     private void showNewMatchActivity(Map<String, String> data) {
-        String userId = data.get("userId");
+        String userId = data.get("Uid");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
