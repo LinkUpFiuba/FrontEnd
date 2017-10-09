@@ -34,6 +34,7 @@ import linkup.linkup.Utils.DataBase;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
 import linkup.linkup.model.ChatRoom;
+import linkup.linkup.model.Match;
 import linkup.linkup.model.Message;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
@@ -102,18 +103,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
 
         titleChat.setText(otherUser.getName());
         if(notifyBloqued){
-            AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
-            builder.setCancelable(false);
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    DataBase.postReadNotificationBloquedByOtherUser(otherUser.getId(),SingletonUser.getUser().getSerializableUser().getId());
-                    onBackPressed();
-                    finish();
-                }
-
-            }).show();
+            youHasBennBloqued();
         }else {
             Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);
 
@@ -179,7 +169,35 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                     //loadMoreHistory();
                 }
             });
+
+            databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("block").child("read").equalTo(true).addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    youHasBennBloqued();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
+    }
+
+    private void youHasBennBloqued() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                DataBase.postReadNotificationBloquedByOtherUser(otherUser.getId(), SingletonUser.getUser().getSerializableUser().getId());
+                onBackPressed();
+                finish();
+            }
+
+        }).show();
     }
 
     private void postReadMessage(String key, Message map) {
