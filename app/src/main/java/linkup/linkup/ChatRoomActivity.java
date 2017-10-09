@@ -359,7 +359,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     public void postLikeMessage(Message message) {
         Log.d(TAG, "posteo mensaje like");
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(message.getKey()).child("liked").setValue(true);
-        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(message.getKey()).child("liked").setValue(true);
+        databaseReference1.child("messages").child(otherUser.getId()).child(selfUserId).child(message.getKey()).child("liked").setValue(true);
     }
 
     @Override
