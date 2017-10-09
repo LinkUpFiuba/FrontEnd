@@ -103,6 +103,19 @@ public class ChatsFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
+    private void updateBloquedInfo(String chatRoomId) {
+        for (ChatRoom cr : chatRoomArrayList) {
+            if (cr.getId().equals(chatRoomId)) {
+                int index = chatRoomArrayList.indexOf(cr);
+                cr.setNotifyBloquedByOtherUser(true);
+                chatRoomArrayList.remove(index);
+                chatRoomArrayList.add(index, cr);
+                break;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
     private void updateRowUnreadChatRoom(String chatRoomId, boolean read) {
         for (ChatRoom cr : chatRoomArrayList) {
             if (cr.getId().equals(chatRoomId)) {
@@ -185,9 +198,8 @@ public class ChatsFragment extends Fragment {
                 if(match.getBlock() != null) {
                     //Si no soy yo el que bloquea y todavia no lo lei
                     if((!match.getBlock().getBy().equals(SingletonUser.getUser().getSerializableUser().getId())) && match.getBlock().isRead() == false){
-                        //TODO: No mostrar la foto de perfil del usuario, ni informacion de ultimo mensaje y unreadCount
+                        updateBloquedInfo(key);
                     }else{
-                        //TODO: Quitar al usuario de la lista
                         removeUserFromView(key);
                     }
                 }
@@ -243,6 +255,7 @@ public class ChatsFragment extends Fragment {
 
             }
         });
+
     }
 
     public void fetchLastMessageData(final ChatRoom cr) {
