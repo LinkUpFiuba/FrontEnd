@@ -393,7 +393,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     public void postUnLikeMessage(Message message) {
         Log.d(TAG, "posteo mensaje unlike");
         databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(message.getKey()).child("liked").setValue(false);
-        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).child(message.getKey()).child("liked").setValue(false);
+        databaseReference1.child("messages").child(otherUser.getId()).child(selfUserId).child(message.getKey()).child("liked").setValue(false);
     }
 
     @Override
