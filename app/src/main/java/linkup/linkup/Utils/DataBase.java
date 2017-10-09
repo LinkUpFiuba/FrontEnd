@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -105,10 +106,23 @@ public class DataBase {
         databaseReference.child("blocks").child(uIdBlocking).child(uIdBlocked).child("by").setValue(uIdBlocking);
         databaseReference.child("blocks").child(uIdBlocked).child(uIdBlocking).child("by").setValue(uIdBlocking);
 
-        Block block = new Block(false, uIdBlocking);
 
-        databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").setValue(block);
-        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").setValue(block);
+
+        databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Block block = new Block(false, uIdBlocking);
+                    databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").setValue(block);
+                    databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").setValue(block);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
