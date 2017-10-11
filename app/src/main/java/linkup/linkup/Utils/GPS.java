@@ -92,7 +92,7 @@ public class GPS {
         }return true;
     }
     public void resumeGPS() {
-        if(!checkForPermission()&&checkIfLocationIsEnabled()){
+        if(!(checkForPermission()&&checkIfLocationIsEnabled())){
             return;
         }
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_INTERVAL_MILISECONDS, MIN_DISTANCE_METERS, mlocListener);
