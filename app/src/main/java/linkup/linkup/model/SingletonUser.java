@@ -26,7 +26,7 @@ public class SingletonUser {
     }
 
     private static synchronized User getSync() {
-        if(instance == null) instance = null;
+        if(instance == null) instance = new User();
         return instance;
     }
     private static synchronized String getSyncToken() {
@@ -34,7 +34,6 @@ public class SingletonUser {
         return token;
     }
     private SingletonUser(){
-        // here you can directly access the Application context calling
         App.get();
     }
 }
