@@ -281,10 +281,13 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     public void locationChanged(double longitude, double latitude) {
         User user = SingletonUser.getUser();
-        UserLocation userLocation = user.location;
-        userLocation.longitude = longitude;
-        userLocation.latitude = latitude;
-        updateUser(user, false);
+        if(user != null){
+            UserLocation userLocation = user.location;
+            userLocation.longitude = longitude;
+            userLocation.latitude = latitude;
+            updateUser(user, false);
+        }
+
     }
 
     private void createAndShowPermissionsAlertDialog(){

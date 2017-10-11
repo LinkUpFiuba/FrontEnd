@@ -10,4 +10,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class UserLocation {
 
     public double longitude,latitude;
+    public UserLocation(){
+        longitude = 0;
+        latitude = 0;
+    }
 }
