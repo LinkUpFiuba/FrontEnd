@@ -57,10 +57,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     public static final String LINK_FRAGMENT = "LINK_FRAGMENT";
     private static final String TAG = "MainActivity";
     private static final String PREFS_FILE_NAME = "PREFS_FILE_NAME";
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-
-    private FirebaseAuth mAuth;
-
+    
     private Toolbar toolbar;
     private AlertDialog gpsAlertDialog;
     private AlertDialog permissionsAlertDialog;
@@ -81,88 +78,89 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser currentUser = mAuth.getCurrentUser();
-        gps = new GPS(this);
-        linkFragment = new LinkFragment();
-        chatsFragment = new ChatsFragment();
-
-        setContentView(R.layout.activity_main);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        User user = SingletonUser.getUser();
+        if (user == null) {
+            startLoginActivity();
+            return;
+        } else {
 
 
-        final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            // Poner ícono del drawer toggle
-            ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle(getResources().getString(R.string.icon_game));
-        }
+            gps = new GPS(this);
+            linkFragment = new LinkFragment();
+            chatsFragment = new ChatsFragment();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            setContentView(R.layout.activity_main);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-            View headerview = navigationView.getHeaderView(0);
-            LinearLayout navigationDrawerHeaderContainer = (LinearLayout) headerview.findViewById(R.id.linearLayoutNavHeader);
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
-            User user = SingletonUser.getUser();
-            if(user==null){
-                startLoginActivity();
-                return;
+
+            final ActionBar ab = getSupportActionBar();
+            if (ab != null) {
+                // Poner ícono del drawer toggle
+                ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+                ab.setDisplayHomeAsUpEnabled(true);
+                ab.setTitle(getResources().getString(R.string.icon_game));
             }
-            ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
-            Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
 
-            TextView menu_name_age = (TextView) headerview.findViewById(R.id.menu_name_age);
-            menu_name_age.setText(user.name + ", " + user.age);
-            TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
-            menu_work.setText(user.work);
-            TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
-            menu_education.setText(user.education);
+            drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-            navigationDrawerHeaderContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startMyProfileActivity();
-                }
-            });
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            if (navigationView != null) {
+                setupDrawerContent(navigationView);
+                View headerview = navigationView.getHeaderView(0);
+                LinearLayout navigationDrawerHeaderContainer = (LinearLayout) headerview.findViewById(R.id.linearLayoutNavHeader);
 
-            ImageButton icGameToolbar = (ImageButton) findViewById(R.id.game_icon_toolbar);
-            icGameToolbar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
-                    toolbar.setTitle(getResources().getString(R.string.icon_game));
-                }
-            });
 
-            icChatsToolbar = (ImageButton) findViewById(R.id.chats_icon_toolbar);
-            icChatsToolbar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_white_24dp);
-                    changeFragment(chatsFragment, EnterAnimation.FROM_RIGHT, CHATS_FRAGMENT);
-                    toolbar.setTitle(getResources().getString(R.string.icon_chats));
-                }
-            });
-            iconChatsToolbarSetAtention();
+                ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
+                Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
+
+                TextView menu_name_age = (TextView) headerview.findViewById(R.id.menu_name_age);
+                menu_name_age.setText(user.name + ", " + user.age);
+                TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
+                menu_work.setText(user.work);
+                TextView menu_education = (TextView) headerview.findViewById(R.id.menu_education);
+                menu_education.setText(user.education);
+
+                navigationDrawerHeaderContainer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startMyProfileActivity();
+                    }
+                });
+
+                ImageButton icGameToolbar = (ImageButton) findViewById(R.id.game_icon_toolbar);
+                icGameToolbar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeFragment(linkFragment, EnterAnimation.FROM_LEFT, LINK_FRAGMENT);
+                        toolbar.setTitle(getResources().getString(R.string.icon_game));
+                    }
+                });
+
+                icChatsToolbar = (ImageButton) findViewById(R.id.chats_icon_toolbar);
+                icChatsToolbar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_white_24dp);
+                        changeFragment(chatsFragment, EnterAnimation.FROM_RIGHT, CHATS_FRAGMENT);
+                        toolbar.setTitle(getResources().getString(R.string.icon_chats));
+                    }
+                });
+                iconChatsToolbarSetAtention();
+            }
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.contentFragment, linkFragment, LINK_FRAGMENT)
+                        .commit();
+                toolbar.setTitle(getResources().getString(R.string.icon_game));
+            }
+
+            registerOnNewActivityNotify();
         }
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.contentFragment, linkFragment, LINK_FRAGMENT)
-                    .commit();
-            toolbar.setTitle(getResources().getString(R.string.icon_game));
-        }
-
-        registerOnNewActivityNotify();
     }
-
 
 
     private void selectItem(String menuItem) {
@@ -242,7 +240,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -281,7 +278,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     public void locationChanged(double longitude, double latitude) {
         User user = SingletonUser.getUser();
-        if(user != null){
+        if (user != null) {
             UserLocation userLocation = user.location;
             userLocation.longitude = longitude;
             userLocation.latitude = latitude;
@@ -290,13 +287,13 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
 
     }
 
-    private void createAndShowPermissionsAlertDialog(){
-        if(permissionsAlertDialog!=null&&permissionsAlertDialog.isShowing()){
+    private void createAndShowPermissionsAlertDialog() {
+        if (permissionsAlertDialog != null && permissionsAlertDialog.isShowing()) {
             return;
         }
-        AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage("Para poder usar esta aplicacion debes darle permiso para usar tu localización.");
-        final Activity thisActivity=this;
+        final Activity thisActivity = this;
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
@@ -306,13 +303,14 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             }
         });
         builder.setCancelable(false);
-        permissionsAlertDialog=builder.create();
+        permissionsAlertDialog = builder.create();
         permissionsAlertDialog.show();
 
     }
+
     @Override
     public void displayGPSSettingsDialog() {
-    //https://medium.com/@muthuraj57/handling-runtime-permissions-in-android-d9de2e18d18f
+        //https://medium.com/@muthuraj57/handling-runtime-permissions-in-android-d9de2e18d18f
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             // Show an expanation to the user *asynchronously* -- don't block
@@ -321,7 +319,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             createAndShowPermissionsAlertDialog();
 
         } else {
-            if(isFirstTimeAskingPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            if (isFirstTimeAskingPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 firstTimeAskingPermission(this,
                         Manifest.permission.ACCESS_FINE_LOCATION, false);
                 // No explanation needed, we can request the permission.
@@ -340,35 +338,36 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
 
     }
 
-    public static void firstTimeAskingPermission(Context context, String permission, boolean isFirstTime){
+    public static void firstTimeAskingPermission(Context context, String permission, boolean isFirstTime) {
         SharedPreferences sharedPreference = context.getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE);
         sharedPreference.edit().putBoolean(permission, isFirstTime).apply();
     }
 
-    public static boolean isFirstTimeAskingPermission(Context context, String permission){
+    public static boolean isFirstTimeAskingPermission(Context context, String permission) {
         return context.getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE).getBoolean(permission, true);
     }
+
     @Override
     public void displayGPSEnabledDialog() {
-        if(gpsAlertDialog!=null&&gpsAlertDialog.isShowing()){
+        if (gpsAlertDialog != null && gpsAlertDialog.isShowing()) {
             return;
         }
-        AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
-        final Context context=getBaseContext();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        final Context context = getBaseContext();
         builder.setMessage("Para poder usar esta aplicacion debe tener habilitada la localización.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                 // TODO Auto-generated method stub
-                Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 context.startActivity(myIntent);
                 //get gps
             }
         });
         builder.setCancelable(false);
-        gpsAlertDialog=builder.create();
+        gpsAlertDialog = builder.create();
         gpsAlertDialog.show();
-        if(this.linkFragment!=null &&this.linkFragment.isTaskRunning()) {
+        if (this.linkFragment != null && this.linkFragment.isTaskRunning()) {
             this.linkFragment.stopTask();
         }
     }
@@ -401,7 +400,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
 
     }
 
-    public void registerOnNewActivityNotify(){
+    public void registerOnNewActivityNotify() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
 
@@ -410,9 +409,9 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final int size = (int) dataSnapshot.getChildrenCount();
                 Log.d(TAG, String.valueOf(size));
-                if(size > 0){
+                if (size > 0) {
                     iconChatsToolbarSetAtention();
-                }else {
+                } else {
                     iconChatsToolbarUnSetAtention();
                 }
             }
@@ -428,7 +427,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message msg = snapshot.getValue(Message.class);
-                    if(!msg.isRead()) {
+                    if (!msg.isRead()) {
                         iconChatsToolbarSetAtention();
                         return;
                     }
@@ -440,7 +439,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message msg = snapshot.getValue(Message.class);
-                    if(!msg.isRead()) {
+                    if (!msg.isRead()) {
                         iconChatsToolbarSetAtention();
                         return;
                     }
@@ -464,9 +463,11 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             }
         });
     }
+
     public void iconChatsToolbarSetAtention() {
         icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_black_24dp);
     }
+
     public void iconChatsToolbarUnSetAtention() {
         icChatsToolbar.setImageResource(R.drawable.ic_chat_bubble_white_24dp);
     }
