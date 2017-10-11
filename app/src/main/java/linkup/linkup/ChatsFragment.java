@@ -302,9 +302,11 @@ public class ChatsFragment extends Fragment {
         ref.child("matches").child(SingletonUser.getUser().getSerializableUser().getId()).child(cr.getUser().getId()).child("read").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean data = (boolean) dataSnapshot.getValue();
-                Log.d(TAG, Boolean.toString(data));
-                updateRowUnreadChatRoom(cr.getId(), data);
+                if(dataSnapshot.exists()){
+                    boolean data = (boolean) dataSnapshot.getValue();
+                    Log.d(TAG, Boolean.toString(data));
+                    updateRowUnreadChatRoom(cr.getId(), data);
+                }
             }
 
             @Override
