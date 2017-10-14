@@ -375,12 +375,13 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
     }
-    protected void setUserProfile(final SerializableUser user, String likes, final Boolean setMapButton){
+    protected void setUserProfile(final SerializableUser user, String likes, final Boolean setMapButton,Boolean setImage){
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
-
-        ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
-        Picasso.with(this).load(user.getPhotoURL()).fit().centerCrop().into(imageView1);
+        if(setImage) {
+            ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
+            Picasso.with(this).load(user.getPhotoURL()).fit().centerCrop().into(imageView1);
+        }
         if(!user.getWork().trim().isEmpty()) {
             TextView proffesionText = (TextView) findViewById(R.id.proffesion_text);
             proffesionText.setText(user.getWork());

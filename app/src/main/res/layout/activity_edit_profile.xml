@@ -111,7 +111,8 @@
             </RelativeLayout>
 
         <TextView
-        android:layout_width="match_parent"
+            android:id="@+id/pick_photo_text"
+            android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/profileTitle.sub.accent"
         android:gravity="center_horizontal"

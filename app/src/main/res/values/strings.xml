@@ -40,6 +40,7 @@
 
     <string name="nav_section_config">Configuración</string>
     <string name="nav_item_edit_profile">Editar perfil</string>
+    <string name="nav_item_pick_photo">Elegir fotos</string>
     <string name="nav_item_edit_account">Ajustes</string>
     <string name="nav_item_edit_logout">Cerrar sesión</string>
 

@@ -22,7 +22,7 @@ import linkup.linkup.model.User;
 public class EditProfileActivity extends BaseActivity {
 
     boolean changed;
-    TextView proffesionText,centerStudyText,about_me_text;
+    TextView proffesionText,centerStudyText,about_me_text,pick_photo_text;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -34,7 +34,15 @@ public class EditProfileActivity extends BaseActivity {
         proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
         centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
         about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
+        pick_photo_text = (TextView) findViewById(R.id.pick_photo_text);
 
+        pick_photo_text.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PickPhotoActivity.class);
+                startActivity(intent);
+            }
+        });
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
