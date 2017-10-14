@@ -18,7 +18,7 @@ import linkup.linkup.model.User;
 
 public class MyProfileActivity extends BaseActivity {
 
-    CarouselView carouselView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +37,14 @@ public class MyProfileActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         User user=SingletonUser.getUser();
-        setUserProfile(user.getSerializableUser(),user.getNotCommonLikesString(),false,false);
+        setUserProfile(user.getSerializableUser(),user.getNotCommonLikesString(),false);
 
         ChangeBounds bounds = new ChangeBounds();
         bounds.setDuration(250);
         getWindow().setSharedElementEnterTransition(bounds);
 
 
-        carouselView = (CarouselView) findViewById(R.id.carouselView);
-        carouselView.setPageCount(3);
 
-        carouselView.setImageListener(imageListener);
     }
 
     @Override
@@ -55,17 +52,10 @@ public class MyProfileActivity extends BaseActivity {
     {
         super.onResume();
         User user=SingletonUser.getUser();
-        setUserProfile(user.getSerializableUser(),user.getNotCommonLikesString(),false,false);
+        setUserProfile(user.getSerializableUser(),user.getNotCommonLikesString(),false);
     }
 
-    ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            User user=SingletonUser.getUser();
-            Picasso.with(getApplicationContext()).load(user.photoUrl).fit().centerCrop().into(imageView);
 
-        }
-    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

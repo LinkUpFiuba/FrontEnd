@@ -4,6 +4,7 @@ import com.facebook.Profile;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class User {
     }
     @Exclude
     public SerializableUser getSerializableUser(){
-        return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education, getNotCommonLikesString(),this.photoUrl,getCommonLikesString(),String.valueOf( this.distance));
+        return new SerializableUser(this.Uid,this.Uid,this.name,this.aboutMe,this.birthday,this.gender,this.work,this.education, getNotCommonLikesString(),this.photoUrl,getCommonLikesString(),String.valueOf( this.distance),new Gson().toJson(this.profilePhotosList));
     }
     public User(FirebaseUser firebaseUser){
 
@@ -155,4 +156,5 @@ public class User {
     public Unlink unlink(User user) {
         return new Unlink(this,user);
     }
+
 }

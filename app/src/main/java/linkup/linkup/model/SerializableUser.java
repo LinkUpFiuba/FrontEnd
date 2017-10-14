@@ -17,9 +17,24 @@ import java.io.Serializable;
 
 public class SerializableUser implements Parcelable {
 
-    String id, fbId, name,aboutMe, birthday, genre,work, formation, likes ,photoURL,commonLikes,distance;
+    String id;
+    String fbId;
+    String name;
+    String aboutMe;
+    String birthday;
+    String genre;
+    String work;
+    String formation;
+    String likes;
+    String photoURL;
+    String commonLikes;
+    String distance;
 
-    public SerializableUser(String id, String fbId, String name,String aboutMe, String birthday, String genre, String work, String formation, String likes, String photoURL,String commonLikes,String distance) {
+
+
+    String profilePhotosList;
+
+    public SerializableUser(String id, String fbId, String name,String aboutMe, String birthday, String genre, String work, String formation, String likes, String photoURL,String commonLikes,String distance,String profilePhotosList) {
         this.id = id;
         this.fbId = fbId;
         this.name = name;
@@ -32,6 +47,7 @@ public class SerializableUser implements Parcelable {
         this.photoURL = photoURL;
         this.commonLikes=commonLikes;
         this.distance=distance;
+        this.profilePhotosList=profilePhotosList;
     }
 
     public String getId() {
@@ -47,6 +63,14 @@ public class SerializableUser implements Parcelable {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
+    }
+
+    public String getProfilePhotosList() {
+        return profilePhotosList;
+    }
+
+    public void setProfilePhotosList(String profilePhotosList) {
+        this.profilePhotosList = profilePhotosList;
     }
 
     public String getAge(){
@@ -137,12 +161,7 @@ public class SerializableUser implements Parcelable {
     }
 
 
-    public String getFbProfileImageUrl() {
-        if (this.hasFbId()) {
-            return "http://graph.facebook.com/ger.funebrero/picture?type=large";
-        }
-        return "";
-    }
+
 
     protected SerializableUser(Parcel in) {
         id = in.readString();
@@ -157,6 +176,7 @@ public class SerializableUser implements Parcelable {
         photoURL = in.readString();
         commonLikes =in.readString();
         distance=in.readString();
+        profilePhotosList=in.readString();
     }
 
     public static final Creator<SerializableUser> CREATOR = new Creator<SerializableUser>() {
@@ -195,8 +215,8 @@ public class SerializableUser implements Parcelable {
         dest.writeString(this.likes);
         dest.writeString(this.photoURL);
         dest.writeString(this.commonLikes);
-
         dest.writeString(this.distance);
+        dest.writeString(this.profilePhotosList);
 
     }
 }

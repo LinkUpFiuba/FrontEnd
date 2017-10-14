@@ -81,7 +81,7 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
             user.photoUrl = getString("photoUrl",jObj);
 
             if(jObj.has("profilePhotosList")){
-                JSONArray jArrayLikesList = jObj.getJSONArray("photoList");
+                JSONArray jArrayLikesList = jObj.getJSONArray("profilePhotosList");
                 user.profilePhotosList = Photo.photoList(jArrayLikesList);
             }
             user.gender= getString("gender",jObj);

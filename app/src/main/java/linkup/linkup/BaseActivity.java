@@ -46,7 +46,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -55,6 +59,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -375,13 +381,25 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
     }
-    protected void setUserProfile(final SerializableUser user, String likes, final Boolean setMapButton,Boolean setImage){
+
+
+
+    protected void setUserProfile(final SerializableUser user, String likes, final Boolean setMapButton){
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
-        if(setImage) {
-            ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
-            Picasso.with(this).load(user.getPhotoURL()).fit().centerCrop().into(imageView1);
-        }
+        CarouselView carouselView = (CarouselView) findViewById(R.id.carouselView);
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<Photo>>(){}.getType();
+        final List<Photo> profilePhotosList=gson.fromJson(user.getProfilePhotosList(),listType);
+        carouselView.setPageCount(profilePhotosList.size());
+        ImageListener imageListener = new ImageListener() {
+            @Override
+            public void setImageForPosition(int position, ImageView imageView) {
+                Picasso.with(getApplicationContext()).load(profilePhotosList.get(position).id).fit().centerCrop().into(imageView);
+
+            }
+        };
+        carouselView.setImageListener(imageListener);
         if(!user.getWork().trim().isEmpty()) {
             TextView proffesionText = (TextView) findViewById(R.id.proffesion_text);
             proffesionText.setText(user.getWork());

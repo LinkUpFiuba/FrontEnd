@@ -43,10 +43,9 @@ public class ProfileActivity extends BaseActivity {
 
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
 
-        ImageView imageView1 = (ImageView) findViewById(R.id.user_image);
-        Picasso.with(this).load(user.getPhotoURL()).fit().centerCrop().into(imageView1);
 
-        setUserProfile(user,user.getLikes(),true,true);
+
+        setUserProfile(user,user.getLikes(),true);
 
         FloatingActionButton fabLike = (FloatingActionButton)findViewById(R.id.fabLikeProfile);
         fabLike.setOnClickListener(new View.OnClickListener() {
