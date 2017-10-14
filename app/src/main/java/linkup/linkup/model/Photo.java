@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,4 +29,5 @@ public class Photo implements Serializable {
         }
         return photoList;
     }
+    public Photo(String id){this.id=id;}
 }

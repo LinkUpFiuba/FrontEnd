@@ -41,7 +41,9 @@ public class User {
     public boolean linkUpPlus = false;
     public Interests interests = new Interests();
     public List<Photo> photoList = new ArrayList<>();
+    public List<Photo> profilePhotosList = new ArrayList<>();
     public UserLocation location =new UserLocation();
+
     @Exclude
     public int distance= DISTANCE_OWN_USER;
     @Exclude
@@ -59,6 +61,9 @@ public class User {
         linkUpPlus=false;
         Uid =firebaseUser.getUid();
         photoUrl = "https://graph.facebook.com/"+getFacebookId()+"/picture?height=400";
+        profilePhotosList.add(new Photo(photoUrl));
+        profilePhotosList.add(new Photo(photoUrl));
+
         name = firebaseUser.getDisplayName();
         email =firebaseUser.getEmail();
         interests=new Interests();
@@ -129,6 +134,8 @@ public class User {
 
         result.put("interests",interests);
         result.put("photoList",photoList);
+        result.put("profilePhotosList",profilePhotosList );
+
         result.put("getNotifications",getNotifications);
         result.put("maxDistance",maxDistance);
         result.put("location", location);
