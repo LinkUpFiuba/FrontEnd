@@ -261,6 +261,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                 Message map = dataSnapshot.getValue(Message.class);
                 String key = dataSnapshot.getKey();
                 map.setKey(key);
+                Log.d(TAG, "Cambio en el mensaje: " + map.isLiked() );
                 updateRowLiked(key,map.isLiked());
             }
 

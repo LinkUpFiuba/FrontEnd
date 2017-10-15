@@ -167,7 +167,19 @@ public class ChatsFragment extends Fragment {
                 if (count == 0 && chatRoomArrayList.size() == 0) {
                     backgroundNoChats.setVisibility(View.VISIBLE);
                 } else {
-                    backgroundNoChats.setVisibility(View.INVISIBLE);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Match match = snapshot.getValue(Match.class);
+                        if(match.getBlock() != null){
+                            if(match.getBlock().isRead()){
+                                count = count -1;
+                            }
+                        }
+                    }
+                    if (count == 0){
+                        backgroundNoChats.setVisibility(View.VISIBLE);
+                    }else {
+                        backgroundNoChats.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
 
