@@ -126,6 +126,8 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             if(message.isLiked()){
                 ((ViewHolder) holder).favChecked.setVisibility(View.VISIBLE);
+            }else{
+                ((ViewHolder) holder).favChecked.setVisibility(View.INVISIBLE);
             }
         }else {
             final Message message = messageArrayList.get(position -1);

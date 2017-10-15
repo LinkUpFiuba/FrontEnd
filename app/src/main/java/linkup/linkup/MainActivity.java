@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     public static final String LINK_FRAGMENT = "LINK_FRAGMENT";
     private static final String TAG = "MainActivity";
     private static final String PREFS_FILE_NAME = "PREFS_FILE_NAME";
-    
+
     private Toolbar toolbar;
     private AlertDialog gpsAlertDialog;
     private AlertDialog permissionsAlertDialog;
@@ -358,10 +358,8 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                // TODO Auto-generated method stub
                 Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 context.startActivity(myIntent);
-                //get gps
             }
         });
         builder.setCancelable(false);
