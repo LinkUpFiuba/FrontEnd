@@ -111,10 +111,10 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
                 View headerview = navigationView.getHeaderView(0);
                 LinearLayout navigationDrawerHeaderContainer = (LinearLayout) headerview.findViewById(R.id.linearLayoutNavHeader);
 
-
-                ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
-                Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
-
+                if(!user.photoUrl.isEmpty()) {
+                    ImageView imageView1 = (ImageView) headerview.findViewById(R.id.circle_image);
+                    Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
+                }
                 TextView menu_name_age = (TextView) headerview.findViewById(R.id.menu_name_age);
                 menu_name_age.setText(user.name + ", " + user.age);
                 TextView menu_work = (TextView) headerview.findViewById(R.id.menu_work);
