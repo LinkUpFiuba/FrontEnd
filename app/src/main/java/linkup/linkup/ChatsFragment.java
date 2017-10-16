@@ -122,7 +122,7 @@ public class ChatsFragment extends Fragment {
                 int index = chatRoomArrayList.indexOf(cr);
                 cr.setRead(read);
                 chatRoomArrayList.remove(index);
-                chatRoomArrayList.add(index, cr);
+                chatRoomArrayList.add(0, cr);
                 break;
             }
         }
@@ -145,8 +145,13 @@ public class ChatsFragment extends Fragment {
             if (cr.getId().equals(chatRoomId)) {
                 int index = chatRoomArrayList.indexOf(cr);
                 cr.setUnreadCount(unreadCount);
-                chatRoomArrayList.remove(index);
-                chatRoomArrayList.add(index, cr);
+                if(cr.getUnreadCount() > 0){
+                    chatRoomArrayList.remove(index);
+                    chatRoomArrayList.add(0, cr);
+                }else {
+                    chatRoomArrayList.remove(index);
+                    chatRoomArrayList.add(index, cr);
+                }
                 break;
             }
         }
@@ -256,9 +261,9 @@ public class ChatsFragment extends Fragment {
                     backgroundNoChats.setVisibility(View.INVISIBLE);
 
                     fetchLastMessageData(cr);
-
                     fetchUnreadCount(cr);
                     fetchChatRoomRead(cr);
+
                 }
             }
 
