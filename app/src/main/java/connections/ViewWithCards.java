@@ -2,6 +2,7 @@ package connections;
 
 import java.util.List;
 
+import linkup.linkup.model.CardSwipeContent;
 import linkup.linkup.model.User;
 
 /**
@@ -9,5 +10,5 @@ import linkup.linkup.model.User;
  */
 
 public interface ViewWithCards {
-     void showCards(List<User> users,boolean showToasts);
+     void showCards(List<CardSwipeContent> users, boolean showToasts);
 }

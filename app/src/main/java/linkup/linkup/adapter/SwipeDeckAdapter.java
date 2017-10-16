@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ import fiuba.cardstack.SwipeDeck;
 import linkup.linkup.MainActivity;
 import linkup.linkup.ProfileActivity;
 import linkup.linkup.R;
+import linkup.linkup.model.Advertisement;
+import linkup.linkup.model.CardSwipeContent;
 import linkup.linkup.model.User;
 
 
@@ -28,10 +31,12 @@ public class SwipeDeckAdapter extends BaseAdapter {
 
     public static final int REQUEST_CODE_PROFILE = 100;
     private final SwipeDeck cardStack;
-    private List<User> data;
+    private List<CardSwipeContent> data;
+    private int AD = 100;
+    private int CANDIDATE = 200;
     private Context context;
 
-    public SwipeDeckAdapter(List<User> data, Context context, SwipeDeck cardStack) {
+    public SwipeDeckAdapter(List<CardSwipeContent> data, Context context, SwipeDeck cardStack) {
         this.data = data;
         this.context = context;
         this.cardStack = cardStack;
@@ -57,14 +62,51 @@ public class SwipeDeckAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        final CardSwipeContent currrentCardSwipeContent = (CardSwipeContent) getItem(position);
+        if(currrentCardSwipeContent.getType() == CardSwipeContent.AD){
+            return AD;
+        }
+        return CANDIDATE;
+    }
+
+    @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
         if (v == null) {
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.candidate_card, parent, false);
+            if (getItemViewType(position) == CANDIDATE) {
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.candidate_card, parent, false);
+                inflateCandidateView(position, v);
+            } else {
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ad_card, parent, false);
+                inflateAdView(position, v);
+            }
         }
+
+
+        return v;
+    }
+
+    private void inflateAdView(int position, View v) {
         if (getItem(position) != null) {
-            final User currrentUser = (User) getItem(position);
+            Advertisement ad = ((CardSwipeContent) getItem(position)).getAd();
+            final ImageView imageView = (ImageView) v.findViewById(R.id.ad_image);
+            Picasso.with(context).load(ad.getUrlImage()).fit().centerCrop().into(imageView);
+
+            Button buttonOk = (Button)v.findViewById(R.id.btnOkAd);
+            buttonOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardStack.swipeTopCardRight(180);
+                }
+            });
+        }
+    }
+
+    private void inflateCandidateView(int position, View v) {
+        if (getItem(position) != null) {
+            final User currrentUser = ((CardSwipeContent) getItem(position)).getUser();
 
             final ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
             Picasso.with(context).load(currrentUser.photoUrl).fit().centerCrop().into(imageView);
@@ -79,7 +121,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
             textView3.setText(currrentUser.education);
 
             TextView cardDistance = (TextView) v.findViewById(R.id.cardDistance);
-            cardDistance.setText(String.valueOf( Math.round( currrentUser.distance))+" km");
+            cardDistance.setText(String.valueOf(Math.round(currrentUser.distance)) + " km");
 
             TextView cardcommonLikes = (TextView) v.findViewById(R.id.cardcommonLikes);
             cardcommonLikes.setText(String.valueOf(currrentUser.commonLikes.size()));
@@ -126,9 +168,6 @@ public class SwipeDeckAdapter extends BaseAdapter {
                 }
             });
         }
-        ;
-
-        return v;
     }
 
 }
