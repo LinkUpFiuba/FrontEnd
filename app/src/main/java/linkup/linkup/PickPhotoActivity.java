@@ -44,7 +44,7 @@ public class PickPhotoActivity extends EditProfileActivity {
             ab.setTitle(getResources().getString(R.string.nav_item_pick_photo));
         }
         User user= SingletonUser.getUser();
-        selectedPhotos= (ArrayList<Photo>) user.profilePhotosList;
+        selectedPhotos.addAll((ArrayList<Photo>) user.profilePhotosList);
         getProfileAlbumId();
 
     }
