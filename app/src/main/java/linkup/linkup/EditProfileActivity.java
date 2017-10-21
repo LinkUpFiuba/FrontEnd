@@ -22,27 +22,12 @@ import linkup.linkup.model.User;
 public class EditProfileActivity extends BaseActivity {
 
     boolean changed;
-    TextView proffesionText,centerStudyText,about_me_text,pick_photo_text;
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        changed = false;
+    TextView proffesionText,centerStudyText,about_me_text,pick_photo_text,pick_profile_photo_text;
 
+    protected void setClickOnSave(Menu menu){
+        changed = false;
         getMenuInflater().inflate(R.menu.edit_profile_menu, menu);
         MenuItem item = (MenuItem) menu.findItem(R.id.make_changes_profile);
-        View makeChangesButton = (View) item.getActionView();
-        proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
-        centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
-        about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
-        pick_photo_text = (TextView) findViewById(R.id.pick_photo_text);
-
-        pick_photo_text.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PickPhotoActivity.class);
-                startActivity(intent);
-            }
-        });
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
@@ -55,8 +40,7 @@ public class EditProfileActivity extends BaseActivity {
                     changed=false;
                     changeUser();
                     updateUser(user,true);
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    getBackToPreviousActivity();
                 }else{
                     Toast.makeText(getApplicationContext(), "Para guardar debes haber realizado algun cambio.",
                             Toast.LENGTH_LONG).show();
@@ -65,12 +49,42 @@ public class EditProfileActivity extends BaseActivity {
                 return true;
             }
         });
+    }
+    protected void getBackToPreviousActivity(){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        setClickOnSave(menu);
+
+        proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
+        centerStudyText = (TextView) findViewById(R.id.editable_centerStudyText);
+        about_me_text = (TextView) findViewById(R.id.editable_about_me_text);
+        pick_photo_text = (TextView) findViewById(R.id.pick_photo_text);
+        pick_profile_photo_text= (TextView) findViewById(R.id.edit_profile_photo_explain_gallery);
+        pick_photo_text.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PickPhotoActivity.class);
+                startActivity(intent);
+            }
+        });
+        pick_profile_photo_text.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PickProfilePhotoActivity.class);
+                startActivity(intent);
+            }
+        });
         return true;
 
 
     }
 
-    private void checkForChange(){
+    protected void checkForChange(){
         User user = SingletonUser.getUser();
         TextView proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
         String oldWork=proffesionText.getText().toString();
@@ -92,17 +106,17 @@ public class EditProfileActivity extends BaseActivity {
         }
     }
 
-    private void changeUser(){
+    protected void changeUser(){
         User user = SingletonUser.getUser();
         user.aboutMe = about_me_text.getText().toString();
         user.education = centerStudyText.getText().toString();
         user.work = proffesionText.getText().toString();
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if((this instanceof PickPhotoActivity) || (this instanceof PickProfilePhotoActivity) ){return;}
         setContentView(R.layout.activity_edit_profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarEditProfile);
         setSupportActionBar(toolbar);
@@ -118,8 +132,6 @@ public class EditProfileActivity extends BaseActivity {
     }
     private void setUserProfile(){
         User user = SingletonUser.getUser();
-        ImageView imageView1 = (ImageView) findViewById(R.id.profileImage1);
-        Picasso.with(this).load(user.photoUrl).fit().centerCrop().into(imageView1);
 
 
         TextView proffesionText = (TextView) findViewById(R.id.editable_proffesionText);
@@ -160,8 +172,7 @@ public class EditProfileActivity extends BaseActivity {
             builder.setPositiveButton(getResources().getString(R.string.edit_profile_discartChanges_positive), new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    getBackToPreviousActivity();
                 }
 
             });

@@ -27,6 +27,7 @@ dependencies {
 
     compile project(':cardstack')
 
+
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
@@ -46,7 +47,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.0.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.synnapps:carouselview:0.1.4'
-
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

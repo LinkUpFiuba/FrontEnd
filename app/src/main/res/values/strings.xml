@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">LinkUp</string>
     <string name="title_activity_login">Sign in</string>
+    <item name="TAG" type="id" />
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -41,10 +42,13 @@
     <string name="nav_section_config">Configuración</string>
     <string name="nav_item_edit_profile">Editar perfil</string>
     <string name="nav_item_pick_photo">Elegir fotos</string>
+    <string name="nav_item_pick_profile_photo">Elegi tu foto de perfil</string>
+
     <string name="nav_item_edit_account">Ajustes</string>
     <string name="nav_item_edit_logout">Cerrar sesión</string>
 
-    <string name="edit_profile_explain_gallery">Pulsa para cambiar la foto</string>
+    <string name="edit_photo_explain_gallery">Pulsa para cambiar tus fotos</string>
+    <string name="edit_profile_photo_explain_gallery">Pulsa para cambiar tu foto de perfil</string>
     <string name="edit_profile_formacion">Formación</string>
     <string name="edit_profile_work">Trabajo actual</string>
     <string name="edit_profile_about_me">Sobre mí</string>
@@ -118,4 +122,5 @@
     <string name="activity_blocked_subtitle"> Los administradores han recibido denuncias de otros usuarios y han decidido bloquearte. No podras ingresar mas en la aplicacion</string>
 
     <string name="activity_blocked_btn"> Salir</string>
+    <string name="title_activity_pick_profile_photo">PickProfilePhotoActivity</string>
 </resources>

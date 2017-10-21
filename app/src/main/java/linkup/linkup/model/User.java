@@ -40,8 +40,8 @@ public class User {
     public boolean getNotifications=true;
     public boolean invisibleMode = false;
     public boolean linkUpPlus = false;
+    public boolean defaultPicture=false;
     public Interests interests = new Interests();
-    public List<Photo> photoList = new ArrayList<>();
     public List<Photo> profilePhotosList = new ArrayList<>();
     public UserLocation location =new UserLocation();
 
@@ -63,8 +63,7 @@ public class User {
         Uid =firebaseUser.getUid();
         photoUrl = "https://graph.facebook.com/"+getFacebookId()+"/picture?height=400";
         profilePhotosList.add(new Photo(photoUrl));
-        profilePhotosList.add(new Photo(photoUrl));
-
+        defaultPicture=true;
         name = firebaseUser.getDisplayName();
         email =firebaseUser.getEmail();
         interests=new Interests();
@@ -134,13 +133,13 @@ public class User {
         result.put("linkUpPlus",linkUpPlus);
 
         result.put("interests",interests);
-        result.put("photoList",photoList);
         result.put("profilePhotosList",profilePhotosList );
 
         result.put("getNotifications",getNotifications);
         result.put("maxDistance",maxDistance);
         result.put("location", location);
         result.put("tokenFCM",tokenFCM);
+        result.put("defaultPicture",defaultPicture);
         return result;
     }
     @Exclude

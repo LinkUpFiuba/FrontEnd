@@ -141,7 +141,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="linkup.linkup.BaseActivity" />
         </activity>
-        <activity android:name=".PickPhotoActivity"></activity>
+        <activity android:name=".PickPhotoActivity" />
+        <activity
+            android:name=".PickProfilePhotoActivity"
+            android:label="@string/title_activity_pick_profile_photo"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

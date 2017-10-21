@@ -287,9 +287,6 @@ public class BaseActivity extends AppCompatActivity {
                                 List<Work> workList= Work.workList(object.getJSONArray("work"));
                                user.work = workList.get(workList.size()-1).name;
                             }
-                            if(object.has("photos")) {
-                                user.photoList = Photo.photoList(object.getJSONObject("photos").getJSONArray("data"));
-                            }
                             SingletonUser.setUser(user);
 
                             JSONObject likes=object.getJSONObject("likes");
@@ -395,7 +392,7 @@ public class BaseActivity extends AppCompatActivity {
         ImageListener imageListener = new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                Picasso.with(getApplicationContext()).load(profilePhotosList.get(position).id).fit().centerCrop().into(imageView);
+                Picasso.with(getApplicationContext()).load(profilePhotosList.get(position).url).fit().centerCrop().into(imageView);
 
             }
         };

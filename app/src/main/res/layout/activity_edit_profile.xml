@@ -21,94 +21,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <include layout="@layout/item_divider"></include>
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:layout_width="fill_parent"
-                            android:padding="@dimen/activity_vertical_margin"
-                            android:layout_height="wrap_content" >
-            <LinearLayout
-                android:id="@+id/first"
+
+
+            <TextView
+                android:id="@+id/edit_profile_photo_explain_gallery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="3" >
-
-                <linkup.linkup.helper.SquareImageView
-                    android:id="@+id/profileImage1"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:layout_margin="@dimen/perfil_gallery_padding"
-                    android:background="@color/empty_photo"
-                    android:src="@drawable/p2"
-                    android:scaleType="centerCrop"
-                    android:text="1" />
-                <linkup.linkup.helper.SquareImageView
-                    android:layout_width="0dp"
-                    android:id="@+id/profileImage2"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:layout_margin="@dimen/perfil_gallery_padding"
-                    android:background="@color/empty_photo"
-                    android:src="@drawable/ic_camera_alt_white_24dp"
-                    android:scaleType="centerInside"
-                    android:text="1" />
-
-                <linkup.linkup.helper.SquareImageView
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/profileImage3"
-                    android:adjustViewBounds="true"
-                    android:background="@color/empty_photo"
-                    android:layout_margin="@dimen/perfil_gallery_padding"
-                    android:src="@drawable/ic_camera_alt_white_24dp"
-                    android:scaleType="centerInside"
-                    android:text="1" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/second"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/first"
-                android:weightSum="3" >
-                <linkup.linkup.helper.SquareImageView
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/profileImage4"
-                    android:layout_margin="@dimen/perfil_gallery_padding"
-                    android:adjustViewBounds="true"
-                    android:background="@color/empty_photo"
-                    android:src="@drawable/ic_camera_alt_white_24dp"
-                    android:scaleType="centerInside"
-                    android:text="1" />
-                <linkup.linkup.helper.SquareImageView
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="@dimen/perfil_gallery_padding"
-                    android:adjustViewBounds="true"
-                    android:id="@+id/profileImage5"
-                    android:background="@color/empty_photo"
-                    android:src="@drawable/ic_camera_alt_white_24dp"
-                    android:scaleType="centerInside"
-                    android:text="1" />
-                <linkup.linkup.helper.SquareImageView
-                    android:id="@+id/profileImage6"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:layout_margin="@dimen/perfil_gallery_padding"
-                    android:background="@color/empty_photo"
-                    android:src="@drawable/ic_camera_alt_white_24dp"
-                    android:scaleType="centerInside"
-                    android:text="1" />
-            </LinearLayout>
-
-            </RelativeLayout>
+                style="@style/profileTitle.sub.accent"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/text_size_xsmall"
+                android:text="@string/edit_profile_photo_explain_gallery"/>
+            <include layout="@layout/item_divider"></include>
 
         <TextView
             android:id="@+id/pick_photo_text"
@@ -117,7 +42,7 @@
         style="@style/profileTitle.sub.accent"
         android:gravity="center_horizontal"
         android:textSize="@dimen/text_size_xsmall"
-            android:text="@string/edit_profile_explain_gallery"/>
+            android:text="@string/edit_photo_explain_gallery"/>
 
         <include layout="@layout/item_divider"></include>
 
