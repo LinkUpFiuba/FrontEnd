@@ -18,6 +18,7 @@ import connections.ViewWithCards;
 import fiuba.cardstack.SwipeDeck;
 import linkup.linkup.Utils.DataBase;
 import linkup.linkup.adapter.SwipeDeckAdapter;
+import linkup.linkup.model.CardSwipeContent;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
@@ -97,19 +98,21 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         }
     }
 
-    public void stopTask(){
+    public void stopTask() {
         task.cancel(true);
     }
-    public boolean isTaskRunning(){
-        return (task.getStatus()== AsyncTask.Status.RUNNING);
+
+    public boolean isTaskRunning() {
+        return (task.getStatus() == AsyncTask.Status.RUNNING);
 
     }
+
     public void showEmptyCardStack() {
         showCards(null, false);
     }
 
     @Override
-    public void showCards(List<User> users, boolean showToasts) {
+    public void showCards(List<CardSwipeContent> users, boolean showToasts) {
 
         if (showToasts) {
             if (users == null) {
@@ -119,7 +122,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
             } else {
                 if (users.size() == 0) {
                     backgroundNoMoreCandidates.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     backgroundNoMoreCandidates.setVisibility(View.INVISIBLE);
                 }
             }
@@ -129,14 +132,14 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
-                dontLike(adapter,position);
+                dontLike(adapter, position);
                 Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
 
             }
 
             @Override
             public void cardSwipedRight(int position) {
-                like(adapter,position);
+                like(adapter, position);
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
 
             }
@@ -144,8 +147,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
             @Override
             public void cardsDepleted() {
                 Log.i("MainActivity", "no more cards");
-                //TODO aca va de nuevo la petición al http server, ojo que si supera el max hay que mostrar otra pantalla
-            }
+                ifCardsDepletedStartAnimation();            }
 
             @Override
             public void cardActionDown() {
@@ -164,9 +166,12 @@ public class LinkFragment extends Fragment implements ViewWithCards {
     public void like(SwipeDeckAdapter adapter, int position) {
         //TODO: postear el like
         Log.i("MainActivity", "Like");
-        User user = (User) adapter.getItem(position);
-        User myUser= SingletonUser.getUser();
-        DataBase.saveLink(myUser.link(user),this);
+        CardSwipeContent card = (CardSwipeContent) adapter.getItem(position);
+        if (card.hasUser()) {
+            User user = card.getUser();
+            User myUser = SingletonUser.getUser();
+            DataBase.saveLink(myUser.link(user), this);
+        }
     }
 
     public void superLike() {
@@ -178,15 +183,17 @@ public class LinkFragment extends Fragment implements ViewWithCards {
     public void dontLike(SwipeDeckAdapter adapter, int position) {
         //TODO: postear el nolike
         Log.i("MainActivity", "DontLike");
-        User user = (User) adapter.getItem(position);
-        User myUser= SingletonUser.getUser();
-        Unlink unlink= myUser.unlink(user);
-        DataBase.saveUnlink(unlink,this);
-
+        CardSwipeContent card = (CardSwipeContent) adapter.getItem(position);
+        if (card.hasUser()) {
+            User user = card.getUser();
+            User myUser = SingletonUser.getUser();
+            Unlink unlink = myUser.unlink(user);
+            DataBase.saveUnlink(unlink, this);
+        }
     }
 
     public void ifCardsDepletedStartAnimation() {
-        if(cardStack.getChildCount()<=0){
+        if (cardStack.getChildCount() <= 0) {
             startAnimation();
         }
     }

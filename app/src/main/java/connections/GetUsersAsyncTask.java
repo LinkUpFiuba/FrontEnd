@@ -17,13 +17,15 @@ import java.util.List;
 
 import linkup.linkup.LinkFragment;
 import linkup.linkup.Utils.HttpClient;
+import linkup.linkup.model.Advertisement;
+import linkup.linkup.model.CardSwipeContent;
 import linkup.linkup.model.Like;
 import linkup.linkup.model.Photo;
 import linkup.linkup.model.User;
 
 import static android.R.attr.data;
 
-public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
+public class GetUsersAsyncTask extends AsyncTask<String, Void, List<CardSwipeContent>>{
 
     private static final String TAG = "GetUsersAsyncTask";
     private  ViewWithCards viewWithCards;
@@ -33,7 +35,7 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
     }
 
     @Override
-        protected List<User> doInBackground(String... params) {
+        protected List<CardSwipeContent> doInBackground(String... params) {
             //String cityCode = params[0];
             try {
                 String data = ((new HttpClient()).getUsers());
@@ -41,11 +43,11 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
 
                 try {
                     if(data!=null){
-                    List<User> users = getUsers(data);
+                    List<CardSwipeContent> users = getUsers(data);
                  //   Log.d(TAG, users.getUser(0).name);
 
                     return users;}
-                    return new ArrayList<User>();
+                    return new ArrayList<CardSwipeContent>();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -56,17 +58,17 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
         }
 
         @Override
-        protected void onPostExecute(List<User> users) {
+        protected void onPostExecute(List<CardSwipeContent> users) {
             super.onPostExecute(users);
             this.viewWithCards.showCards(users,true);
         }
-    public static List<User> getUsers(String data) throws JSONException {
-        List<User> users = new ArrayList<>();
+    public static List<CardSwipeContent> getUsers(String data) throws JSONException {
+        List<CardSwipeContent> users = new ArrayList<>();
 
         JSONArray dataArray = new JSONArray(data);
         for(int i=0; i<dataArray.length();i++) {
             JSONObject jObj = dataArray.getJSONObject(i);
-            Gson gson=new Gson();
+
             User user = new User();
             user.Uid=getString("Uid",jObj);
             user.name = getString("name",jObj);
@@ -92,10 +94,14 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<User>>{
                 JSONArray jArrayLikesList = jObj.getJSONArray("commonInterests");
                 user.commonLikes = Like.likesList(jArrayLikesList);
             }
-            users.add(user);
+            CardSwipeContent cardSwipeContent = new CardSwipeContent(CardSwipeContent.CANDIDATE);
+            cardSwipeContent.setUser(user);
+            users.add(cardSwipeContent);
         }
 
-
+        CardSwipeContent cardSwipeContent = new CardSwipeContent(CardSwipeContent.AD);
+        cardSwipeContent.setAd(new Advertisement("http://www.coca-colacompany.com/content/dam/journey/us/en/private/2015/02/1947-print-ad-671-900-abef8a95.jpg"));
+        users.add(cardSwipeContent);
         return users;
     }
 
