@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,8 +23,11 @@ import fiuba.cardstack.SwipeDeck;
 import linkup.linkup.MainActivity;
 import linkup.linkup.ProfileActivity;
 import linkup.linkup.R;
+import linkup.linkup.Utils.LikeObserver;
 import linkup.linkup.model.Advertisement;
 import linkup.linkup.model.CardSwipeContent;
+import linkup.linkup.model.Like;
+import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
 
@@ -134,6 +138,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //TODO: postear el like
+                    LikeObserver.setLike();
                     cardStack.swipeTopCardRight(180);
                 }
             });
@@ -141,7 +146,20 @@ public class SwipeDeckAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //TODO: postear el superlike
-                    cardStack.swipeTopCardRight(180);
+                    User user= SingletonUser.getUser();
+                    if(user.hasAvailableSuperLinks()){
+                        LikeObserver.setSuperLike();
+                        cardStack.swipeTopCardRight(180);
+                    }else{
+                        if(user.linkUpPlus){
+                            Toast.makeText(v.getContext(), "No tienes mas Superlinks, a partir de mañana tendras mas. ", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(v.getContext(), "No tienes mas Superlinks, si quieres disponer de mas puedes conseguir LinkUp Plus.", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+
                 }
             });
             fabDontLike.setOnClickListener(new View.OnClickListener() {

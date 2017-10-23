@@ -5,13 +5,26 @@ package linkup.linkup.model;
  */
 
 public class Link {
+    public static final String SUPERLINK = "superlink";
+    public static final String NORMAL = "normal";
     public String linkingUser;
     public String linkedUser;
+    public String type;
     public Link(){
 
     }
-    public Link(User linkingUser,User linkedUser){
-        this.linkingUser =linkingUser.Uid;
-        this.linkedUser =linkedUser.Uid;
+    public static  Link createLink(User linkingUser,User linkedUser){
+        Link link=new Link();
+        link.linkingUser =linkingUser.Uid;
+        link.linkedUser =linkedUser.Uid;
+        link.type = NORMAL;
+        return link;
+    }
+    public static Link createSuperLink(User linkingUser,User linkedUser){
+        Link link=new Link();
+        link.linkingUser =linkingUser.Uid;
+        link.linkedUser =linkedUser.Uid;
+        link.type = SUPERLINK;
+        return link;
     }
 }

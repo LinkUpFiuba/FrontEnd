@@ -17,6 +17,7 @@ import connections.GetUsersAsyncTask;
 import connections.ViewWithCards;
 import fiuba.cardstack.SwipeDeck;
 import linkup.linkup.Utils.DataBase;
+import linkup.linkup.Utils.LikeObserver;
 import linkup.linkup.adapter.SwipeDeckAdapter;
 import linkup.linkup.model.CardSwipeContent;
 import linkup.linkup.model.SingletonUser;
@@ -38,6 +39,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
     }
 
     public void swipeRight() {
+        LikeObserver.setLike();
         this.cardStack.swipeTopCardRight(180);
     }
 
@@ -46,7 +48,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
     }
 
     public void swipeSuperLike() {
-        superLike();
+        LikeObserver.setSuperLike();
         this.cardStack.swipeTopCardRight(180);
     }
 
@@ -139,7 +141,11 @@ public class LinkFragment extends Fragment implements ViewWithCards {
 
             @Override
             public void cardSwipedRight(int position) {
-                like(adapter, position);
+                if(LikeObserver.isSuperLike()){
+                    superLike(adapter,position);
+                }else {
+                    like(adapter, position);
+                }
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
 
             }
@@ -174,9 +180,16 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         }
     }
 
-    public void superLike() {
+    public void superLike(SwipeDeckAdapter adapter,int position) {
         //TODO: postear el superlike
         Log.i("MainActivity", "SuperLike");
+        CardSwipeContent card = (CardSwipeContent) adapter.getItem(position);
+        if (card.hasUser()) {
+            User user = card.getUser();
+            User myUser = SingletonUser.getUser();
+            DataBase.saveLink(myUser.superLink(user), this);
+            DataBase.updateUser(myUser);
+        }
 
     }
 

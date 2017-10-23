@@ -57,7 +57,7 @@ public class DataBase {
                 if (dataSnapshot.exists()) {
 
                     Map<String, Object> update = new HashMap<String, Object>();
-                    update.put(link.linkedUser, true);
+                    update.put(link.linkedUser, link.type);
                     dataSnapshot.getRef().updateChildren(update).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -65,7 +65,7 @@ public class DataBase {
                         }
                     });
                 } else {
-                    dataSnapshot.getRef().child(link.linkedUser).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    dataSnapshot.getRef().child(link.linkedUser).setValue(link.type).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             linkFragment.ifCardsDepletedStartAnimation();

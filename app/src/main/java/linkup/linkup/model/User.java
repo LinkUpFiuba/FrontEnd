@@ -21,6 +21,7 @@ import java.util.Map;
 public class User {
     private static final int MAX_DISTANCE_ALLOWED = 100;
     public static final int DISTANCE_OWN_USER = -1;
+    public static final int DEFAULT_SUPER_LINKS = 5;
     public String Uid = "";
     public String photoUrl = "";
     public String name = "" ;
@@ -44,6 +45,7 @@ public class User {
     public Interests interests = new Interests();
     public List<Photo> profilePhotosList = new ArrayList<>();
     public UserLocation location =new UserLocation();
+    public int availableSuperlinks = DEFAULT_SUPER_LINKS;
 
     @Exclude
     public int distance= DISTANCE_OWN_USER;
@@ -71,13 +73,22 @@ public class User {
     }
     @Exclude
     public Link link(User linkedUser){
-        return new Link(this,linkedUser);
+        return  Link.createLink(this,linkedUser);
+    }
+    @Exclude
+    public boolean hasAvailableSuperLinks(){
+        return availableSuperlinks>0;
+    }
+    @Exclude
+    public Link superLink(User linkedUser){
+        this.availableSuperlinks-=1;
+        return  Link.createSuperLink(this,linkedUser);
     }
 
     @Exclude
     public String getNotCommonLikesString(){
         String likesString="";
-        if(likesList == null) return "";
+        if(likesList == null || likesList.size()==0) return "";
         likesList.removeAll(commonLikes);
         for (int i=0; i<likesList.size()-1;i++ ){
                 likesString += (likesList.get(i).name + ", ");
@@ -139,6 +150,8 @@ public class User {
         result.put("maxDistance",maxDistance);
         result.put("location", location);
         result.put("tokenFCM",tokenFCM);
+        result.put("availableSuperlinks",availableSuperlinks);
+
         result.put("defaultPicture",defaultPicture);
         return result;
     }
