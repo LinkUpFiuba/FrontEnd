@@ -1,6 +1,7 @@
 package linkup.linkup;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -53,6 +54,7 @@ public class AccountConfigProfileActivity extends BaseActivity {
         setSearchFriendSwitch();
         setLogOffButton();
         setDeleteButton();
+        setLinkUpPlusButton();
 
         setSeekBarAgeRange();
         setSeekBarDistanceRange();
@@ -60,6 +62,16 @@ public class AccountConfigProfileActivity extends BaseActivity {
 
     }
 
+    private void setLinkUpPlusButton() {
+        final Button btnObtenerLinkUpPlus = (Button)findViewById(R.id.btnObtenerLinkUpPlus);
+        btnObtenerLinkUpPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LinkUpPlusActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
 
     private void setDeleteButton() {

@@ -45,6 +45,8 @@
     <string name="nav_item_pick_profile_photo">Elegi tu foto de perfil</string>
 
     <string name="nav_item_edit_account">Ajustes</string>
+    <string name="nav_item_linkup_plus">LinkUp Plus</string>
+
     <string name="nav_item_edit_logout">Cerrar sesión</string>
 
     <string name="edit_photo_explain_gallery">Pulsa para cambiar tus fotos</string>
@@ -66,7 +68,7 @@
     <string name="edit_settings_exploration_age_range_hint">LinkUp usará estas preferencias para sugerirte candidatos a linkear</string>
     <string name="edit_settings_seccion_app_settings">Ajustes de la app</string>
     <string name="edit_settings_app_settings_notifications">Notificaciones</string>
-    <string name="edit_settings_btn_get_link_plus">Obtener linkup plus</string>
+    <string name="edit_settings_btn_get_link_plus">Linkup plus</string>
     <string name="edit_settings_btn_get_salir">salir</string>
     <string name="edit_settings_btn_get_eliminar">eliminar cuenta</string>
 
@@ -79,6 +81,11 @@
 
     <string name="edit_success_title">Todo listo</string>
     <string name="edit_success_message">Los datos fueron almacenados con éxito</string>
+    <string name="linkUpPlus_success_title">Felicitaciones</string>
+    <string name="linkUpPlus_success_message">Ya tienes todos los beneficios de LinkUp Plus</string>
+
+    <string name="linkUpPlus_out_success_title">Completado</string>
+    <string name="linkUpPlus_out_success_message">Ya no tienes todos los beneficios de LinkUp Plus</string>
     <string name="edit_profile_work_hint">¿Dónde trabajas?</string>
 
     <string name="edit_profile_studies_hint">¿Dónde estudias/estudiaste?</string>

@@ -311,12 +311,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_vertical_margin"
                 android:height="@dimen/button_height"
-                android:background="@color/secondary_text"
-                android:foreground="?attr/selectableItemBackground"
+                android:background="@color/accent"
                 android:clickable="true"
-                android:enabled="false"
+                android:enabled="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:text="@string/edit_settings_btn_get_link_plus"
-                android:textColor="@color/icons"/>
+                android:textColor="@color/icons" />
 
             <Button
                 android:id="@+id/btnLogOut2"
