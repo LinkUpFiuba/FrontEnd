@@ -20,13 +20,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
+                style="@style/editAccountTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/editAccountTitle"
-                android:textSize="@dimen/text_size_medium"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:background="@color/accent"
                 android:text="Beneficios"
-                android:layout_margin="@dimen/activity_vertical_margin"/>
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
             />
         </LinearLayout>
         <android.support.v7.widget.CardView
@@ -43,100 +47,138 @@
                 android:orientation="vertical"
                 android:weightSum="1">
 
-                <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/activity_vertical_margin_large"
-                android:tint="@color/secondary_text"
-                android:src="@drawable/ic_school_black_24dp"/>
-
-            <TextView
-                style="@style/profileTitle.sub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start|center_vertical"
-                android:text=" Beneficio 1 " />
-
-        </LinearLayout>
-                <TextView
-                    style="@style/profileTitle.sub"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin_small"
-                    android:text="Beneficios"
-                    android:textAlignment="center"
-                    android:textColor="@color/accent"
-                    android:textSize="@dimen/text_size_small"
-                    android:layout_weight="0.11" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
+                    android:layout_weight="0.43"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/activity_vertical_margin_large"
-                        android:tint="@color/secondary_text"
-                        android:src="@drawable/ic_school_black_24dp"/>
 
                     <TextView
+                        android:id="@+id/textView17"
                         style="@style/profileTitle.sub"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start|center_vertical"
-                        android:text=" Beneficio 2 " />
-
-                </LinearLayout>
-                <TextView
-                    style="@style/profileTitle.sub"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin_small"
-                    android:text="Beneficios"
-                    android:textAlignment="center"
-                    android:textColor="@color/accent"
-                    android:textSize="@dimen/text_size_small" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
-                    android:orientation="horizontal">
-                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/activity_vertical_margin_large"
-                        android:tint="@color/secondary_text"
-                        android:src="@drawable/ic_school_black_24dp"/>
+                        android:layout_alignStart="@+id/textView14"
+                        android:layout_below="@+id/textView14"
+                        android:layout_weight="1"
+                        android:gravity="start|center_vertical"
+                        android:text="Tendras a partir de mañana el doble de superlink y asi tener mas chances de linkear con quien quieras." />
 
                     <TextView
+                        android:id="@+id/textView14"
                         style="@style/profileTitle.sub"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="5dp "
+                        android:layout_toEndOf="@+id/imageView7"
                         android:gravity="start|center_vertical"
-                        android:text=" Beneficio 3 " />
+                        android:text="Mas SuperLinks"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_school_black_24dp"
+                        android:tint="@color/secondary_text" />
 
 
+                </RelativeLayout>
 
-                </LinearLayout>
-                <TextView
-                    style="@style/profileTitle.sub"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin_small"
-                    android:text="Beneficios"
-                    android:textAlignment="center"
-                    android:textColor="@color/accent"
-                    android:textSize="@dimen/text_size_small" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
+                    android:layout_weight="0.43"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        style="@style/profileTitle.sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/textView14"
+                        android:layout_below="@+id/textView14"
+                        android:layout_weight="1"
+                        android:gravity="start|center_vertical"
+                        android:text="Tendras mas prioridad y asi tener mas chances de linkear con quien quieras." />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        style="@style/profileTitle.sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="5dp "
+                        android:layout_toEndOf="@+id/imageView7"
+                        android:gravity="start|center_vertical"
+                        android:text="Mas chances de linkear "
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_school_black_24dp"
+                        android:tint="@color/secondary_text" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="128px"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin_xlarge"
+                    android:layout_weight="0.43"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        style="@style/profileTitle.sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/textView14"
+                        android:layout_below="@+id/textView14"
+                        android:layout_weight="1"
+                        android:gravity="start|center_vertical"
+                        android:text="Podras usar LinkUp sin tener que ver ninguna publicidad" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        style="@style/profileTitle.sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="5dp "
+                        android:layout_toEndOf="@+id/imageView7"
+                        android:gravity="start|center_vertical"
+                        android:text="Sin publicidad"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_school_black_24dp"
+                        android:tint="@color/secondary_text" />
+
+
+                </RelativeLayout>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
