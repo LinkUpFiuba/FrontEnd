@@ -76,7 +76,7 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
         }else {
             Picasso.with(mContext).load(R.drawable.womn).fit().centerCrop().into(holder.profileImageView);
 
-            holder.message.setText("Has sido bloqueado por el usuario");
+            holder.message.setText("Ya no te puedes contactar con esta persona.");
             //holder.count.setVisibility(View.GONE);
             holder.count.setText("!");
             holder.count.setVisibility(View.VISIBLE);

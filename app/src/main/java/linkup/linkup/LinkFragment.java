@@ -153,7 +153,8 @@ public class LinkFragment extends Fragment implements ViewWithCards {
             @Override
             public void cardsDepleted() {
                 Log.i("MainActivity", "no more cards");
-                ifCardsDepletedStartAnimation();            }
+                //ifCardsDepletedStartAnimation();
+            }
 
             @Override
             public void cardActionDown() {

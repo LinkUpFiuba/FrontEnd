@@ -43,8 +43,6 @@ public class ProfileActivity extends BaseActivity {
 
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
 
-
-
         setUserProfile(user,user.getLikes(),true);
 
         FloatingActionButton fabLike = (FloatingActionButton)findViewById(R.id.fabLikeProfile);

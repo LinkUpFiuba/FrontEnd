@@ -483,6 +483,37 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+    protected void deleteLink(final String id, final String name) {
+        final User user=SingletonUser.getUser();
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(BaseActivity.this, R.style.AppThemeDialog);
+        builder.setCancelable(true);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View mView = inflater.inflate(R.layout.dialog_block, null);
+        builder.setView(mView);
+        Button blockButton=(Button) mView.findViewById(R.id.btn_blockDialog);
+        TextView textBlock=(TextView) mView.findViewById(R.id.dialog_blockText);
+
+        textBlock.setText("Estás seguro que deseas eliminar tu link con "+name+" ?");
+        blockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataBase.saveDeleteLink(user.Uid,id);
+                AlertDialog.Builder builder=new AlertDialog.Builder(BaseActivity.this).setTitle("Exito").setMessage("Has bloqueado a "+name+".");
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        goToBlockActivity();
+                    }
+
+                }).show();
+            }
+        });
+        builder.show();
+    }
+
     protected void goToBlockActivity(){
         startMainActivity();
     }
@@ -519,8 +550,6 @@ public class BaseActivity extends AppCompatActivity {
         });
         alertDialog.show();
     }
-
-
 
     private  void goToMapActivity(String distance){
         Intent intent = new Intent(this, MapsActivity.class);
@@ -611,6 +640,7 @@ public class BaseActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
     public void deleteAccount() {
         showProgressDialog();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

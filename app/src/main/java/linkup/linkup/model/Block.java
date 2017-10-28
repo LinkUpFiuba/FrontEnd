@@ -7,8 +7,13 @@ import java.io.Serializable;
  */
 
 public class Block implements Serializable {
+    public static final String BLOCK = "BLOCK";
+    public static final String DELETE_LINK = "DELETE";
+
     boolean read;
     String by;
+
+    String type;
 
     public Block(){
 
@@ -16,6 +21,7 @@ public class Block implements Serializable {
     public Block(boolean read, String by) {
         this.read = read;
         this.by = by;
+        this.type = BLOCK;
     }
 
     public boolean isRead() {
@@ -33,5 +39,13 @@ public class Block implements Serializable {
 
     public void setBy(String by) {
         this.by = by;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -12,4 +12,8 @@
         android:title="@string/block"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/eliminar_chat"
+        android:title="@string/delete_chat"
+        app:showAsAction="never" />
 </menu>
