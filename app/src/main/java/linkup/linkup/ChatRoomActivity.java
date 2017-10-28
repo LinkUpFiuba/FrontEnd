@@ -33,6 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import linkup.linkup.Utils.DataBase;
 import linkup.linkup.adapter.ChatRoomThreadAdapter;
 import linkup.linkup.adapter.LoadEarlierMessages;
+import linkup.linkup.model.Block;
 import linkup.linkup.model.ChatRoom;
 import linkup.linkup.model.Match;
 import linkup.linkup.model.Message;
@@ -191,13 +192,21 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     }
 
     private void youHasBennBloqued() {
+        Intent intent = getIntent();
+        final String type = intent.getStringExtra("BloquedType");
+
+
         AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
         builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                DataBase.postReadNotificationBloquedByOtherUser(otherUser.getId(), SingletonUser.getUser().getSerializableUser().getId());
+                if(type.equals(Block.BLOCK)){
+                    DataBase.postReadNotificationBloquedByOtherUser(otherUser.getId(), SingletonUser.getUser().getSerializableUser().getId());
+                }else{
+                    DataBase.deleteBloquedMatch(otherUser.getId(), SingletonUser.getUser().getSerializableUser().getId());
+                }
                 onBackPressed();
                 finish();
             }

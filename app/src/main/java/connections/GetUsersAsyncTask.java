@@ -39,7 +39,7 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<CardSwipeCon
             //String cityCode = params[0];
             try {
                 String data = ((new HttpClient()).getUsers());
-//                Log.d(TAG, data);
+                Log.d(TAG, data);
 
                 try {
                     if(data!=null){
@@ -69,40 +69,55 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<CardSwipeCon
         for(int i=0; i<dataArray.length();i++) {
             JSONObject jObj = dataArray.getJSONObject(i);
 
-            User user = new User();
-            user.Uid=getString("Uid",jObj);
-            user.name = getString("name",jObj);
-            user.aboutMe = getString("aboutMe",jObj);
-            user.age = getString("age",jObj);
-            user.birthday = getString("birthday",jObj);
-            user.education = getString("education",jObj);
-            if(jObj.has("likesList")){
-                JSONArray jArrayLikesList = jObj.getJSONArray("likesList");
-                user.likesList = Like.likesList(jArrayLikesList);
+            String type = getString("type",jObj);
+            if(type.equals("user")){
+                addUser(users, jObj);
+            }else if(type.equals("ad")){
+                addAd(users,jObj);
             }
-            user.photoUrl = getString("photoUrl",jObj);
 
-            if(jObj.has("profilePhotosList")){
-                JSONArray jArrayLikesList = jObj.getJSONArray("profilePhotosList");
-                user.profilePhotosList = Photo.photoList(jArrayLikesList);
-            }
-            user.gender= getString("gender",jObj);
-
-            user.work = getString("work",jObj);
-            user.distance=Math.round( getFloat("distance",jObj));
-            if(jObj.has("commonInterests")){
-                JSONArray jArrayLikesList = jObj.getJSONArray("commonInterests");
-                user.commonLikes = Like.likesList(jArrayLikesList);
-            }
-            CardSwipeContent cardSwipeContent = new CardSwipeContent(CardSwipeContent.CANDIDATE);
-            cardSwipeContent.setUser(user);
-            users.add(cardSwipeContent);
         }
-
-        CardSwipeContent cardSwipeContent = new CardSwipeContent(CardSwipeContent.AD);
-        cardSwipeContent.setAd(new Advertisement("http://www.coca-colacompany.com/content/dam/journey/us/en/private/2015/02/1947-print-ad-671-900-abef8a95.jpg"));
-        users.add(cardSwipeContent);
         return users;
+    }
+
+    private static void addUser(List<CardSwipeContent> users, JSONObject jObj) throws JSONException {
+        User user = new User();
+        user.Uid=getString("Uid",jObj);
+        user.name = getString("name",jObj);
+        user.aboutMe = getString("aboutMe",jObj);
+        user.age = getString("age",jObj);
+        user.birthday = getString("birthday",jObj);
+        user.education = getString("education",jObj);
+        if(jObj.has("likesList")){
+            JSONArray jArrayLikesList = jObj.getJSONArray("likesList");
+            user.likesList = Like.likesList(jArrayLikesList);
+        }
+        user.photoUrl = getString("photoUrl",jObj);
+
+        if(jObj.has("profilePhotosList")){
+            JSONArray jArrayLikesList = jObj.getJSONArray("profilePhotosList");
+            user.profilePhotosList = Photo.photoList(jArrayLikesList);
+        }
+        user.gender= getString("gender",jObj);
+
+        user.work = getString("work",jObj);
+        //user.distance=Math.round( getFloat("distance",jObj));
+        if(jObj.has("commonInterests")){
+            JSONArray jArrayLikesList = jObj.getJSONArray("commonInterests");
+            user.commonLikes = Like.likesList(jArrayLikesList);
+        }
+        CardSwipeContent cardSwipeContent = new CardSwipeContent(CardSwipeContent.CANDIDATE);
+        cardSwipeContent.setUser(user);
+        users.add(cardSwipeContent);
+    }
+
+    private static void addAd(List<CardSwipeContent> users, JSONObject jObj) throws JSONException {
+        Advertisement ad = new Advertisement();
+        ad.setUrlImage(getString("image",jObj));
+
+        CardSwipeContent cardSwipeContent = new CardSwipeContent(CardSwipeContent.CANDIDATE);
+        cardSwipeContent.setAd(ad);
+        users.add(cardSwipeContent);
     }
 
     private static String getString(String tagName, JSONObject jObj) throws JSONException {

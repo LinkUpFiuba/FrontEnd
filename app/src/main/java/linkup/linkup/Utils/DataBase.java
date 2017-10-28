@@ -125,6 +125,34 @@ public class DataBase {
 
     }
 
+    public static void saveDeleteLink(final String uIdBlocking,final String uIdBlocked) {
+
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("links").child(uIdBlocking).child(uIdBlocked).removeValue();
+        databaseReference.child("links").child(uIdBlocked).child(uIdBlocking).removeValue();
+
+        databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Block block = new Block(false, uIdBlocking);
+                    block.setType(Block.DELETE_LINK);
+
+                    databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").setValue(block);
+
+                    databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     public static void saveReport(Report report) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -182,4 +210,8 @@ public class DataBase {
 
         ref.child("users").child(user.Uid).updateChildren(map);
     }
+
+    public static void deleteBloquedMatch(final String uIdBlocking,final String uIdBlocked) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).removeValue();    }
 }

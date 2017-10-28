@@ -67,6 +67,16 @@ public class ChatRoom implements Serializable {
     @Exclude
     boolean notifyBloquedByOtherUser = false;
 
+    public void setTypeBlock(String typeBlock) {
+        this.typeBlock = typeBlock;
+    }
+
+    @Exclude
+    String typeBlock = "";
+
+    @Exclude
+    public String getTypeBlock(){return typeBlock;}
+
     @Exclude
     public boolean isNotifyBloquedByOtherUser() {
         return notifyBloquedByOtherUser;

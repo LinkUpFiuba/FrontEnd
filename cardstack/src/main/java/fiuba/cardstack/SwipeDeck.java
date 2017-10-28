@@ -196,6 +196,7 @@ public class SwipeDeck extends FrameLayout {
         }
     }
 
+
     private void removeViewWaitForAnimation(View child) {
         new RemoveViewOnAnimCompleted().execute(child);
 
@@ -335,7 +336,6 @@ public class SwipeDeck extends FrameLayout {
         }
         setMeasuredDimension(width, height);
     }
-
 
     private void setupTopCard() {
 

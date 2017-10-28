@@ -27,6 +27,7 @@ public class CardSwipeContent {
 
     public void setAd(Advertisement ad) {
         this.ad = ad;
+        this.type = AD;
     }
 
     public User getUser() {

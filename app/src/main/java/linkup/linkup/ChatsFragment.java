@@ -77,6 +77,7 @@ public class ChatsFragment extends Fragment {
                 Intent intent = new Intent(context, ChatRoomActivity.class);
                 intent.putExtra("chatRead", chatRoom.isRead());
                 intent.putExtra("notifyBloqued", chatRoom.isNotifyBloquedByOtherUser());
+                intent.putExtra("BloquedType", chatRoom.getTypeBlock());
                 intent.putExtra("user", chatRoom.getUser());
                 startActivity(intent);
             }
@@ -103,11 +104,12 @@ public class ChatsFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void updateBloquedInfo(String chatRoomId) {
+    private void updateBloquedInfo(String chatRoomId,  String type) {
         for (ChatRoom cr : chatRoomArrayList) {
             if (cr.getId().equals(chatRoomId)) {
                 int index = chatRoomArrayList.indexOf(cr);
                 cr.setNotifyBloquedByOtherUser(true);
+                cr.setTypeBlock(type);
                 chatRoomArrayList.remove(index);
                 chatRoomArrayList.add(index, cr);
                 break;
@@ -215,7 +217,8 @@ public class ChatsFragment extends Fragment {
                 if(match.getBlock() != null) {
                     //Si no soy yo el que bloquea y todavia no lo lei
                     if((!match.getBlock().getBy().equals(SingletonUser.getUser().getSerializableUser().getId())) && match.getBlock().isRead() == false){
-                        updateBloquedInfo(key);
+
+                        updateBloquedInfo(key,match.getBlock().getType());
                     }else{
                         removeUserFromView(key);
                     }

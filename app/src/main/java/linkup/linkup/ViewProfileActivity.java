@@ -40,8 +40,6 @@ public class ViewProfileActivity extends BaseActivity {
 
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
 
-
-
         setUserProfile(user,user.getLikes(),false);
 
         FloatingActionButton fabLike = (FloatingActionButton)findViewById(R.id.fabLikeProfile);
@@ -68,6 +66,9 @@ public class ViewProfileActivity extends BaseActivity {
             case R.id.bloqueo:
                 blockUser(user.getId(),user.getName());
                 break;
+
+            case R.id.eliminar_chat:
+                deleteLink(user.getId(), user.getName());
         }
         return super.onOptionsItemSelected(item);
     }

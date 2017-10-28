@@ -120,6 +120,7 @@
 
     <string name="report">Denunciar</string>
     <string name="block">Bloquear</string>
+    <string name="delete_chat">Eliminar link</string>
 
     <string name="title_activity_blocked">BlockedActivity</string>
     <string name="dummy_button">Dummy Button</string>
