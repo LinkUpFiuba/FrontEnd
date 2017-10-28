@@ -27,6 +27,14 @@ public class PickProfilePhotoActivity extends PickPhotoActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pick_photo);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarPickPhoto);
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setTitle(getResources().getString(R.string.nav_item_pick_profile_photo));
+        }
 
     }
     protected int getMaxPhotos(){
