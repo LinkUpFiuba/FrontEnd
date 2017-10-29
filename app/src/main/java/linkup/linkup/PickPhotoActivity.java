@@ -86,7 +86,10 @@ public class PickPhotoActivity extends EditProfileActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    @Override
+    public void onBackPressed() {
+        getBackToPreviousActivity();
+    }
 
     protected int getMaxPhotos(){
         return 6;
