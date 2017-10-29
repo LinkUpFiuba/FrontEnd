@@ -31,6 +31,8 @@ import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
+import static android.R.attr.type;
+
 
 public class ChatsFragment extends Fragment {
     private static final String TAG = "ChatsFragment";
@@ -102,6 +104,15 @@ public class ChatsFragment extends Fragment {
             }
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void addChatRoom(ChatRoom chatRoom){
+        for (ChatRoom cr : chatRoomArrayList) {
+            if (cr.getId().equals(chatRoom.getId())) {
+                return;
+            }
+        }
+        chatRoomArrayList.add(chatRoom);
     }
 
     private void updateBloquedInfo(String chatRoomId,  String type) {
@@ -261,7 +272,8 @@ public class ChatsFragment extends Fragment {
                     cr.setLastMessage("");
                     cr.setUnreadCount(0);
                     cr.setNotifyBloquedByOtherUser(bloqued);
-                    chatRoomArrayList.add(cr);
+
+                    addChatRoom(cr);
 
                     mAdapter.notifyDataSetChanged();
                     backgroundNoChats.setVisibility(View.INVISIBLE);

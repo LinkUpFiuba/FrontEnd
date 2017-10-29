@@ -196,7 +196,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         if(this.isFinishing()){
            return;
         }
-        AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
+        AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Link eliminado").setMessage("Ya no te puedes contactar con esta persona.");
         builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
