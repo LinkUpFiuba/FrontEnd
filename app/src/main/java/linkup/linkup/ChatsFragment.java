@@ -227,6 +227,9 @@ public class ChatsFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                removeUserFromView(key);
+
             }
 
             @Override
