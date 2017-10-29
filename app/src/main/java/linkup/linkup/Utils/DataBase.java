@@ -112,8 +112,8 @@ public class DataBase {
                 if(dataSnapshot.exists()){
                     Block block = new Block(false, uIdBlocking);
                     databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").setValue(block);
-                    block.setRead(true);
-                    databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").setValue(block);
+                    databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).removeValue();
+                    databaseReference.child("messages").child(uIdBlocking).child(uIdBlocked).removeValue();
                 }
             }
 
@@ -142,6 +142,7 @@ public class DataBase {
                     databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").setValue(block);
 
                     databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).removeValue();
+                    databaseReference.child("messages").child(uIdBlocking).child(uIdBlocked).removeValue();
                 }
             }
 
@@ -213,5 +214,6 @@ public class DataBase {
 
     public static void deleteBloquedMatch(final String uIdBlocking,final String uIdBlocked) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).removeValue();    }
+        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).removeValue();
+        databaseReference.child("messages").child(uIdBlocked).child(uIdBlocking).removeValue(); }
 }
