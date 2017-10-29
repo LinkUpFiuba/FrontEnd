@@ -94,14 +94,13 @@ public class DataBase {
         });
 
     }
-    public static void postReadNotificationBloquedByOtherUser(final String uIdBlocking,final String uIdBlocked){
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("matches").child(uIdBlocking).child(uIdBlocked).child("block").child("read").setValue(true);
-        databaseReference.child("matches").child(uIdBlocked).child(uIdBlocking).child("block").child("read").setValue(true);
-    }
+
     public static void saveBlock(final String uIdBlocking,final String uIdBlocked) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("links").child(uIdBlocking).child(uIdBlocked).removeValue();
+        databaseReference.child("links").child(uIdBlocked).child(uIdBlocking).removeValue();
 
         databaseReference.child("blocks").child(uIdBlocking).child(uIdBlocked).child("by").setValue(uIdBlocking);
         databaseReference.child("blocks").child(uIdBlocked).child(uIdBlocking).child("by").setValue(uIdBlocking);
