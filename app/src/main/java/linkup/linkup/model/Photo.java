@@ -25,8 +25,10 @@ public class Photo implements Serializable {
         for(int i=0; i<photoArray.length();i++){
             Photo photo=new Photo();
             JSONObject photoObject = photoArray.getJSONObject(i);
-            photo.url=photoObject.getString("id");
-            photoList.add(photo);
+            if(photoObject.has("id")){
+                photo.url=photoObject.getString("id");
+                photoList.add(photo);
+            }
         }
         return photoList;
     }

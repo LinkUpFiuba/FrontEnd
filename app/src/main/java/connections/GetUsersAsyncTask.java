@@ -70,11 +70,11 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<CardSwipeCon
             JSONObject jObj = dataArray.getJSONObject(i);
 
             String type = getString("type",jObj);
-            if(type.equals("user")){
-                addUser(users, jObj);
-            }else if(type.equals("ad")){
+             if(type.equals("ad")){
                 addAd(users,jObj);
-            }
+            }else{
+                 addUser(users, jObj);
+             }
 
         }
         return users;
