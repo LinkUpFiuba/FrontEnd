@@ -104,7 +104,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
 
         titleChat.setText(otherUser.getName());
         if(notifyBloqued){
-            youHasBennBloqued();
+            final String type = intent.getStringExtra("BloquedType");
+            youHasBennBloqued(type);
         }else {
             Picasso.with(this).load(otherUser.getPhotoURL()).fit().centerCrop().into(profileImageView);
 
@@ -171,14 +172,14 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                 }
             });
 
-            databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("block").child("read").addValueEventListener(new ValueEventListener() {
+            databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("block").addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
-                        Boolean read = (Boolean) dataSnapshot.getValue();
-                        if(read == false){
-                            youHasBennBloqued();
+                        Block block = (Block) dataSnapshot.getValue(Block.class);
+                        if(block.isRead() == false){
+                            youHasBennBloqued(block.getType());
                         }
                     }
                 }
@@ -191,10 +192,8 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
         }
     }
 
-    private void youHasBennBloqued() {
+    private void youHasBennBloqued(final String type) {
         Intent intent = getIntent();
-        final String type = intent.getStringExtra("BloquedType");
-
 
         AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
         builder.setCancelable(false);
