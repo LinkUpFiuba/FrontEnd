@@ -193,19 +193,16 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     }
 
     private void youHasBennBloqued(final String type) {
-        Intent intent = getIntent();
-
+        if(this.isFinishing()){
+           return;
+        }
         AlertDialog.Builder builder=new AlertDialog.Builder(this).setTitle("Bloqueado").setMessage("Has sido bloqueado por el usuario");
         builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                if(type.equals(Block.BLOCK)){
-                    DataBase.postReadNotificationBloquedByOtherUser(otherUser.getId(), SingletonUser.getUser().getSerializableUser().getId());
-                }else{
-                    DataBase.deleteBloquedMatch(otherUser.getId(), SingletonUser.getUser().getSerializableUser().getId());
-                }
+                DataBase.deleteBloquedMatch(otherUser.getId(), SingletonUser.getUser().getSerializableUser().getId());
                 onBackPressed();
                 finish();
             }
