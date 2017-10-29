@@ -60,12 +60,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import linkup.linkup.Utils.App;
 import linkup.linkup.Utils.DataBase;
+import linkup.linkup.Utils.HttpClient;
 import linkup.linkup.model.Education;
 import linkup.linkup.model.Like;
 import linkup.linkup.model.Photo;
@@ -644,32 +646,29 @@ public class BaseActivity extends AppCompatActivity {
 
     public void deleteAccount() {
         showProgressDialog();
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Thread thread = new Thread(new Runnable() {
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("users").child(user.getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
+            public void run() {
+                try  {
+                    HttpClient client =new HttpClient();
+                    try {
+                        client.deleteUser();
+                        LoginManager.getInstance().logOut();
 
-                user.delete()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    LoginManager.getInstance().logOut();
-                                    hideProgressDialog();
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    startActivity(intent);
-
-                                }
-                            }
-
-
-                        });
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    }catch (UnknownHostException e){
+                        Toast.makeText(BaseActivity.this, "Ha ocurrido un error, intente mas tarde.",
+                                Toast.LENGTH_LONG).show();
+                    }                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-
         });
+        thread.start();
+
+
     }
 }
 
