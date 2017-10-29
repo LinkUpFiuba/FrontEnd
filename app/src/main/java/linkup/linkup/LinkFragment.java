@@ -32,6 +32,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
     private SwipeDeckAdapter adapter;
     private GetUsersAsyncTask task;
     private RelativeLayout backgroundNoMoreCandidates;
+    private boolean isFetchingUsers= false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,11 @@ public class LinkFragment extends Fragment implements ViewWithCards {
         }
         Log.d(TAG, "token" + SingletonUser.getToken());
 
-        task = new GetUsersAsyncTask(this);
-        task.execute();
+        if(isFetchingUsers == false){
+            task = new GetUsersAsyncTask(this);
+            isFetchingUsers = true;
+            task.execute();
+        }
     }
 
     private void stopAnimation() {
@@ -115,7 +119,7 @@ public class LinkFragment extends Fragment implements ViewWithCards {
 
     @Override
     public void showCards(List<CardSwipeContent> users, boolean showToasts) {
-
+        this.isFetchingUsers = false;
         if (showToasts) {
             if (users == null) {
                 backgroundNoMoreCandidates.setVisibility(View.VISIBLE);
