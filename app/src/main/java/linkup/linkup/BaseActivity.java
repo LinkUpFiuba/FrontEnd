@@ -495,11 +495,12 @@ public class BaseActivity extends AppCompatActivity {
         TextView textBlock=(TextView) mView.findViewById(R.id.dialog_blockText);
 
         textBlock.setText("Estás seguro que deseas eliminar tu link con "+name+" ?");
+        blockButton.setText("Eliminar Link");
         blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DataBase.saveDeleteLink(user.Uid,id);
-                AlertDialog.Builder builder=new AlertDialog.Builder(BaseActivity.this).setTitle("Exito").setMessage("Has bloqueado a "+name+".");
+                AlertDialog.Builder builder=new AlertDialog.Builder(BaseActivity.this).setTitle("Exito").setMessage("Has eliminado tu link con "+name+".");
                 builder.setCancelable(false);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
