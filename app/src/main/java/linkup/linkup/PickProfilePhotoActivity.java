@@ -53,7 +53,14 @@ public class PickProfilePhotoActivity extends PickPhotoActivity {
     @Override
     protected void changeUser(){
         User user = SingletonUser.getUser();
+        Photo oldProfilePhoto= new Photo(user.photoUrl);
+        user.profilePhotosList.remove(oldProfilePhoto);
         user.photoUrl=selectedPhotos.get(0).url;
+        Photo profilePhoto= new Photo(user.photoUrl);
+        if(user.profilePhotosList.contains(profilePhoto)){
+            user.profilePhotosList.remove(profilePhoto);
+        }
+        user.profilePhotosList.add(0,profilePhoto);
     }
     @Override
     protected void setSelectedPhotos(){
