@@ -65,7 +65,7 @@
                         android:layout_below="@+id/textView14"
                         android:layout_weight="1"
                         android:gravity="start|center_vertical"
-                        android:text="Tendrás a partir de mañana el doble de superfinos y así tendrás más chances de lincear con quien quieras." />
+                        android:text="Tendrás a partir de mañana el doble de superlikes y así tendrás más chances de lincear con quien quieras." />
 
                     <TextView
                         android:id="@+id/textView14"
@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:src="@drawable/ic_school_black_24dp"
+                        android:src="@drawable/ic_favorite_white_24dp"
                         android:tint="@color/secondary_text" />
 
 
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:src="@drawable/ic_school_black_24dp"
+                        android:src="@drawable/ic_group_white_24dp"
                         android:tint="@color/secondary_text" />
 
 
@@ -174,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:src="@drawable/ic_school_black_24dp"
+                        android:src="@drawable/ic_tv_white_24dp"
                         android:tint="@color/secondary_text" />
 
 
