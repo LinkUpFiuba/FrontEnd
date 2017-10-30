@@ -152,10 +152,10 @@ public class SwipeDeckAdapter extends BaseAdapter {
                         cardStack.swipeTopCardRight(180);
                     }else{
                         if(user.linkUpPlus){
-                            Toast.makeText(v.getContext(), "No tienes mas Superlinks, a partir de mañana tendras mas. ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(v.getContext(), "No tienes más Superlinks, a partir de mañana tendrás más. ", Toast.LENGTH_LONG).show();
                         }
                         else {
-                            Toast.makeText(v.getContext(), "No tienes mas Superlinks, si quieres disponer de mas puedes conseguir LinkUp Plus.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(v.getContext(), "No tienes más Superlinks, si quieres disponer de más puedes conseguir LinkUp Plus.", Toast.LENGTH_LONG).show();
 
                         }
                     }

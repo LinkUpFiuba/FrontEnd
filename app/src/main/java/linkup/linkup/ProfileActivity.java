@@ -13,10 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import linkup.linkup.Utils.LikeObserver;
 import linkup.linkup.model.SerializableUser;
+import linkup.linkup.model.SingletonUser;
+import linkup.linkup.model.User;
 
 public class ProfileActivity extends BaseActivity {
 
@@ -59,10 +63,22 @@ public class ProfileActivity extends BaseActivity {
         fabSuperLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent1 = new Intent();
-                returnIntent1.putExtra("result", SUPER_LIKE);
-                setResult(Activity.RESULT_OK,returnIntent1);
-                finish();
+                User myUser = SingletonUser.getUser();
+                if(myUser.hasAvailableSuperLinks()){
+                    Intent returnIntent1 = new Intent();
+                    returnIntent1.putExtra("result", SUPER_LIKE);
+                    setResult(Activity.RESULT_OK,returnIntent1);
+                    finish();
+                }else{
+                    if(myUser.linkUpPlus){
+                        Toast.makeText(v.getContext(), "No tienes más Superlinks, a partir de mañana tendrás más. ", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(v.getContext(), "No tienes más Superlinks, si quieres disponer de más puedes conseguir LinkUp Plus.", Toast.LENGTH_LONG).show();
+
+                    }
+                }
+
             }
         });
         FloatingActionButton fabDontLike = (FloatingActionButton)findViewById(R.id.fabDontLikeProfile);

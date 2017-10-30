@@ -65,7 +65,7 @@
                         android:layout_below="@+id/textView14"
                         android:layout_weight="1"
                         android:gravity="start|center_vertical"
-                        android:text="Tendras a partir de mañana el doble de superlink y asi tener mas chances de linkear con quien quieras." />
+                        android:text="Tendrás a partir de mañana el doble de superfinos y así tendrás más chances de lincear con quien quieras." />
 
                     <TextView
                         android:id="@+id/textView14"
@@ -109,7 +109,7 @@
                         android:layout_below="@+id/textView14"
                         android:layout_weight="1"
                         android:gravity="start|center_vertical"
-                        android:text="Tendras mas prioridad y asi tener mas chances de linkear con quien quieras." />
+                        android:text="Trendrás más prioridad y así podrás tener más chances de encontrar a la persona que quieres." />
 
                     <TextView
                         android:id="@+id/textView14"
@@ -153,7 +153,7 @@
                         android:layout_below="@+id/textView14"
                         android:layout_weight="1"
                         android:gravity="start|center_vertical"
-                        android:text="Podras usar LinkUp sin tener que ver ninguna publicidad" />
+                        android:text="Podrás usar LinkUp sin tener que ver ninguna publicidad." />
 
                     <TextView
                         android:id="@+id/textView14"

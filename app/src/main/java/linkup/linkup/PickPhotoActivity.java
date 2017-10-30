@@ -1,6 +1,7 @@
 package linkup.linkup;
 
 import android.content.Intent;
+import android.content.pm.PermissionGroupInfo;
 import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -33,6 +35,7 @@ import linkup.linkup.model.User;
 public class PickPhotoActivity extends EditProfileActivity {
     protected ArrayList<Photo> selectedPhotos = new ArrayList<>();
     protected ArrayList<Photo> availablePhotos = new ArrayList<>();
+    private Photo profilePhoto;
     protected Map<Photo,ImageView> selectedImageViews=new HashMap<Photo,ImageView>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class PickPhotoActivity extends EditProfileActivity {
     protected void setSelectedPhotos(){
         User user= SingletonUser.getUser();
         selectedPhotos.addAll((ArrayList<Photo>) user.profilePhotosList);
+        profilePhoto=new Photo(user.photoUrl);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,7 +98,13 @@ public class PickPhotoActivity extends EditProfileActivity {
     protected int getMaxPhotos(){
         return 6;
     }
+
     protected void selectPhoto(Photo clickedPhoto, ImageView imageView){
+        if(clickedPhoto.equals(profilePhoto)){
+            Toast.makeText(PickPhotoActivity.this, "No puedes remover tu imagen de perfil.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(!selectedPhotos.contains(clickedPhoto)){
             if ((selectedPhotos.size() <= getMaxPhotos())){
                 selectedPhotos.add(clickedPhoto);
