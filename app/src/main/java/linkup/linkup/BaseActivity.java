@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -391,6 +392,7 @@ public class BaseActivity extends AppCompatActivity {
         Type listType = new TypeToken<ArrayList<Photo>>(){}.getType();
         final List<Photo> profilePhotosList=gson.fromJson(user.getProfilePhotosList(),listType);
         carouselView.setPageCount(profilePhotosList.size());
+        carouselView.setIndicatorGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         ImageListener imageListener = new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
