@@ -10,11 +10,12 @@ import java.util.Date;
  */
 
 public class Report {
-    public String idReporting,message,state,timeStamp;
+    public String idReporting,message,state,timeStamp,type;
     @Exclude
     public String idReported;
     public Report(){}
-    public Report(String idReporting,String idReported,String message){
+    public Report(String idReporting,String idReported,String message,String type){
+        this.type=type;
         this.idReported=idReported;
         this.idReporting=idReporting;
         this.message=message;

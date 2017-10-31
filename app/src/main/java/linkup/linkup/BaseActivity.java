@@ -20,10 +20,13 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -536,11 +539,35 @@ public class BaseActivity extends AppCompatActivity {
         TextView textBlock=(TextView) mView.findViewById(R.id.dialog_reportText);
         textBlock.setHint("Razones de la denuncia");
         textBlock.setText("Explique las razones por la cual quieres denunciar a "+name+", esto puede resultar en que su cuenta sea eliminada de la aplicacion.");
+        Spinner spinner = (Spinner) mView.findViewById(R.id.dialog_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.report_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        final String[] reportType = new String[1];
+        spinner.setSelection(0);
+        reportType[0]=(String)spinner.getItemAtPosition(0);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                reportType[0] = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         Button reportButton=(Button) mView.findViewById(R.id.btn_reportDialog);
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Report report =new Report(user.Uid,id,input.getText().toString());
+                if(input.getText().toString().isEmpty()){
+                    Toast.makeText(BaseActivity.this,"Escribe la razón de tu denuncia.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Report report =new Report(user.Uid,id,input.getText().toString(),reportType[0]);
                 DataBase.saveReport(report);
                 alertDialog.dismiss();
                 AlertDialog.Builder builder=new AlertDialog.Builder(BaseActivity.this).setTitle("Denuncia Procesada").setMessage("Tu denuncia ha sido enviada y pronto sera revisada por nuestros sexys administradores.");

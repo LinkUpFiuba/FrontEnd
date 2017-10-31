@@ -131,4 +131,10 @@
 
     <string name="activity_blocked_btn"> Salir</string>
     <string name="title_activity_pick_profile_photo">PickProfilePhotoActivity</string>
+    <string-array name="report_array">
+        <item>Spam</item>
+        <item>Acoso</item>
+        <item>Ofensivo</item>
+        <item>Otros</item>
+    </string-array>
 </resources>
