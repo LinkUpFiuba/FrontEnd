@@ -537,20 +537,22 @@ public class BaseActivity extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
         final EditText input = (EditText)mView.findViewById(R.id.dialog_reportInput);
         TextView textBlock=(TextView) mView.findViewById(R.id.dialog_reportText);
-        textBlock.setHint("Razones de la denuncia");
+        textBlock.setHint(R.string.report_text_hint);
         textBlock.setText("Explique las razones por la cual quieres denunciar a "+name+", esto puede resultar en que su cuenta sea eliminada de la aplicacion.");
         Spinner spinner = (Spinner) mView.findViewById(R.id.dialog_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.report_array, android.R.layout.simple_spinner_item);
+         R.array.report_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         final String[] reportType = new String[1];
-        spinner.setSelection(0);
-        reportType[0]=(String)spinner.getItemAtPosition(0);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(getResources().getString(R.string.report_default_type)==(String)parent.getItemAtPosition(position)){
+                    return;
+                }
                 reportType[0] = (String) parent.getItemAtPosition(position);
+                input.setEnabled(true);
             }
 
             @Override
@@ -562,6 +564,11 @@ public class BaseActivity extends AppCompatActivity {
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(reportType[0]==null){
+                    Toast.makeText(BaseActivity.this,"Elija una razón para la denuncia.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if(input.getText().toString().isEmpty()){
                     Toast.makeText(BaseActivity.this,"Escribe la razón de tu denuncia.",
                             Toast.LENGTH_LONG).show();

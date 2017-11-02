@@ -133,10 +133,15 @@
 
     <string name="activity_blocked_btn"> Salir</string>
     <string name="title_activity_pick_profile_photo">PickProfilePhotoActivity</string>
+    <string name="report_default_type">Selecciona una razón</string>
     <string-array name="report_array">
+        <item>Selecciona una razón</item>
         <item>Spam</item>
         <item>Mensaje Inapropiado</item>
         <item>Comportamiento Sospechoso</item>
         <item>Otros</item>
     </string-array>
+    <string name="report_text_hint">Razones de la denuncia</string>
+    <string name="report_prompt">Seleccione una razón</string>
+
 </resources>

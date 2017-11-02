@@ -22,6 +22,15 @@
 
         >
 
+        <Spinner
+            android:id="@+id/dialog_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp" />
+
         <TextView
             android:id="@+id/dialog_reportText"
             android:layout_width="wrap_content"
@@ -33,17 +42,9 @@
             android:textAlignment="center"
             android:textColor="#000000" />
 
-        <Spinner
-            android:id="@+id/dialog_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp" />
         <EditText
             android:id="@+id/dialog_reportInput"
-
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
