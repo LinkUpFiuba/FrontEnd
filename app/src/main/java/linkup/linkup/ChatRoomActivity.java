@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -53,7 +54,7 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
     private String selfUserId;
     private DatabaseReference databaseReference1;
     private String oldestKey = "";
-
+    private boolean startable;
     private long count = 0;
     private boolean chatRoomIsRead;
     private RelativeLayout backgroundNoMessages;
@@ -131,38 +132,9 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
             recyclerView.setItemAnimator(new DefaultItemAnimator());
 
             recyclerView.setAdapter(mAdapter);
-
-            backgroundNoMessages = (RelativeLayout) findViewById(R.id.contentNoMessages);
-
             oldestKey = "";
-            ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    count = dataSnapshot.getChildrenCount();
-                    Log.d(TAG, Long.toString(count));
 
-                    backgroundNoMessages.setVisibility(View.INVISIBLE);
-                    recyclerView.setVisibility(View.VISIBLE);
 
-                    if (count == 0 && messageArrayList.size() == 0) {
-                        backgroundNoMessages.setVisibility(View.VISIBLE);
-                        mAdapter.setLoadEarlierMsgs(false);
-                        recyclerView.setVisibility(View.INVISIBLE);
-                    }
-
-                    if (count > 0 && messageArrayList.size() == 0) {
-                        fetchHistory();
-                    } else {
-                        mAdapter.setLoadEarlierMsgs(false);
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            };
-            databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).addValueEventListener(messagesCountValueEventListener);
 
             btnSend.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -181,6 +153,57 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
                         if(block.isRead() == false){
                             youHasBennBloqued(block.getType());
                         }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            databaseReference1.child("matches").child(selfUserId).child(otherUser.getId()).child("startable").addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                         startable = (Boolean)  dataSnapshot.getValue(Boolean.class);
+                        backgroundNoMessages = (RelativeLayout) findViewById(R.id.contentNoMessages);
+
+                        if(!startable){
+                            TextView textView=(TextView)backgroundNoMessages.findViewById(R.id.subtitleNoMessages);
+                            textView.setText(R.string.no_startable);
+                         }
+
+
+                        ValueEventListener messagesCountValueEventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                count = dataSnapshot.getChildrenCount();
+                                Log.d(TAG, Long.toString(count));
+
+                                backgroundNoMessages.setVisibility(View.INVISIBLE);
+                                recyclerView.setVisibility(View.VISIBLE);
+
+                                if (count == 0 && messageArrayList.size() == 0) {
+                                    backgroundNoMessages.setVisibility(View.VISIBLE);
+                                    mAdapter.setLoadEarlierMsgs(false);
+                                    recyclerView.setVisibility(View.INVISIBLE);
+                                }
+
+                                if (count > 0 && messageArrayList.size() == 0) {
+                                    fetchHistory();
+                                } else {
+                                    mAdapter.setLoadEarlierMsgs(false);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        };
+                        databaseReference1.child("messages").child(selfUserId).child(otherUser.getId()).addValueEventListener(messagesCountValueEventListener);
+
                     }
                 }
 
@@ -288,8 +311,14 @@ public class ChatRoomActivity extends BaseActivity implements LoadEarlierMessage
      * Post de un nuevo mensaje
      */
     private void sendMessage() {
+
         final String messageToSend = this.inputMessage.getText().toString().trim();
         if (TextUtils.isEmpty(messageToSend)) {
+            return;
+        }
+        if(!startable){
+            Toast.makeText(ChatRoomActivity.this, "Las chicas primero, ellas deben empezar la conversación ;)",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
         this.inputMessage.setText("");

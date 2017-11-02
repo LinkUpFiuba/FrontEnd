@@ -112,6 +112,8 @@
     <string name="no_more_candidates">Por el momento no hay candidatos,</string>
     <string name="came_back_later">vuelve más tarde</string>
     <string name="no_messages_yet">No seas tímido y comienza la conversación</string>
+    <string name="no_startable">Ella debe hablarte primero </string>
+
     <string name="no_messages_yet_woman">No seas tímida y comienza la conversación</string>
 
     <string name="retry">Buscar candidatos</string>
@@ -133,8 +135,8 @@
     <string name="title_activity_pick_profile_photo">PickProfilePhotoActivity</string>
     <string-array name="report_array">
         <item>Spam</item>
-        <item>Acoso</item>
-        <item>Ofensivo</item>
+        <item>Mensaje Inapropiado</item>
+        <item>Comportamiento Sospechoso</item>
         <item>Otros</item>
     </string-array>
 </resources>

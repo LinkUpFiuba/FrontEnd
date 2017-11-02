@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="app" />
+      <module fileurl="file://$PROJECT_DIR$/cardstack/cardstack.iml" filepath="$PROJECT_DIR$/cardstack/cardstack.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cardstack/cardstack.iml" filepath="$PROJECT_DIR$/.idea/modules/cardstack/cardstack.iml" group="cardstack" />
+      <module fileurl="file://$PROJECT_DIR$/frontend.iml" filepath="$PROJECT_DIR$/frontend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/frontend.iml" filepath="$PROJECT_DIR$/.idea/modules/frontend.iml" />
     </modules>
   </component>
