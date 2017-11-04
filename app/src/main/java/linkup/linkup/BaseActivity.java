@@ -66,6 +66,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -544,6 +545,12 @@ public class BaseActivity extends AppCompatActivity {
          R.array.report_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        String[] names = getResources().getStringArray(R.array.report_array);
+        String[] types = getResources().getStringArray(R.array.report_array_type);
+        final Map<String,String> mapNameType=new HashMap<String,String>();
+        for(int i=0;i<names.length;i++){
+            mapNameType.put(names[i],types[i]);
+        }
         final String[] reportType = new String[1];
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -574,7 +581,7 @@ public class BaseActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                     return;
                 }
-                Report report =new Report(user.Uid,id,input.getText().toString(),reportType[0]);
+                Report report =new Report(user.Uid,id,input.getText().toString(),mapNameType.get(reportType[0]));
                 DataBase.saveReport(report);
                 alertDialog.dismiss();
                 AlertDialog.Builder builder=new AlertDialog.Builder(BaseActivity.this).setTitle("Denuncia Procesada").setMessage("Tu denuncia ha sido enviada y pronto sera revisada por nuestros sexys administradores.");

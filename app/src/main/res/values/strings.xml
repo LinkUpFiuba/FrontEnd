@@ -141,6 +141,13 @@
         <item>Comportamiento Sospechoso</item>
         <item>Otros</item>
     </string-array>
+    <string-array name="report_array_type">
+        <item></item>
+        <item>spam</item>
+        <item>inappropiate-message</item>
+        <item>suspicious</item>
+        <item>other</item>
+    </string-array>
     <string name="report_text_hint">Razones de la denuncia</string>
     <string name="report_prompt">Seleccione una razón</string>
 
