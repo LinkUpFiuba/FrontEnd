@@ -1,8 +1,10 @@
 package linkup.linkup.Utils;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +24,7 @@ import linkup.linkup.ProfileActivity;
 import linkup.linkup.model.Block;
 import linkup.linkup.model.Link;
 import linkup.linkup.model.Report;
+import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
 
@@ -52,15 +55,60 @@ public class DataBase {
         return user[0];
     }
 
-    public static void showProfileUser(String Uid, final Context context){
+    public static void showProfileUser(final String Uid, final Context context){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        String myUserId = SingletonUser.getUser().getSerializableUser().getId();
+
+        ref.child("blocks").child(myUserId).child(Uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long count = dataSnapshot.getChildrenCount();
+                if (count == 0){
+                    getProfileUser(Uid,context);
+                }else{
+                    AlertDialog.Builder builder=new AlertDialog.Builder(context).setTitle("Atención").setMessage("No puedes visualizar el perfil de esta persona");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+
+                    }).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private static void getProfileUser(String Uid, final Context context){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
         ref.child("users").child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = (User) dataSnapshot.getValue(User.class);
-                Intent i = new Intent(context, ProfileActivity.class);
-                i.putExtra("user", user.getSerializableUser());
-                context.startActivity(i);
+                if (user.invisibleMode == true){
+                    AlertDialog.Builder builder=new AlertDialog.Builder(context).setTitle("Atención").setMessage("No puedes visualizar el perfil de esta persona");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+
+                    }).show();
+                }else {
+                    Intent i = new Intent(context, ProfileActivity.class);
+                    i.putExtra("user", user.getSerializableUser());
+                    context.startActivity(i);
+                }
+
             }
 
             @Override
