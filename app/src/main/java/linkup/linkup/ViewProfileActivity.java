@@ -120,7 +120,7 @@ public class ViewProfileActivity extends BaseActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "Firebase Deep Link");
-        intent.putExtra(Intent.EXTRA_TEXT,deepLink);
+        intent.putExtra(Intent.EXTRA_TEXT,"Creo que esta persona podría interesarte: " + deepLink);
 
         startActivity(intent);
     }
