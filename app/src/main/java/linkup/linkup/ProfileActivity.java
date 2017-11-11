@@ -2,12 +2,15 @@ package linkup.linkup;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +18,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.squareup.picasso.Picasso;
 
 import linkup.linkup.Utils.LikeObserver;
@@ -22,11 +30,14 @@ import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
+import static android.R.attr.id;
+
 public class ProfileActivity extends BaseActivity {
 
     public static final String LIKE = "1";
     public static final String SUPER_LIKE = "2";
     public static final String DONT_LIKE = "3";
+    private static final String TAG = "ProfileActivity";
     SerializableUser user;
 
     @Override
@@ -107,10 +118,17 @@ public class ProfileActivity extends BaseActivity {
             case R.id.bloqueo:
                 blockUser(user.getId(),user.getName());
                 break;
+
+            case R.id.share:
+                shareProfile(user.getId());
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void shareProfile(String id) {
+        Uri link = buildDeepLink(id);
+        shareShortLink(link);
+    }
 
 
     @Override
@@ -127,4 +145,55 @@ public class ProfileActivity extends BaseActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+    public Uri buildDeepLink(String userId ) {
+        String DEEP_LINK_URL = "https://linkupapp.com/" + userId + "/";
+        Log.d(TAG,DEEP_LINK_URL);
+
+        final Uri deepLink = Uri.parse(DEEP_LINK_URL);
+
+        String domain = "qa224.app.goo.gl";
+
+        DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
+                .createDynamicLink()
+                .setDynamicLinkDomain(domain)
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
+                        .build())
+                .setLink(deepLink);
+
+        // Build the dynamic link
+        DynamicLink link = builder.buildDynamicLink();
+
+        // Return the dynamic link as a URI
+        return link.getUri();
+    }
+
+    private void shareDeepLink(String deepLink) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Firebase Deep Link");
+        intent.putExtra(Intent.EXTRA_TEXT,deepLink);
+
+        startActivity(intent);
+    }
+
+    private void shareShortLink(Uri deepLink){
+        Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLongLink(deepLink)
+                .buildShortDynamicLink()
+                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+                            shareDeepLink(shortLink.toString());
+                        } else {
+                            // Error
+                            // ...
+                        }
+                    }
+                });
+    }
+
 }

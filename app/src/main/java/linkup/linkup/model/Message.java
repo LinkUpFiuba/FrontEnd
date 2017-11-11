@@ -11,6 +11,16 @@ public class Message implements Serializable {
     boolean read;
     boolean liked;
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    long timestamp;
+
     public boolean isLiked() {
         return liked;
     }
@@ -30,6 +40,7 @@ public class Message implements Serializable {
     public Message() {
         this.read = false;
         this.liked = false;
+        timestamp = System.currentTimeMillis();
     }
 
     public Message(String message, String userId, boolean read, boolean liked) {
