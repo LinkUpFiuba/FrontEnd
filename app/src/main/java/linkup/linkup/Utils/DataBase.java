@@ -1,5 +1,7 @@
 package linkup.linkup.Utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import linkup.linkup.LinkFragment;
+import linkup.linkup.ProfileActivity;
 import linkup.linkup.model.Block;
 import linkup.linkup.model.Link;
 import linkup.linkup.model.Report;
@@ -47,6 +50,24 @@ public class DataBase {
             }
         });
         return user[0];
+    }
+
+    public static void showProfileUser(String Uid, final Context context){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("users").child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = (User) dataSnapshot.getValue(User.class);
+                Intent i = new Intent(context, ProfileActivity.class);
+                i.putExtra("user", user.getSerializableUser());
+                context.startActivity(i);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static void saveLink(final Link link, final LinkFragment linkFragment) {

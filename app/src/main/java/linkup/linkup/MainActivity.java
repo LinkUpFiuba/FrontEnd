@@ -46,6 +46,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Iterator;
 
+import linkup.linkup.Utils.DataBase;
 import linkup.linkup.Utils.GPS;
 import linkup.linkup.Utils.IGPSActivity;
 import linkup.linkup.adapter.SwipeDeckAdapter;
@@ -83,7 +84,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        registerDynamicLinks();
 
         User user = SingletonUser.getUser();
 
@@ -92,6 +92,7 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             return;
         } else {
 
+            registerDynamicLinks();
 
             gps = new GPS(this);
             linkFragment = new LinkFragment();
@@ -491,8 +492,10 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
                             Log.d(TAG,"DeepLink recibido:  "+ deepLink.toString());
 
                             String[] separated =  deepLink.toString().split("/");
-                            Log.d(TAG,"ID de usuario compartido: " + separated[3]);
                             String userid = separated[3];
+
+                            Log.d(TAG,"ID de usuario compartido: " + userid);
+                            openProfile(userid);
                         }
 
                     }
@@ -503,5 +506,11 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
                         Log.w(TAG, "getDynamicLink:onFailure", e);
                     }
                 });
+    }
+    private void openProfile(String userId){
+        //Intent i = new Intent(this, ProfileActivity.class);
+        //i.putExtra("user", user);
+        //startActivity(i);
+        DataBase.showProfileUser(userId, this);
     }
 }
