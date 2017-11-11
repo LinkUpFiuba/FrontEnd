@@ -91,7 +91,6 @@ public class MainActivity extends BaseActivity implements IGPSActivity {
             startLoginActivity();
             return;
         } else {
-
             registerDynamicLinks();
 
             gps = new GPS(this);

@@ -28,6 +28,7 @@ import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
 
+import static linkup.linkup.R.id.count;
 import static linkup.linkup.R.string.block;
 import static linkup.linkup.R.string.report;
 
@@ -44,7 +45,6 @@ public class DataBase {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user[0] = (User) dataSnapshot.getValue(User.class);
-
             }
 
             @Override
@@ -65,17 +65,9 @@ public class DataBase {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long count = dataSnapshot.getChildrenCount();
                 if (count == 0){
-                    getProfileUser(Uid,context);
+                    checkDisebledUser(Uid,context);
                 }else{
-                    AlertDialog.Builder builder=new AlertDialog.Builder(context).setTitle("Atención").setMessage("No puedes visualizar el perfil de esta persona");
-                    builder.setCancelable(false);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-
-                    }).show();
+                    showAlertDialog(context);
                 }
             }
 
@@ -86,6 +78,38 @@ public class DataBase {
         });
     }
 
+    public static void checkDisebledUser(final String Uid, final Context context){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        ref.child("disabledUsers").child(Uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() == false){
+                    getProfileUser(Uid,context);
+                }else{
+                    showAlertDialog(context);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private static void showAlertDialog(Context context) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(context).setTitle("Atención").setMessage("No puedes visualizar el perfil de esta persona");
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+
+        }).show();
+    }
+
     private static void getProfileUser(String Uid, final Context context){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
@@ -94,15 +118,8 @@ public class DataBase {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = (User) dataSnapshot.getValue(User.class);
                 if (user.invisibleMode == true){
-                    AlertDialog.Builder builder=new AlertDialog.Builder(context).setTitle("Atención").setMessage("No puedes visualizar el perfil de esta persona");
-                    builder.setCancelable(false);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    showAlertDialog(context);
 
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-
-                    }).show();
                 }else {
                     Intent i = new Intent(context, ProfileActivity.class);
                     i.putExtra("user", user.getSerializableUser());

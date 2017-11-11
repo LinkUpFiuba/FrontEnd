@@ -39,10 +39,12 @@ public class GetUsersAsyncTask extends AsyncTask<String, Void, List<CardSwipeCon
             //String cityCode = params[0];
             try {
                 String data = ((new HttpClient()).getUsers());
-                Log.d(TAG, data);
+
 
                 try {
                     if(data!=null){
+                        Log.d(TAG, data);
+
                     List<CardSwipeContent> users = getUsers(data);
                  //   Log.d(TAG, users.getUser(0).name);
 
