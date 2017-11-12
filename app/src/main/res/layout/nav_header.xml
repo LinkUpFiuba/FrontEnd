@@ -19,7 +19,7 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:scaleType="centerCrop"
-        android:src="@drawable/p2"/>
+        />
 
     <LinearLayout
         android:layout_width="match_parent"

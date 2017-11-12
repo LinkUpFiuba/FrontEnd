@@ -8,14 +8,9 @@
     <dimen name="activity_vertical_margin_small">8dp</dimen>
     <dimen name="activity_vertical_margin_xsmall">2dp</dimen>
 
-    <dimen name="padding_toolbar">10dp</dimen>
-    <dimen name="padding_toolbar_large">14dp</dimen>
-    <dimen name="padding_toolbar_small">6dp</dimen>
-
 
     <dimen name="activity_login_button_text_vertical_margin">60dp</dimen>
     <dimen name="activity_login_button_text_vertical_margin_top">60dp</dimen>
-    <dimen name="toolbar_padding_left_right">8dp</dimen>
 
 
     <dimen name="button_height">48dp</dimen>
@@ -27,15 +22,11 @@
 
 
     <!-- Content Swipe Deck-->
-    <dimen name="swipe_horizontal_margin">0dp</dimen>
     <dimen name="cardview_radius">0dp</dimen>
 
-    <dimen name="card_top_shadow_margin_bottom">2dp</dimen>
     <!-- Candidate card-->
-    <dimen name="card_margin_bottom">92dp</dimen>
 
     <dimen name="appbarlayout_height">418dp</dimen>
-    <dimen name="edittext_drawable_pad">16dp</dimen>
     <dimen name="rippleStrokeWidth">2dp</dimen>
     <dimen name="rippleRadius">64dp</dimen>
 
@@ -44,8 +35,5 @@
     <dimen name="header_height">204dp</dimen>
 
     <dimen name="perfil_image_size">76dp</dimen>
-
-    <dimen name="perfil_gallery_padding">4dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

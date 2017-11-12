@@ -1,22 +1,9 @@
 <resources>
     <string name="app_name">LinkUp</string>
-    <string name="title_activity_login">Sign in</string>
     <item name="TAG" type="id" />
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
     <string name="loading">Cargando</string>
-    <string name="action_logout">Salir</string>
 
     <string name="facebook_app_id">113492992704721</string>
     <string name="fb_login_protocol_scheme">fb113492992704721</string>
@@ -24,12 +11,6 @@
     <string name="activit_continue_button">Continuar con facebook</string>
     <string name="activity_loigin_dont_publish_facebook">Nunca publicaremos algo en tu facebook</string>
     <string name="activity_loigin_use_conditions">Condiciones de uso</string>
-    <string name="activity_loigin_use_logo">LinkUp</string>
-
-    <string name="activity_profile_interests">Intereses</string>
-
-    <string name="activity_configurations_edit_info">Editar perfil</string>
-    <string name="activity_configurations_account">ajustes</string>
 
     <string name="icon_game">Linkear</string>
     <string name="icon_chats">Chat</string>
@@ -69,15 +50,7 @@
     <string name="edit_settings_seccion_app_settings">Ajustes de la app</string>
     <string name="edit_settings_app_settings_notifications">Notificaciones</string>
     <string name="edit_settings_btn_get_link_plus">Linkup plus</string>
-    <string name="edit_settings_btn_get_salir">salir</string>
     <string name="edit_settings_btn_get_eliminar">eliminar cuenta</string>
-
-    <string name="edit_settings_logo">LinkUp</string>
-    <string name="edit_settings_version">Versión 0.0.1</string>
-    <string name="edit_settings_version_platform">(Android)</string>
-
-    <string name="welcome">Su usuario fue creado con éxito</string>
-    <string name="welcome_title">Todo listo</string>
 
     <string name="edit_success_title">Todo listo</string>
     <string name="edit_success_message">Los datos fueron almacenados con éxito</string>
@@ -114,8 +87,6 @@
     <string name="no_messages_yet">No seas tímido y comienza la conversación</string>
     <string name="no_startable">Ella debe hablarte primero </string>
 
-    <string name="no_messages_yet_woman">No seas tímida y comienza la conversación</string>
-
     <string name="retry">Buscar candidatos</string>
     <string name="title_activity_maps">Map</string>
     <string name="see_in_map">Ver en mapa</string>
@@ -127,8 +98,6 @@
 
 
     <string name="title_activity_blocked">BlockedActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="activity_blocked_title">Has sido bloqueado</string>
     <string name="activity_blocked_subtitle"> Los administradores han recibido denuncias de otros usuarios y han decidido bloquearte. No podras ingresar mas en la aplicacion</string>
@@ -151,6 +120,5 @@
         <item>other</item>
     </string-array>
     <string name="report_text_hint">Razones de la denuncia</string>
-    <string name="report_prompt">Seleccione una razón</string>
 
 </resources>
