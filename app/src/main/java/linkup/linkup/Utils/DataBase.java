@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,16 +20,13 @@ import java.util.Map;
 
 import linkup.linkup.LinkFragment;
 import linkup.linkup.ProfileActivity;
+import linkup.linkup.ViewProfileActivity;
 import linkup.linkup.model.Block;
 import linkup.linkup.model.Link;
 import linkup.linkup.model.Report;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
-
-import static linkup.linkup.R.id.count;
-import static linkup.linkup.R.string.block;
-import static linkup.linkup.R.string.report;
 
 
 public class DataBase {
@@ -60,7 +56,7 @@ public class DataBase {
 
         String myUserId = SingletonUser.getUser().getSerializableUser().getId();
 
-        ref.child("blocks").child(myUserId).child(Uid).addValueEventListener(new ValueEventListener() {
+        ref.child("blocks").child(myUserId).child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long count = dataSnapshot.getChildrenCount();
@@ -81,11 +77,11 @@ public class DataBase {
     public static void checkDisebledUser(final String Uid, final Context context){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-        ref.child("disabledUsers").child(Uid).addValueEventListener(new ValueEventListener() {
+        ref.child("disabledUsers").child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() == false){
-                    getProfileUser(Uid,context);
+                    checkLike(Uid,context);
                 }else{
                     showAlertDialog(context);
                 }
@@ -98,19 +94,43 @@ public class DataBase {
         });
     }
 
-    private static void showAlertDialog(Context context) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(context).setTitle("Atención").setMessage("No puedes visualizar el perfil de esta persona");
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
+    public static void checkLink(final String Uid, final Context context){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("matches").child(SingletonUser.getUser().Uid).child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() == false){
+                    getProfileUser(Uid,context,true);
+                }else{
+                    getProfileUser(Uid,context,false);
+                }
             }
 
-        }).show();
-    }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-    private static void getProfileUser(String Uid, final Context context){
+            }
+        });
+    }
+    public static void checkLike(final String Uid, final Context context){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("links").child(SingletonUser.getUser().Uid).child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() == false){
+                    checkLink(Uid,context);
+                }else{
+                    getProfileUser(Uid,context,false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private static void getProfileUser(String Uid, final Context context, final boolean showGameButtons){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
         ref.child("users").child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -121,7 +141,12 @@ public class DataBase {
                     showAlertDialog(context);
 
                 }else {
-                    Intent i = new Intent(context, ProfileActivity.class);
+                    Intent i;
+                    if(showGameButtons == true){
+                        i = new Intent(context, ProfileActivity.class);
+                    }else{
+                        i = new Intent(context, ViewProfileActivity.class);
+                    }
                     i.putExtra("user", user.getSerializableUser());
                     context.startActivity(i);
                 }
@@ -134,6 +159,19 @@ public class DataBase {
             }
         });
     }
+    private static void showAlertDialog(Context context) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(context).setTitle("Atención").setMessage("No puedes visualizar el perfil de esta persona");
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+
+        }).show();
+    }
+
+
 
     public static void saveLink(final Link link, final LinkFragment linkFragment) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
