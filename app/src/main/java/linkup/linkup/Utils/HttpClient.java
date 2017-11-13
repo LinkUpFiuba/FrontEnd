@@ -15,7 +15,7 @@ import linkup.linkup.model.SingletonUser;
 public class HttpClient {
 
 	private static final String TAG = "HttpClient";
-	private static String BASE_URL = "http://dev-link-up-g1.herokuapp.com";
+	private static String BASE_URL = "http://link-up-g1.herokuapp.com";
 
 	public String getUsers() throws  UnknownHostException {
 		HttpURLConnection con = null ;
