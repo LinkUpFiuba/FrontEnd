@@ -25,11 +25,13 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.squareup.picasso.Picasso;
 
+import linkup.linkup.Utils.DataBase;
 import linkup.linkup.Utils.LikeObserver;
 import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.User;
 
+import static android.R.attr.expandableListViewStyle;
 import static android.R.attr.id;
 
 public class ProfileActivity extends BaseActivity {
@@ -42,6 +44,7 @@ public class ProfileActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -55,19 +58,28 @@ public class ProfileActivity extends BaseActivity {
         getWindow().setSharedElementEnterTransition(bounds);
 
         user = (SerializableUser) getIntent().getParcelableExtra("user");
+        User myUser = SingletonUser.getUser();
+
+        final boolean callDatabse = getIntent().getBooleanExtra("callDatabse", false);
 
         toolbarLayout.setTitle(user.getName()+", "+user.getAge());
 
         setUserProfile(user,user.getLikes(),true);
 
         FloatingActionButton fabLike = (FloatingActionButton)findViewById(R.id.fabLikeProfile);
+
         fabLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("result", LIKE);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                if (callDatabse == true){
+                    DataBase.postLike(user);
+                    finish();
+                }else {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("result", LIKE);
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
+                }
             }
         });
         FloatingActionButton fabSuperLike = (FloatingActionButton)findViewById(R.id.fabSuperLikeProfile);
@@ -76,10 +88,15 @@ public class ProfileActivity extends BaseActivity {
             public void onClick(View v) {
                 User myUser = SingletonUser.getUser();
                 if(myUser.hasAvailableSuperLinks()){
-                    Intent returnIntent1 = new Intent();
-                    returnIntent1.putExtra("result", SUPER_LIKE);
-                    setResult(Activity.RESULT_OK,returnIntent1);
-                    finish();
+                    if (callDatabse == true){
+                        DataBase.postSuperLike(user);
+                        finish();
+                    }else {
+                        Intent returnIntent1 = new Intent();
+                        returnIntent1.putExtra("result", SUPER_LIKE);
+                        setResult(Activity.RESULT_OK, returnIntent1);
+                        finish();
+                    }
                 }else{
                     if(myUser.linkUpPlus){
                         Toast.makeText(v.getContext(), "No tienes más Superlinks, a partir de mañana tendrás más. ", Toast.LENGTH_LONG).show();
@@ -96,10 +113,15 @@ public class ProfileActivity extends BaseActivity {
         fabDontLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent2 = new Intent();
-                returnIntent2.putExtra("result", DONT_LIKE);
-                setResult(Activity.RESULT_OK,returnIntent2);
-                finish();
+                if (callDatabse == true){
+                    DataBase.postDontLike(user);
+                    finish();
+                }else {
+                    Intent returnIntent2 = new Intent();
+                    returnIntent2.putExtra("result", DONT_LIKE);
+                    setResult(Activity.RESULT_OK, returnIntent2);
+                    finish();
+                }
             }
         });
 

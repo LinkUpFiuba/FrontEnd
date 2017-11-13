@@ -24,6 +24,7 @@ import linkup.linkup.ViewProfileActivity;
 import linkup.linkup.model.Block;
 import linkup.linkup.model.Link;
 import linkup.linkup.model.Report;
+import linkup.linkup.model.SerializableUser;
 import linkup.linkup.model.SingletonUser;
 import linkup.linkup.model.Unlink;
 import linkup.linkup.model.User;
@@ -144,6 +145,7 @@ public class DataBase {
                     Intent i;
                     if(showGameButtons == true){
                         i = new Intent(context, ProfileActivity.class);
+                        i.putExtra("callDatabse", true);
                     }else{
                         i = new Intent(context, ViewProfileActivity.class);
                     }
@@ -172,7 +174,67 @@ public class DataBase {
     }
 
 
+    public static void postLike(final SerializableUser otherUser) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("links").child(SingletonUser.getUser().Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Map<String, Object> update = new HashMap<String, Object>();
+                    update.put(otherUser.getId(), Link.NORMAL);
+                    dataSnapshot.getRef().updateChildren(update);
+                }else {
+                    dataSnapshot.getRef().child(otherUser.getId()).setValue(Link.NORMAL);
 
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+    public static void postSuperLike(final SerializableUser otherUser) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("links").child(SingletonUser.getUser().Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Map<String, Object> update = new HashMap<String, Object>();
+                    update.put(otherUser.getId(), Link.SUPERLINK);
+                    dataSnapshot.getRef().updateChildren(update);
+                }else {
+                    dataSnapshot.getRef().child(otherUser.getId()).setValue(Link.NORMAL);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public static void postDontLike(final SerializableUser otherUser) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("unlinks").child(SingletonUser.getUser().Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Map<String, Object> update = new HashMap<String, Object>();
+                    update.put(otherUser.getId(), true);
+                    dataSnapshot.getRef().updateChildren(update);
+                }else {
+                    dataSnapshot.getRef().child(otherUser.getId()).setValue(Link.NORMAL);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
     public static void saveLink(final Link link, final LinkFragment linkFragment) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("links").child(link.linkingUser).addListenerForSingleValueEvent(new ValueEventListener() {
